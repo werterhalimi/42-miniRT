@@ -1,0 +1,6 @@
+*.o
+*.sh
+*.a
+miniRT
+.idea
+.DS_Store
