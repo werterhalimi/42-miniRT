@@ -54,7 +54,7 @@ static int	add_object(char *line, t_list **objects)
 	char	*content;
 
 	content = ft_strtrim(line, " ");
-	free(line);
+	ft_alloc(0, 0, line, FREE);
 	hash = ft_strchr(content, '#');
 	if (hash)
 		*hash = '\n';
