@@ -21,7 +21,7 @@ int	parse_sphere(t_scene *scene, t_list *current)
 	i = 0;
 	while (!((scene->objects)[i]))
 		i++;
-	sphere = malloc(sizeof (t_sphere));
+	sphere = ft_alloc(1, sizeof (t_sphere), NULL, ALLOC);
 	if (!sphere)
 		return (print_error(ERROR, "Sphere allocation failed"));
 	item = next_item((char *)(current->content));

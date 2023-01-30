@@ -10,7 +10,8 @@
 #                                                                              #
 # **************************************************************************** #
 
-SRCS			=	ft_atoi.c		ft_bzero.c		ft_calloc.c \
+SRCS			=	ft_alloc.c \
+					ft_atoi.c		ft_bzero.c		ft_calloc.c \
 					ft_isalnum.c	ft_isalpha.c	ft_isascii.c \
 					ft_isdigit.c	ft_isprint.c	ft_itoa.c \
 					ft_memchr.c		ft_memcmp.c		ft_memcpy.c \
@@ -35,11 +36,11 @@ OBJS			= $(SRCS:.c=.o)
 
 TEST			= libft_test
 
-CC				= gcc
+CC				= @gcc
 CFLAGS			= -Wall -Wextra -Werror -I.
-RM				= rm -f
-LIB				= ar rcs
-DEBUG			= -g3 -fsanitize=address
+RM				= @rm -f
+LIB				= @ar rcs
+DEBUG			= -g3 -fsanitize=undefined
 TMP				= .tmp.txt
 NAME			= libft.a
 

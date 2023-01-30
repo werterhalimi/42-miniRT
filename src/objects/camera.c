@@ -34,7 +34,7 @@ int	parse_camera(t_scene *scene, t_list *current)
 	if (camera)
 		return (print_error(ERROR, \
 			"There can be only one camera per scene"));
-	camera = malloc(sizeof (t_camera));
+	camera = ft_alloc(1, sizeof (t_camera), NULL, ALLOC);
 	if (!camera)
 		return (print_error(ERROR, "Camera allocation failed"));
 	item = next_item((char *)(current->content));

@@ -25,7 +25,7 @@ char	*ft_hextoa(unsigned int u)
 		nb /= 16;
 		size++;
 	}
-	str = malloc(sizeof (*str) * (size + 1));
+	str = ft_alloc(size + 1, sizeof (*str), NULL, ALLOC);
 	if (str)
 	{
 		str[size] = 0;

@@ -22,10 +22,10 @@ char	*ft_strtrim(char const *s1, char const *set)
 	start = 0;
 	while (s1[start] && ft_strchr(set, s1[start]))
 		start++;
-	end = ft_strlen(s1);
+	end = (int)ft_strlen(s1);
 	while (end > start && ft_strchr(set, s1[end - 1]))
 		end--;
-	str = malloc(sizeof (char) * (end - start + 1));
+	str = ft_alloc(end - start + 1, sizeof (char), NULL, ALLOC);
 	if (str)
 	{
 		i = 0;

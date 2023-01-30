@@ -18,9 +18,16 @@ int	main(int argc, char *argv[])
 {
 	t_scene	*scene;
 
+	sleep(10);
 	if (init(argc, argv, &scene))
+	{
+		ft_alloc(0, 0, NULL, FLUSH);
+		sleep(20);
 		return (ERROR);
+	}
 	printf("%sSUCCESS!%s\n", BOLD_GREEN, RESET_COLOR);
+	ft_alloc(0, 0, NULL, FLUSH);
+	sleep(10);
 	return (SUCCESS);
 }
 #endif

@@ -15,6 +15,7 @@
 
 # include <stdlib.h>
 # include <unistd.h>
+# include "ft_alloc.h"
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 2048

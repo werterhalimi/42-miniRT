@@ -13,9 +13,13 @@
 #ifndef LIBFT_H
 # define LIBFT_H
 
+# include "ft_alloc.h"
 # include "ft_printf.h"
 # include "get_next_line_bonus.h"
+# include <limits.h>
 # include <stdlib.h>
+
+/* Structures */
 
 /// @brief Linked list with any content
 /// @param content pointer to any content
@@ -25,6 +29,8 @@ typedef struct s_list
 	void			*content;
 	struct s_list	*next;
 }	t_list;
+
+/* Functions */
 
 /// @brief Check if the character is an alphabetical ASCII character
 /// @return non-zero if it is, 0 otherwise

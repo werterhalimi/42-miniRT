@@ -61,7 +61,7 @@ static int	add_object(char *line, t_list **objects)
 	item = ft_lstnew(content);
 	if (!item)
 	{
-		ft_lstclear(objects, free);
+//		ft_lstclear(objects, free);
 		return (ERROR);
 	}
 	ft_lstadd_back(objects, item);
@@ -82,7 +82,7 @@ int	read_file(int argc, char **argv, t_list **objects)
 	while (line)
 	{
 		if (empty_line(line))
-			free(line);
+			ft_alloc(0, 0, line, FREE);
 		else if (++size && add_object(line, objects))
 			return (quit(ERROR_NEG, fd, 0));
 		line = get_next_line(fd);

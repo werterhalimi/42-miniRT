@@ -15,15 +15,5 @@
 
 void	*ft_calloc(size_t count, size_t size)
 {
-	void	*mem;
-	size_t	i;
-	size_t	total;
-
-	total = count * size;
-	i = 0;
-	mem = malloc(total);
-	if (mem)
-		while (i < total)
-			*(unsigned char *)(mem + i++) = 0;
-	return (mem);
+	return (ft_alloc(count, size, NULL, ALLOC));
 }

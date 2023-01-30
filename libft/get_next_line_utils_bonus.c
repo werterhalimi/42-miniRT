@@ -49,14 +49,14 @@ int	gnl_strchr(const char *s, int c)
 char	*gnl_strjoin(char const *s1, char const *s2)
 {
 	char	*str;
-	int		size;
+	size_t	size;
 	int		i;
 	int		j;
 
 	size = gnl_strlen(s1) + gnl_strlen(s2);
 	if (!size)
 		return (NULL);
-	str = malloc(sizeof (char) * (size + 1));
+	str = ft_alloc(size + 1, sizeof (char), NULL, ALLOC);
 	if (str)
 	{
 		i = 0;

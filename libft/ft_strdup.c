@@ -19,9 +19,9 @@ char	*ft_strdup(const char *s1)
 	char	*dup;
 	int		i;
 
-	len = ft_strlen(s1) + 1;
+	len = (int)ft_strlen(s1) + 1;
 	i = -1;
-	dup = malloc(len);
+	dup = ft_alloc(1, len, NULL, ALLOC);
 	if (dup)
 		while (++i < len)
 			dup[i] = s1[i];

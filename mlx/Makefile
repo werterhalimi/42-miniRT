@@ -50,7 +50,7 @@ fclean:	sclean
 	rm -f libmlx.a
 	@echo $(BOLD_BLUE)[FCLEAN][$(NOM)]$(BOLD_GREEN)" : DONE"$(RESET_COLOR)
 
-debug:	CFLAGS += -g3 -fsanitize=address
+debug:	CFLAGS += -g3 -fsanitize=undefined
 debug:	$(OBJ)
 	ar -r $(NOM) $(OBJ)
 	ranlib $(NOM)

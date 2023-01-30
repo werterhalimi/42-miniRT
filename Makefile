@@ -38,7 +38,7 @@ HEADERS 		:= $(addprefix $(INC_DIR),$(INC))
 
 CC				:= @gcc
 CFLAGS			:= -g -Wall -Wextra -Werror -I $(INC_DIR)
-DEBUG			:= -g3 -fsanitize=address
+DEBUG			:= -g3 -fsanitize=undefined
 
 RM				:= @rm -f
 UNIT			:= ""

@@ -19,8 +19,8 @@ static void	*ft_free(char **result, int size, int *tab)
 
 	i = 0;
 	while (i < size)
-		free(result[i++]);
-	free(result);
+		ft_alloc(0, 0, result[i++], FREE);
+	ft_alloc(0, 0, result, FREE);
 	free(tab);
 	return (NULL);
 }
@@ -65,7 +65,7 @@ char	**ft_split(char const *s, char c)
 	tab = ft_parsing(s, c, &size);
 	if (!tab)
 		return (NULL);
-	result = malloc(sizeof (*result) * (size + 1));
+	result = ft_alloc(size + 1, sizeof (*result), NULL, ALLOC);
 	if (result)
 	{
 		i = 0;

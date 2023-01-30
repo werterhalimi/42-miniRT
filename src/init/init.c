@@ -16,19 +16,17 @@ static t_scene	*alloc_scene(int size)
 {
 	t_scene	*scene;
 
-	scene = malloc(sizeof (*scene));
+	scene = ft_alloc(1, sizeof (*scene), NULL, ALLOC);
 	if (!scene)
 		return (scene);
-	scene->objects = malloc(sizeof (*(scene->objects)) * (size - 2));
+	scene->objects = ft_alloc(size - 2, sizeof (*(scene->objects)), \
+		NULL, ALLOC);
 	if (!(scene->objects))
-	{
-		free(scene);
 		return (NULL);
-	}
-	ft_bzero(scene->objects, size - 2);
-	scene->amb_light = NULL;
-	scene->camera = NULL;
-	scene->light = NULL;
+//	ft_bzero(scene->objects, size - 2);
+//	scene->amb_light = NULL;
+//	scene->camera = NULL;
+//	scene->light = NULL;
 	return (scene);
 }
 
@@ -67,7 +65,8 @@ static int	parse_selector(t_scene **scene, t_list *current)
 
 static int	check_scene(t_scene *scene, t_list **objects)
 {
-	ft_lstclear(objects, free);
+	(void) objects;
+//	ft_lstclear(objects, free); TODO free
 	if (!(scene->amb_light))
 		return (print_error(ERROR, "An ambient light is missing"));
 	if (!(scene->camera))

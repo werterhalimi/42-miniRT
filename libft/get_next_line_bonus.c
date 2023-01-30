@@ -61,7 +61,7 @@ static char	*fill_next_line(char *buffer, char *src, int len)
 	int		i;
 	int		j;
 
-	dst = malloc(sizeof (*dst) * (gnl_strlen(src) + len + 1));
+	dst = ft_alloc(gnl_strlen(src) + len + 1, sizeof (*dst), NULL, ALLOC);
 	if (dst)
 	{
 		i = 0;
@@ -99,11 +99,11 @@ static char	*fill_str(t_stat_var *buf, int fd)
 	while (len < 0 && buf->index == READING_FILE)
 	{
 		dst = gnl_strjoin(src, start_buffer(buf->buffer));
-		free(src);
+		ft_alloc(0, 0, src, FREE);
 		src = dst;
 		if (read_buffer(buf, fd))
 		{
-			free(dst);
+			ft_alloc(0, 0, dst, FREE);
 			return (NULL);
 		}
 		len = gnl_strchr(start_buffer(buf->buffer), '\n');
@@ -112,7 +112,7 @@ static char	*fill_str(t_stat_var *buf, int fd)
 		dst = gnl_strjoin(src, start_buffer(buf->buffer));
 	else
 		dst = fill_next_line(start_buffer(buf->buffer), src, len + 1);
-	free(src);
+	ft_alloc(0, 0, src, FREE);
 	return (dst);
 }
 
