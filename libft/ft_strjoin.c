@@ -20,7 +20,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	int		j;
 
 	size = ft_strlen(s1) + ft_strlen(s2);
-	str = ft_alloc(size + 1, sizeof (char), NULL, ALLOC);
+	str = ft_calloc(size + 1, sizeof (char));
 	if (str)
 	{
 		i = 0;

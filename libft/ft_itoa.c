@@ -40,7 +40,7 @@ char	*ft_itoa(int n)
 		nb /= 10;
 		size++;
 	}
-	str = ft_alloc(size + 1, sizeof (*str), NULL, ALLOC);
+	str = ft_calloc(size + 1, sizeof (*str));
 	if (str)
 	{
 		ft_rec_itoa(str, n, size - 1);

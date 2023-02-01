@@ -54,7 +54,7 @@ static int	add_object(char *line, t_list **objects)
 	char	*content;
 
 	content = ft_strtrim(line, " ");
-	ft_alloc(0, 0, line, FREE);
+	ft_free(line);
 	hash = ft_strchr(content, '#');
 	if (hash)
 		*hash = '\n';
@@ -79,7 +79,7 @@ int	read_file(int argc, char **argv, t_list **objects)
 	while (line)
 	{
 		if (empty_line(line))
-			ft_alloc(0, 0, line, FREE);
+			ft_free(line);
 		else if (++size && add_object(line, objects))
 			return (quit(ERROR_NEG, fd, 0));
 		line = get_next_line(fd);

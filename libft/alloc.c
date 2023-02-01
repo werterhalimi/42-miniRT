@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_alloc.c                                         :+:      :+:    :+:   */
+/*   alloc.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ncotte <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/30 15:25:54 by ncotte            #+#    #+#             */
-/*   Updated: 2023/01/30 15:25:56 by ncotte           ###   ########.fr       */
+/*   Created: 2023/02/01 12:04:18 by ncotte            #+#    #+#             */
+/*   Updated: 2023/02/01 12:04:21 by ncotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ static void	alloc_flush(t_list **garbage_collector)
 	}
 }
 
-void	*ft_alloc(size_t count, size_t size, void *ptr, char mode)
+void	*gc_alloc(size_t count, size_t size, void *ptr, char mode)
 {
 	static t_list	*garbage_collector;
 

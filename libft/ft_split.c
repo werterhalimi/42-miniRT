@@ -19,8 +19,8 @@ static void	*split_free(char **result, int size, int *tab)
 
 	i = 0;
 	while (i < size)
-		ft_alloc(0, 0, result[i++], FREE);
-	ft_alloc(0, 0, result, FREE);
+		ft_free(result[i++]);
+	ft_free(result);
 	free(tab);
 	return (NULL);
 }
@@ -65,7 +65,7 @@ char	**ft_split(char const *s, char c)
 	tab = ft_parsing(s, c, &size);
 	if (!tab)
 		return (NULL);
-	result = ft_alloc(size + 1, sizeof (*result), NULL, ALLOC);
+	result = ft_calloc(size + 1, sizeof (*result));
 	if (result)
 	{
 		i = 0;

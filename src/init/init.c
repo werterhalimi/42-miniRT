@@ -16,11 +16,10 @@ static t_scene	*alloc_scene(int size)
 {
 	t_scene	*scene;
 
-	scene = ft_alloc(1, sizeof (*scene), NULL, ALLOC);
+	scene = ft_calloc(1, sizeof (*scene));
 	if (!scene || size < 4)
 		return (scene);
-	scene->objects = ft_alloc(size - 2, sizeof (*(scene->objects)), \
-		NULL, ALLOC);
+	scene->objects = ft_calloc(size - 2, sizeof (*(scene->objects)));
 	if (!(scene->objects))
 		return (NULL);
 	return (scene);

@@ -56,7 +56,7 @@ char	*gnl_strjoin(char const *s1, char const *s2)
 	size = gnl_strlen(s1) + gnl_strlen(s2);
 	if (!size)
 		return (NULL);
-	str = ft_alloc(size + 1, sizeof (char), NULL, ALLOC);
+	str = ft_calloc(size + 1, sizeof (char));
 	if (str)
 	{
 		i = 0;

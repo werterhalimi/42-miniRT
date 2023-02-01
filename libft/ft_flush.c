@@ -1,41 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_flush.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ncotte <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/29 11:01:30 by ncotte            #+#    #+#             */
-/*   Updated: 2023/01/29 11:01:32 by ncotte           ###   ########.fr       */
+/*   Created: 2023/02/01 12:07:21 by ncotte            #+#    #+#             */
+/*   Updated: 2023/02/01 12:07:23 by ncotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "miniRT.h"
+#include "ft_alloc.h"
 
-#ifndef UNIT
-
-int	main(int argc, char *argv[])
+void	ft_flush(void)
 {
-	t_scene	*scene;
-
-	if (init(argc, argv, &scene))
-	{
-		ft_flush();
-		return (ERROR);
-	}
-	printf("%sSUCCESS!%s\n", BOLD_GREEN, RESET_COLOR);
-	ft_flush();
-	return (SUCCESS);
+	gc_alloc(0, 0, NULL, FLUSH);
 }
-#endif
-
-#ifdef UNIT
-
-int	main(int argc, char *argv[])
-{
-	(void) argc;
-	(void) argv;
-	printf("miniRT\n");
-	return (0);
-}
-#endif

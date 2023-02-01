@@ -21,7 +21,7 @@ int	parse_amb_light(t_scene *scene, t_list *current)
 	if (amb_light)
 		return (print_error(ERROR, \
 			"There can be only one ambient light per scene"));
-	amb_light = ft_alloc(1, sizeof (t_amb_light), NULL, ALLOC);
+	amb_light = ft_calloc(1, sizeof (t_amb_light));
 	if (!amb_light)
 		return (print_error(ERROR, "Ambient light allocation failed"));
 	item = next_item((char *)(current->content));

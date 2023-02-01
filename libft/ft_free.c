@@ -14,5 +14,5 @@
 
 void	ft_free(void *ptr)
 {
-	ft_alloc(0, 0, ptr, FREE);
+	gc_alloc(0, 0, ptr, FREE);
 }
