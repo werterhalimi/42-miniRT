@@ -22,6 +22,7 @@ int	parse_light(t_scene *scene, t_list *current)
 		return (print_error(ERROR, \
 			"There can be only one main light per scene"));
 	light = ft_calloc(1, sizeof (t_light));
+	printf("parse_light : light : %p\n", light); // TODO
 	if (!light)
 		return (print_error(ERROR, "Main light allocation failed"));
 	item = next_item((char *)(current->content));

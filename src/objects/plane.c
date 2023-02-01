@@ -22,6 +22,7 @@ int	parse_plane(t_scene *scene, t_list *current)
 	while ((scene->objects)[i])
 		i++;
 	plane = ft_calloc(1, sizeof (t_plane));
+	printf("parse_plane : plane : %p\n", plane); // TODO
 	if (!plane)
 		return (print_error(ERROR, "Plane allocation failed"));
 	item = next_item((char *)(current->content));

@@ -58,6 +58,48 @@
 
 # define NB_OBJECTS	6
 
+/// @brief Hooks
+enum {
+	ON_KEYDOWN = 2,
+	ON_KEYUP = 3,
+	ON_MOUSEDOWN = 4,
+	ON_MOUSEUP = 5,
+	ON_MOUSEMOVE = 6,
+	ON_EXPOSE = 12,
+	ON_DESTROY = 17
+};
+
+/// @brief Mouse buttons
+enum {
+	LEFT_CLICK = 1,
+	RIGHT_CLICK = 2,
+	MIDDLE_CLICK = 3,
+	SCROLL_UP = 4,
+	SCROLL_DOWN = 5
+};
+
+/// @brief Keyboard buttons
+enum {
+	KEY_ESC = 53,
+	KEY_SPACE = 49,
+	KEY_LEFT = 123,
+	KEY_RIGHT = 124,
+	KEY_DOWN = 125,
+	KEY_UP = 126,
+	KEY_PLUS = 69,
+	KEY_MINUS = 78,
+	KEY_K = 40,
+	KEY_R = 15,
+	KEY_G = 5,
+	KEY_B = 11,
+	KEY_Y = 16,
+	KEY_C = 8,
+	KEY_M = 46,
+	KEY_D = 2,
+	KEY_PAGE_UP = 116,
+	KEY_PAGE_DOWN = 121
+};
+
 /* Structures */
 
 typedef struct s_point
@@ -123,48 +165,74 @@ typedef struct s_scene
 	t_camera	*camera;
 	t_light		*light;
 	void		**objects;
+	void		*mlx;
+	void		*win;
+	void		*img;
+	char		*addr;
+	int			bpp;
+	int			line_len;
+	int			endian;
+	int			width;
+	int			height;
 }	t_scene;
 
 /* utils */
 
-int		print_error(int error_code, char *error_msg);
+int				print_error(int error_code, char *error_msg);
 
-int		str_to_d(char *str, double *d, int last);
+int				str_to_d(char *str, double *d, int last);
 
 /* items */
 
-int		parse_color(t_color *color, char *item);
+int				parse_color(t_color *color, char *item);
 
-int		parse_ratio(double *ratio, char *item);
+int				parse_ratio(double *ratio, char *item);
 
-int		parse_length(double *length, char *item, char *name);
+int				parse_length(double *length, char *item, char *name);
 
-char	*next_coord(char *item, char last);
+char			*next_coord(char *item, char last);
 
-int		parse_coord(t_point *coord, char *item);
+int				parse_coord(t_point *coord, char *item);
 
-int		parse_vector(t_point *vector, char *item);
+int				parse_vector(t_point *vector, char *item);
 
 /* objects */
 
-int		parse_amb_light(t_scene *scene, t_list *current);
+int				parse_amb_light(t_scene *scene, t_list *current);
 
-int		parse_camera(t_scene *scene, t_list *current);
+int				parse_camera(t_scene *scene, t_list *current);
 
-int		parse_light(t_scene *scene, t_list *current);
+int				parse_light(t_scene *scene, t_list *current);
 
-int		parse_sphere(t_scene *scene, t_list *current);
+int				parse_sphere(t_scene *scene, t_list *current);
 
-int		parse_plane(t_scene *scene, t_list *current);
+int				parse_plane(t_scene *scene, t_list *current);
 
-int		parse_cylinder(t_scene *scene, t_list *current);
+int				parse_cylinder(t_scene *scene, t_list *current);
+
+/* print */
+
+int				create_trgb(unsigned char t, unsigned char r, \
+					unsigned char g, unsigned char b);
+
+unsigned char	color_get_t(int trgb);
+
+unsigned char	color_get_r(int trgb);
+
+unsigned char	color_get_g(int trgb);
+
+unsigned char	color_get_b(int trgb);
+
+void			put_pixel(t_scene *scene, int x, int y, unsigned int color);
+
+void			print_window(t_scene *scene);
 
 /* init */
 
-char	*next_item(char *line);
+char			*next_item(char *line);
 
-int		read_file(int argc, char **argv, t_list **objects);
+int				read_file(int argc, char **argv, t_list **objects);
 
-int		init(int argc, char **argv, t_scene **scene);
+int				init(int argc, char **argv, t_scene **scene);
 
 #endif

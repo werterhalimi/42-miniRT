@@ -15,6 +15,7 @@ SRCS_FILES		:=	utils/error.c		utils/str_to_d.c \
 					items/coord.c		items/vector.c \
 					objects/camera.c	objects/light.c		objects/amb_light.c \
 					objects/plane.c		objects/sphere.c	objects/cylinder.c \
+					print/color_rgbt.c	print/put_pixel.c	print/print_window.c \
 					init/parsing.c		init/read_file.c	init/init.c \
 					main.c
 
@@ -23,7 +24,8 @@ SRCS			:= $(addprefix $(SRCS_DIR),$(SRCS_FILES))
 
 OBJS_FILES		:= $(SRCS_FILES:.c=.o)
 OBJS_DIR		:= ./bin/
-OBJS_SUB_DIR	:= $(OBJS_DIR)objects $(OBJS_DIR)items $(OBJS_DIR)init $(OBJS_DIR)utils
+OBJS_SUB_DIR	:= 	$(OBJS_DIR)objects	$(OBJS_DIR)items	$(OBJS_DIR)init \
+					$(OBJS_DIR)utils	$(OBJS_DIR)print
 OBJS			:= $(addprefix $(OBJS_DIR),$(OBJS_FILES))
 
 LIBFT_DIR		:= ./libft/

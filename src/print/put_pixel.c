@@ -1,35 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_alloc.h                                         :+:      :+:    :+:   */
+/*   put_pixel.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ncotte <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/30 19:41:34 by ncotte            #+#    #+#             */
-/*   Updated: 2023/01/30 19:41:38 by ncotte           ###   ########.fr       */
+/*   Created: 2023/02/01 14:38:58 by ncotte            #+#    #+#             */
+/*   Updated: 2023/02/01 14:39:00 by ncotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_ALLOC_H
-# define FT_ALLOC_H
+#include "miniRT.h"
 
-# include <limits.h>
-# include <stdlib.h>
-# include "libft.h"
+void	put_pixel(t_scene *scene, int x, int y, unsigned int color)
+{
+	char	*dst;
 
-/* Constants */
-
-# define ALLOC	0
-# define FREE	1
-# define FLUSH	2
-
-/// TODO
-void	*gc_alloc(size_t count, size_t size, void *ptr, char mode);
-
-/// TODO
-void	ft_free(void *ptr);
-
-/// TODO
-void	ft_flush(void);
-
-#endif
+	dst = scene->addr + (y * scene->line_len + x * (scene->bpp / 8));
+	*(unsigned int *)dst = color;
+}

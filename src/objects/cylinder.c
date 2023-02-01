@@ -45,6 +45,7 @@ int	parse_cylinder(t_scene *scene, t_list *current)
 	while ((scene->objects)[i])
 		i++;
 	cylinder = ft_calloc(1, sizeof (t_cylinder));
+	printf("parse_cylinder : cylinder : %p\n", cylinder); // TODO
 	if (!cylinder)
 		return (print_error(ERROR, "Cylinder allocation failed"));
 	if (sub_parse_cylinder(cylinder, current))

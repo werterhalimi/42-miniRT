@@ -1,35 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_alloc.h                                         :+:      :+:    :+:   */
+/*   print_window.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ncotte <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/30 19:41:34 by ncotte            #+#    #+#             */
-/*   Updated: 2023/01/30 19:41:38 by ncotte           ###   ########.fr       */
+/*   Created: 2023/02/01 14:39:19 by ncotte            #+#    #+#             */
+/*   Updated: 2023/02/01 14:39:21 by ncotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_ALLOC_H
-# define FT_ALLOC_H
+#include "miniRT.h"
 
-# include <limits.h>
-# include <stdlib.h>
-# include "libft.h"
+void	print_window(t_scene *scene)
+{
+	int	a;
+	int	b;
 
-/* Constants */
-
-# define ALLOC	0
-# define FREE	1
-# define FLUSH	2
-
-/// TODO
-void	*gc_alloc(size_t count, size_t size, void *ptr, char mode);
-
-/// TODO
-void	ft_free(void *ptr);
-
-/// TODO
-void	ft_flush(void);
-
-#endif
+	a = -1;
+	while (++a < scene->width)
+	{
+		b = -1;
+		while (++b < scene->height)
+			put_pixel(scene, a, b, create_trgb(127, 255, 255, 255));
+	}
+	mlx_put_image_to_window(scene->mlx, scene->win, scene->img, 0, 0);
+}
