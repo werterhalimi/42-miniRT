@@ -115,7 +115,7 @@ run:			$(NAME) norm
 				./$(NAME)
 
 leaks:			$(NAME)
-				leaks -atExit -- ./$(NAME) scenes/test.rt
+				leaks -atExit -- ./$(NAME) scenes/valid.rt
 
 debug:			CFLAGS += $(DEBUG)
 debug:			$(OBJS)

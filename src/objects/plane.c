@@ -19,7 +19,7 @@ int	parse_plane(t_scene *scene, t_list *current)
 	t_plane	*plane;
 
 	i = 0;
-	while (!((scene->objects)[i]))
+	while ((scene->objects)[i])
 		i++;
 	plane = ft_alloc(1, sizeof (t_plane), NULL, ALLOC);
 	if (!plane)

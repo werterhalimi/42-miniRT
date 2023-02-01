@@ -17,9 +17,9 @@ static char	*next_color(char *item, char last)
 	while (ft_isdigit(*item))
 		item++;
 	if (last && (!(*item) || *item == '\n' || *item == ' '))
-		return (item);
-	else if (last)
 		return (NULL);
+	else if (last)
+		return (item);
 	if (*item != ',')
 		return (NULL);
 	if (ft_isdigit(*(++item)))

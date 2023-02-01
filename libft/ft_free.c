@@ -1,22 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstdelone.c                                     :+:      :+:    :+:   */
+/*   ft_free.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ncotte <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/12 16:45:27 by ncotte            #+#    #+#             */
-/*   Updated: 2022/10/12 17:08:39 by ncotte           ###   ########.fr       */
+/*   Created: 2023/02/01 11:44:30 by ncotte            #+#    #+#             */
+/*   Updated: 2023/02/01 11:44:32 by ncotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "ft_alloc.h"
 
-void	ft_lstdelone(t_list *lst, void (*del)(void*))
+void	ft_free(void *ptr)
 {
-	if (lst && del)
-	{
-		(*del)(lst->content);
-		ft_alloc(0, 0, lst, FREE);
-	}
+	ft_alloc(0, 0, ptr, FREE);
 }

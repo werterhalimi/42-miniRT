@@ -19,7 +19,7 @@ int	parse_sphere(t_scene *scene, t_list *current)
 	t_sphere	*sphere;
 
 	i = 0;
-	while (!((scene->objects)[i]))
+	while ((scene->objects)[i])
 		i++;
 	sphere = ft_alloc(1, sizeof (t_sphere), NULL, ALLOC);
 	if (!sphere)

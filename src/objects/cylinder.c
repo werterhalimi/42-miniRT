@@ -42,7 +42,7 @@ int	parse_cylinder(t_scene *scene, t_list *current)
 	t_cylinder	*cylinder;
 
 	i = 0;
-	while (!((scene->objects)[i]))
+	while ((scene->objects)[i])
 		i++;
 	cylinder = ft_alloc(1, sizeof (t_cylinder), NULL, ALLOC);
 	if (!cylinder)

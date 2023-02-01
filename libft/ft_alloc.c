@@ -51,7 +51,7 @@ static void	*sub_alloc(t_list **garbage_collector, size_t count, size_t size)
 	return (ptr);
 }
 
-static void	ft_free(t_list **garbage_collector, void *ptr)
+static void	alloc_free(t_list **garbage_collector, void *ptr)
 {
 	t_list	*current;
 	t_list	*tmp;
@@ -60,7 +60,8 @@ static void	ft_free(t_list **garbage_collector, void *ptr)
 	if (current->content == ptr)
 	{
 		*garbage_collector = current->next;
-		ft_lstdelone(current, free);
+		free(current->content);
+		free(current);
 		return ;
 	}
 	while (current->next)
@@ -69,10 +70,27 @@ static void	ft_free(t_list **garbage_collector, void *ptr)
 		{
 			tmp = current->next;
 			current->next = tmp->next;
-			ft_lstdelone(tmp, free);
+			free(tmp->content);
+			free(tmp);
 			return ;
 		}
 		current = current->next;
+	}
+}
+
+static void	alloc_flush(t_list **garbage_collector)
+{
+	t_list	*elem;
+
+	if (garbage_collector)
+	{
+		while (*garbage_collector)
+		{
+			elem = (*garbage_collector)->next;
+			free((*garbage_collector)->content);
+			free(*garbage_collector);
+			*garbage_collector = elem;
+		}
 	}
 }
 
@@ -83,8 +101,8 @@ void	*ft_alloc(size_t count, size_t size, void *ptr, char mode)
 	if (mode == ALLOC)
 		return (sub_alloc(&garbage_collector, count, size));
 	else if (mode == FREE)
-		ft_free(&garbage_collector, ptr);
+		alloc_free(&garbage_collector, ptr);
 	else if (mode == FLUSH)
-		ft_lstclear(&garbage_collector, free);
+		alloc_flush(&garbage_collector);
 	return (NULL);
 }

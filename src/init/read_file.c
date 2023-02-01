@@ -60,10 +60,7 @@ static int	add_object(char *line, t_list **objects)
 		*hash = '\n';
 	item = ft_lstnew(content);
 	if (!item)
-	{
-//		ft_lstclear(objects, free);
 		return (ERROR);
-	}
 	ft_lstadd_back(objects, item);
 	return (SUCCESS);
 }

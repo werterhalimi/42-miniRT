@@ -26,4 +26,7 @@
 /// TODO
 void	*ft_alloc(size_t count, size_t size, void *ptr, char mode);
 
+/// TODO
+void	ft_free(void *ptr);
+
 #endif

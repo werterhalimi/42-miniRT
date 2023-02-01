@@ -13,7 +13,7 @@
 #include "libft.h"
 
 /// @brief Free allocated memory in result of size elements and tab
-static void	*ft_free(char **result, int size, int *tab)
+static void	*split_free(char **result, int size, int *tab)
 {
 	int	i;
 
@@ -73,7 +73,7 @@ char	**ft_split(char const *s, char c)
 		{
 			result[i] = ft_substr(s, tab[i * 2], tab[i * 2 + 1]);
 			if (!result[i++])
-				return (ft_free(result, i - 1, tab));
+				return (split_free(result, i - 1, tab));
 		}
 		result[i] = NULL;
 	}
