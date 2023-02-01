@@ -1,21 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   put_pixel.c                                        :+:      :+:    :+:   */
+/*   quit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ncotte <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/01 14:38:58 by ncotte            #+#    #+#             */
-/*   Updated: 2023/02/01 14:39:00 by ncotte           ###   ########.fr       */
+/*   Created: 2023/02/01 17:29:26 by ncotte            #+#    #+#             */
+/*   Updated: 2023/02/01 17:29:48 by ncotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
-void	put_pixel(t_scene *scene, int x, int y, unsigned int color)
+void	quit(t_scene *scene)
 {
-	char	*dst;
-
-	dst = scene->address + (y * scene->line_len + x * (scene->bpp / 8));
-	*(unsigned int *)dst = color;
+	if (scene->image)
+		mlx_destroy_image(scene->mlx, scene->image);
+	if (scene->window)
+		mlx_destroy_window(scene->mlx, scene->window);
+//	free(scene->mlx); // TODO ???
+	ft_flush();
+	exit(SUCCESS);
 }

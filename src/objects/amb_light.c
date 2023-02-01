@@ -22,7 +22,6 @@ int	parse_amb_light(t_scene *scene, t_list *current)
 		return (print_error(ERROR, \
 			"There can be only one ambient light per scene"));
 	amb_light = ft_calloc(1, sizeof (t_amb_light));
-	printf("parse_amb_light : amb_light : %p\n", amb_light); // TODO
 	if (!amb_light)
 		return (print_error(ERROR, "Ambient light allocation failed"));
 	item = next_item((char *)(current->content));

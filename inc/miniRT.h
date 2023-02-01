@@ -18,7 +18,8 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <stdio.h>
-# include <string.h>
+//# include <string.h>
+# include <limits.h>
 # include <errno.h>
 # include <fcntl.h>
 # include <math.h>
@@ -88,6 +89,7 @@ enum {
 	KEY_UP = 126,
 	KEY_PLUS = 69,
 	KEY_MINUS = 78,
+	KEY_LEFT_SHIFT = 57,
 	KEY_K = 40,
 	KEY_R = 15,
 	KEY_G = 5,
@@ -96,6 +98,8 @@ enum {
 	KEY_C = 8,
 	KEY_M = 46,
 	KEY_D = 2,
+	KEY_W = 13,
+	KEY_S = 1,
 	KEY_PAGE_UP = 116,
 	KEY_PAGE_DOWN = 121
 };
@@ -166,9 +170,9 @@ typedef struct s_scene
 	t_light		*light;
 	void		**objects;
 	void		*mlx;
-	void		*win;
-	void		*img;
-	char		*addr;
+	void		*window;
+	void		*image;
+	char		*address;
 	int			bpp;
 	int			line_len;
 	int			endian;
@@ -177,6 +181,12 @@ typedef struct s_scene
 }	t_scene;
 
 /* utils */
+
+void			quit(t_scene *scene);
+
+int				key_hook(int key_code, t_scene *scene);
+
+int				mouse_hook(int mouse_code, int x, int y, t_scene *scene);
 
 int				print_error(int error_code, char *error_msg);
 

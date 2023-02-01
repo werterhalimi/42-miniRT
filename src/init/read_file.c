@@ -54,13 +54,11 @@ static int	add_object(char *line, t_list **objects)
 	char	*content;
 
 	content = ft_strtrim(line, " ");
-	printf("add_object : ft_strtrim : %p\n", content); // TODO
 	ft_free(line);
 	hash = ft_strchr(content, '#');
 	if (hash)
 		*hash = '\n';
 	item = ft_lstnew(content);
-	printf("add_object : ft_lstnew : %p\n", item); // TODO
 	if (!item)
 		return (ERROR);
 	ft_lstadd_back(objects, item);
@@ -80,7 +78,6 @@ int	read_file(int argc, char **argv, t_list **objects)
 	line = get_next_line(fd);
 	while (line)
 	{
-		printf("read_file : line : %p\n", line); // TODO
 		if (empty_line(line))
 			ft_free(line);
 		else if (++size && add_object(line, objects))

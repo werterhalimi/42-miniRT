@@ -117,7 +117,7 @@ void	mlx_int_xpm_set_pixel(mlx_img_list_t *img, char *data, int opp, int col, in
   dec = opp;
   while (dec--)
     {
-      if (img->image->byte_order)
+      if (image->image->byte_order)
 	*(data+x*opp+dec) = col&0xFF;
       else
 	*(data+x*opp+opp-dec-1) = col&0xFF;
@@ -216,7 +216,7 @@ void	*mlx_int_parse_xpm(mlx_ptr_t *xvar,void *info,int info_size,char *(*f)())
 
   if (!(img = mlx_new_image(xvar,width,height)))
     RETURN;
-  //opp = img->bpp/8;
+  //opp = image->bpp/8;
   opp = 4;
 
 
@@ -251,7 +251,7 @@ void	*mlx_int_parse_xpm(mlx_ptr_t *xvar,void *info,int info_size,char *(*f)())
 	  mlx_int_xpm_set_pixel(img, data, opp, col, x);
 	  x ++;
 	}
-      //      data += img->size_line;
+      //      data += image->size_line;
       data += img->width*4;
     }
   /*
@@ -260,14 +260,14 @@ void	*mlx_int_parse_xpm(mlx_ptr_t *xvar,void *info,int info_size,char *(*f)())
       if (!(clip_pix = XCreatePixmap(xvar->display, xvar->root,
 					   width, height, 1)) )
 	RETURN;
-      img->gc = XCreateGC(xvar->display, clip_pix, 0, &xgcv);
-      XPutImage(xvar->display, clip_pix, img->gc, clip_img,
+      image->gc = XCreateGC(xvar->display, clip_pix, 0, &xgcv);
+      XPutImage(xvar->display, clip_pix, image->gc, clip_img,
 		0, 0, 0, 0, width, height);
-      XFreeGC(xvar->display, img->gc);
+      XFreeGC(xvar->display, image->gc);
       xgcv.clip_mask = clip_pix;
       xgcv.function = GXcopy;
       xgcv.plane_mask = AllPlanes;
-      img->gc = XCreateGC(xvar->display, xvar->root, GCClipMask|GCFunction|
+      image->gc = XCreateGC(xvar->display, xvar->root, GCClipMask|GCFunction|
 			  GCPlaneMask, &xgcv);
       XSync(xvar->display, False);
       XDestroyImage(clip_img);

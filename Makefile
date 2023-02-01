@@ -10,12 +10,13 @@
 #                                                                              #
 # **************************************************************************** #
 
-SRCS_FILES		:=	utils/error.c		utils/str_to_d.c \
+SRCS_FILES		:=	utils/error.c		utils/str_to_d.c	utils/hook.c \
+					utils/quit.c \
 					items/color.c		items/light_ratio.c	items/double_length.c \
 					items/coord.c		items/vector.c \
 					objects/camera.c	objects/light.c		objects/amb_light.c \
 					objects/plane.c		objects/sphere.c	objects/cylinder.c \
-					print/color_rgbt.c	print/put_pixel.c	print/print_window.c \
+					print/color_trgb.c	print/put_pixel.c	print/print_window.c \
 					init/parsing.c		init/read_file.c	init/init.c \
 					main.c
 
@@ -113,10 +114,10 @@ norm:
 					cat $(TMP) | sed -e "s/^/    /g")
 				$(RM) $(TMP)
 
-run:			$(NAME) norm
-				./$(NAME)
+run:			$(NAME)
+				./$(NAME) scenes/valid.rt
 
-leaks:			$(NAME)
+leaks:			$(NAME) norm
 				leaks -atExit -- ./$(NAME) scenes/valid.rt
 
 debug:			CFLAGS += $(DEBUG)

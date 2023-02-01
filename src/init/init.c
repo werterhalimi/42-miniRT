@@ -53,7 +53,6 @@ static t_scene	*alloc_scene(int size, t_list **objects)
 	if (!scene)
 		return (scene);
 	scene->objects = ft_calloc(size - 2, sizeof (*(scene->objects)));
-	printf("alloc_scene : scene->objects : %p\n", scene->objects); // TODO
 	if (!(scene->objects))
 		return (NULL);
 	while (*objects)
@@ -76,9 +75,9 @@ static int	check_scene(t_scene *scene)
 		return (print_error(ERROR, "A main light is missing"));
 	if (!(scene->mlx))
 		return (print_error(ERROR, "MLX initialization has failed"));
-	if (!(scene->win))
+	if (!(scene->window))
 		return (print_error(ERROR, "Windows initialization has failed"));
-	if (!(scene->img) || !(scene->addr))
+	if (!(scene->image) || !(scene->address))
 		return (print_error(ERROR, "Image initialization has failed"));
 	print_window(scene);
 	return (SUCCESS);
@@ -99,11 +98,11 @@ int	init(int argc, char **argv, t_scene **scene)
 	(*scene)->mlx = mlx_init();
 	(*scene)->width = 1920;
 	(*scene)->height = 1080;
-	(*scene)->win = mlx_new_window((*scene)->mlx, \
+	(*scene)->window = mlx_new_window((*scene)->mlx, \
 		(*scene)->width, (*scene)->height, "miniRT");
-	(*scene)->img = mlx_new_image((*scene)->mlx, \
+	(*scene)->image = mlx_new_image((*scene)->mlx, \
 		(*scene)->width, (*scene)->height);
-	(*scene)->addr = mlx_get_data_addr((*scene)->img, &(*scene)->bpp, \
+	(*scene)->address = mlx_get_data_addr((*scene)->image, &(*scene)->bpp, \
 		&(*scene)->line_len, &(*scene)->endian);
 	return (check_scene(*scene));
 }
