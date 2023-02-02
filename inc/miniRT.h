@@ -59,6 +59,13 @@
 
 # define NB_OBJECTS	6
 
+/* Objects */
+enum {
+	SPHERE = 1,
+	PLANE = 2,
+	CYLINDER = 3
+};
+
 /// @brief Hooks
 enum {
 	ON_KEYDOWN = 2,
@@ -144,7 +151,8 @@ typedef struct s_sphere
 {
 	t_point	coord;
 	t_color	color;
-	double	diameter;
+	double	radius;
+	int		type;
 }	t_sphere;
 
 typedef struct s_plane
@@ -152,6 +160,7 @@ typedef struct s_plane
 	t_point	coord;
 	t_point	vector;
 	t_color	color;
+	int		type;
 }	t_plane;
 
 typedef struct s_cylinder
@@ -159,8 +168,9 @@ typedef struct s_cylinder
 	t_point	coord;
 	t_point	vector;
 	t_color	color;
-	double	diameter;
-	double	height;
+	double	radius;
+	double	semi_height;
+	int		type;
 }	t_cylinder;
 
 typedef struct s_scene
@@ -192,17 +202,33 @@ int				print_error(int error_code, char *error_msg);
 
 int				str_to_d(char *str, double *d, int last);
 
+double			inv_sqrt(double d);
+
 /* items */
 
 int				parse_color(t_color *color, char *item);
 
 int				parse_ratio(double *ratio, char *item);
 
-int				parse_length(double *length, char *item, char *name);
-
+int				parse_length(double *length, char *item, char *name, char half);
+/*
+double			dist_op(t_point o, t_point p);
+*/
 char			*next_coord(char *item, char last);
 
 int				parse_coord(t_point *coord, char *item);
+
+t_point			vector_op(t_point o, t_point p);
+/*
+double			norm_vector(t_point vector);
+*/
+t_point			scalar_multi(double lambda, t_point vector);
+
+double			dot_product(t_point v1, t_point v2);
+
+double			norm_square(t_point vector);
+
+t_point			unit_vector(t_point vector);
 
 int				parse_vector(t_point *vector, char *item);
 
@@ -214,9 +240,15 @@ int				parse_camera(t_scene *scene, t_list *current);
 
 int				parse_light(t_scene *scene, t_list *current);
 
+int				is_sphere(t_point point, t_sphere sphere);
+
 int				parse_sphere(t_scene *scene, t_list *current);
 
+int				is_plane(t_point point, t_plane plane);
+
 int				parse_plane(t_scene *scene, t_list *current);
+
+int				is_cylinder(t_point point, t_cylinder cylinder);
 
 int				parse_cylinder(t_scene *scene, t_list *current);
 

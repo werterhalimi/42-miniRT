@@ -12,6 +12,13 @@
 
 #include "miniRT.h"
 
+int	is_plane(t_point point, t_plane plane)
+{
+	if (dot_product(vector_op(plane.coord, point), plane.vector))
+		return (NO);
+	return (YES);
+}
+
 int	parse_plane(t_scene *scene, t_list *current)
 {
 	int		i;
@@ -35,6 +42,7 @@ int	parse_plane(t_scene *scene, t_list *current)
 		return (ERROR);
 	if (next_item(item))
 		return (print_error(ERROR, "Too many items for plane"));
+	plane->type = PLANE;
 	(scene->objects)[i] = plane;
 	return (SUCCESS);
 }

@@ -23,7 +23,7 @@ static int	custom_error(char *prefix, char *name, char *suffix)
 	return (ERROR);
 }
 
-int	parse_length(double *length, char *item, char *name)
+int	parse_length(double *length, char *item, char *name, char half)
 {
 	if (!item)
 		return (custom_error("A ", name, " is missing"));
@@ -32,5 +32,7 @@ int	parse_length(double *length, char *item, char *name)
 			" format. Required: one double"));
 	if (*length < 0.0)
 		return (custom_error("The ", name, " must be positive"));
+	if (half)
+		*length /= 2;
 	return (SUCCESS);
 }

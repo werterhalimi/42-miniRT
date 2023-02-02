@@ -12,6 +12,14 @@
 
 #include "miniRT.h"
 
+int	is_sphere(t_point point, t_sphere sphere)
+{
+	if (norm_square(vector_op(sphere.coord, point)) \
+		== sphere.radius * sphere.radius)
+		return (YES);
+	return (NO);
+}
+
 int	parse_sphere(t_scene *scene, t_list *current)
 {
 	int			i;
@@ -28,13 +36,14 @@ int	parse_sphere(t_scene *scene, t_list *current)
 	if (parse_coord(&(sphere->coord), item))
 		return (ERROR);
 	item = next_item(item);
-	if (parse_length(&(sphere->diameter), item, "Diameter"))
+	if (parse_length(&(sphere->radius), item, "Diameter", YES))
 		return (ERROR);
 	item = next_item(item);
 	if (parse_color(&(sphere->color), item))
 		return (ERROR);
 	if (next_item(item))
 		return (print_error(ERROR, "Too many items for sphere"));
+	sphere->type = SPHERE;
 	(scene->objects)[i] = sphere;
 	return (SUCCESS);
 }

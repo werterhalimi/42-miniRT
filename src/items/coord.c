@@ -11,7 +11,12 @@
 /* ************************************************************************** */
 
 #include "miniRT.h"
-
+/*
+double	dist_op(t_point o, t_point p)
+{
+	return (norm_vector(vector_op(o, p)));
+}
+*/
 char	*next_coord(char *item, char last)
 {
 	if (*item == '-')

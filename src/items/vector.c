@@ -12,6 +12,47 @@
 
 #include "miniRT.h"
 
+t_point	vector_op(t_point o, t_point p)
+{
+	t_point	vector;
+
+	vector.x = p.x - o.x;
+	vector.y = p.y - o.y;
+	vector.z = p.z - o.z;
+	return (vector);
+}
+/*
+double	norm_vector(t_point vector)
+{
+	return (sqrt(vector.x * vector.x + vector.y * vector.y \
+		+ vector.z * vector.z));
+}
+*/
+t_point	scalar_multi(double lambda, t_point vector)
+{
+	t_point	lambda_vector;
+
+	lambda_vector.x = vector.x * lambda;
+	lambda_vector.y = vector.y * lambda;
+	lambda_vector.z = vector.z * lambda;
+	return (lambda_vector);
+}
+
+double	dot_product(t_point v1, t_point v2)
+{
+	return (v1.x * v2.x + v1.y * v2.y + v1.z * v2.z);
+}
+
+double	norm_square(t_point vector)
+{
+	return (dot_product(vector, vector));
+}
+
+t_point	unit_vector(t_point vector)
+{
+	return (scalar_multi(inv_sqrt(norm_square(vector)), vector));
+}
+
 static int	set_coord(double *coord, char *item, char last)
 {
 	if (!item)

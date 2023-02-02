@@ -11,7 +11,7 @@
 # **************************************************************************** #
 
 SRCS_FILES		:=	utils/error.c		utils/str_to_d.c	utils/hook.c \
-					utils/quit.c \
+					utils/quit.c		utils/quake.c \
 					items/color.c		items/light_ratio.c	items/double_length.c \
 					items/coord.c		items/vector.c \
 					objects/camera.c	objects/light.c		objects/amb_light.c \
@@ -74,7 +74,6 @@ all:			$(NAME)
 
 ${OBJS_DIR}%.o:	${SRCS_DIR}%.c $(HEADERS)
 				@mkdir -p $(OBJS_DIR) $(OBJS_SUB_DIR)
-#				@echo $(BOLD_GREEN)"Compiling $<"$(RESET_COLOR)  #Ajout de la ligne pour afficher le pourcentage de compilation en couleur.
 				$(CC) $(UNIT) $(CFLAGS) -c $< -o $@
 
 $(NAME):		$(OBJS)
