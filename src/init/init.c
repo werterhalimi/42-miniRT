@@ -45,64 +45,66 @@ static int	parse_selector(t_scene *scene, t_list *current)
 	return (print_error(ERROR, "Unknown object"));
 }
 
-static t_scene	*alloc_scene(int size, t_list **objects)
+static int	objects_parsing(t_scene *scene, t_list **objects)
 {
-	t_scene	*scene;
-
-	scene = ft_calloc(1, sizeof (*scene));
-	if (!scene)
-		return (scene);
-	scene->objects = ft_calloc(size - 2, sizeof (*(scene->objects)));
+	scene->objects = ft_calloc(scene->nb_objects - 1, \
+		sizeof (*(scene->objects)));
 	if (!(scene->objects))
-		return (NULL);
+		return (print_error(ERROR, "Scene allocation failed"));
+	scene->objects_type = ft_calloc(scene->nb_objects - 2, \
+		sizeof (*(scene->objects_type)));
+	if (!(scene->objects))
+		return (print_error(ERROR, "Scene allocation failed"));
 	while (*objects)
 	{
 		if (parse_selector(scene, *objects))
-			return (NULL);
+			return (ERROR);
 		*objects = (*objects)->next;
 	}
 	ft_lstclear(objects, ft_free);
-	return (scene);
-}
-
-static int	check_scene(t_scene *scene)
-{
 	if (!(scene->amb_light))
 		return (print_error(ERROR, "An ambient light is missing"));
 	if (!(scene->camera))
 		return (print_error(ERROR, "A camera is missing"));
 	if (!(scene->light))
 		return (print_error(ERROR, "A main light is missing"));
+	return (SUCCESS);
+}
+
+static int	init_mlx(t_scene *scene)
+{
+	scene->mlx = mlx_init();
 	if (!(scene->mlx))
 		return (print_error(ERROR, "MLX initialization has failed"));
+	scene->window = mlx_new_window(scene->mlx, \
+		scene->width, scene->height, "miniRT");
 	if (!(scene->window))
 		return (print_error(ERROR, "Windows initialization has failed"));
-	if (!(scene->image) || !(scene->address))
+	scene->image = mlx_new_image(scene->mlx, \
+		scene->width, scene->height);
+	if (!(scene->image))
 		return (print_error(ERROR, "Image initialization has failed"));
-	print_window(scene);
-	return (SUCCESS);
+	scene->address = mlx_get_data_addr(scene->image, &scene->bpp, \
+		&scene->line_len, &scene->endian);
+	if (!(scene->address))
+		return (print_error(ERROR, "Image address not found"));
+	return (print_window(scene));
 }
 
 int	init(int argc, char **argv, t_scene **scene)
 {
 	t_list	*objects;
-	int		size;
 
 	objects = NULL;
-	size = read_file(argc, argv, &objects);
-	if (size < 0)
-		return (ERROR);
-	*scene = alloc_scene(size, &objects);
+	*scene = ft_calloc(1, sizeof (**scene));
 	if (!(*scene))
 		return (print_error(ERROR, "Scene allocation failed"));
-	(*scene)->mlx = mlx_init();
+	(*scene)->nb_objects = read_file(argc, argv, &objects);
+	if ((*scene)->nb_objects < 0)
+		return (ERROR);
 	(*scene)->width = 1920;
 	(*scene)->height = 1080;
-	(*scene)->window = mlx_new_window((*scene)->mlx, \
-		(*scene)->width, (*scene)->height, "miniRT");
-	(*scene)->image = mlx_new_image((*scene)->mlx, \
-		(*scene)->width, (*scene)->height);
-	(*scene)->address = mlx_get_data_addr((*scene)->image, &(*scene)->bpp, \
-		&(*scene)->line_len, &(*scene)->endian);
-	return (check_scene(*scene));
+	if (objects_parsing(*scene, &objects))
+		return (ERROR);
+	return (init_mlx(*scene));
 }

@@ -14,7 +14,7 @@
 /*
 double	dist_op(t_point o, t_point p)
 {
-	return (norm_vector(vector_op(o, p)));
+	return (norm_vector(sub_vectors(p, o)));
 }
 */
 char	*next_coord(char *item, char last)

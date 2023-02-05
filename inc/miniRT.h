@@ -61,6 +61,7 @@
 
 /* Objects */
 enum {
+	MAIN_LIGHT = 0,
 	SPHERE = 1,
 	PLANE = 2,
 	CYLINDER = 3
@@ -113,6 +114,8 @@ enum {
 
 /* Structures */
 
+struct s_scene;
+
 typedef struct s_point
 {
 	double	x;
@@ -136,8 +139,15 @@ typedef struct s_amb_light
 typedef struct s_camera
 {
 	t_point	coord;
-	t_point	vector;
+	t_point	front;
+	t_point	right;
+	t_point	down;
+	t_point	shift_x;
+	t_point	shift_y;
 	double	fov;
+	double	pixel_size;
+	double	size_x;
+	double	size_y;
 }	t_camera;
 
 typedef struct s_light
@@ -152,7 +162,6 @@ typedef struct s_sphere
 	t_point	coord;
 	t_color	color;
 	double	radius;
-	int		type;
 }	t_sphere;
 
 typedef struct s_plane
@@ -160,7 +169,6 @@ typedef struct s_plane
 	t_point	coord;
 	t_point	vector;
 	t_color	color;
-	int		type;
 }	t_plane;
 
 typedef struct s_cylinder
@@ -170,14 +178,23 @@ typedef struct s_cylinder
 	t_color	color;
 	double	radius;
 	double	semi_height;
-	int		type;
 }	t_cylinder;
+
+typedef struct s_objects
+{
+	int 			*objects_type;
+	void			**objects;
+	unsigned int	(**get_color)(struct s_scene *, int);
+	double 			(**intersect)(struct s_scene *, t_point, int);
+}	t_objects;
 
 typedef struct s_scene
 {
+	t_point		window_corner;
 	t_amb_light	*amb_light;
 	t_camera	*camera;
 	t_light		*light;
+	int 		*objects_type;
 	void		**objects;
 	void		*mlx;
 	void		*window;
@@ -188,6 +205,7 @@ typedef struct s_scene
 	int			endian;
 	int			width;
 	int			height;
+	int			nb_objects;
 }	t_scene;
 
 /* utils */
@@ -218,11 +236,15 @@ char			*next_coord(char *item, char last);
 
 int				parse_coord(t_point *coord, char *item);
 
-t_point			vector_op(t_point o, t_point p);
+t_point			add_vectors(t_point v1, t_point v2);
+
+t_point			sub_vectors(t_point v1, t_point v2);
 /*
-double			norm_vector(t_point vector);
+double			norm_vector(t_point front);
 */
 t_point			scalar_multi(double lambda, t_point vector);
+
+t_point			cross_product(t_point v1, t_point v2);
 
 double			dot_product(t_point v1, t_point v2);
 
@@ -230,7 +252,7 @@ double			norm_square(t_point vector);
 
 t_point			unit_vector(t_point vector);
 
-int				parse_vector(t_point *vector, char *item);
+int				parse_vector(t_point *vector, char *item, char norm);
 
 /* objects */
 
@@ -254,8 +276,10 @@ int				parse_cylinder(t_scene *scene, t_list *current);
 
 /* print */
 
-int				create_trgb(unsigned char t, unsigned char r, \
+unsigned int	create_trgb(unsigned char t, unsigned char r, \
 					unsigned char g, unsigned char b);
+
+unsigned int	color_trgb(t_color color);
 
 unsigned char	color_get_t(int trgb);
 
@@ -267,7 +291,7 @@ unsigned char	color_get_b(int trgb);
 
 void			put_pixel(t_scene *scene, int x, int y, unsigned int color);
 
-void			print_window(t_scene *scene);
+int 			print_window(t_scene *scene);
 
 /* init */
 

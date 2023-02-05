@@ -19,11 +19,11 @@ int	is_cylinder(t_point point, t_cylinder cylinder)
 	double	height_p;
 	double	radius_p;
 
-	vector_p = vector_op(cylinder.coord, point);
+	vector_p = sub_vectors(point, cylinder.coord);
 	proj_p = scalar_multi(dot_product(vector_p, cylinder.vector) * \
 		inv_sqrt(norm_square(cylinder.vector)), cylinder.vector);
 	height_p = norm_square(proj_p);
-	radius_p = norm_square(vector_op(proj_p, vector_p));
+	radius_p = norm_square(sub_vectors(vector_p, proj_p));
 	if ((height_p == cylinder.semi_height * cylinder.semi_height \
 		&& radius_p < cylinder.radius * cylinder.radius) \
 		|| (height_p < cylinder.semi_height * cylinder.semi_height \
@@ -40,7 +40,7 @@ static int	sub_parse_cylinder(t_cylinder *cylinder, t_list *current)
 	if (parse_coord(&(cylinder->coord), item))
 		return (ERROR);
 	item = next_item(item);
-	if (parse_vector(&(cylinder->vector), item))
+	if (parse_vector(&(cylinder->vector), item, YES))
 		return (ERROR);
 	item = next_item(item);
 	if (parse_length(&(cylinder->radius), item, "Diameter", YES))
@@ -61,15 +61,15 @@ int	parse_cylinder(t_scene *scene, t_list *current)
 	int			i;
 	t_cylinder	*cylinder;
 
-	i = 0;
+	i = 1;
 	while ((scene->objects)[i])
 		i++;
+	(scene->objects_type)[i] = CYLINDER;
 	cylinder = ft_calloc(1, sizeof (t_cylinder));
 	if (!cylinder)
 		return (print_error(ERROR, "Cylinder allocation failed"));
 	if (sub_parse_cylinder(cylinder, current))
 		return (ERROR);
-	cylinder->type = CYLINDER;
 	(scene->objects)[i] = cylinder;
 	return (SUCCESS);
 }

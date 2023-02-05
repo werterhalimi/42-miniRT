@@ -36,5 +36,7 @@ int	parse_light(t_scene *scene, t_list *current)
 	if (next_item(item))
 		return (print_error(ERROR, "Too many items for main light"));
 	scene->light = light;
+	(scene->objects)[0] = light;
+	(scene->objects_type)[0] = MAIN_LIGHT;
 	return (SUCCESS);
 }

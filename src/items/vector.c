@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vector.c                                           :+:      :+:    :+:   */
+/*   front.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ncotte <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,20 +12,31 @@
 
 #include "miniRT.h"
 
-t_point	vector_op(t_point o, t_point p)
+t_point	add_vectors(t_point v1, t_point v2)
 {
 	t_point	vector;
 
-	vector.x = p.x - o.x;
-	vector.y = p.y - o.y;
-	vector.z = p.z - o.z;
+	vector.x = v1.x + v2.x;
+	vector.y = v1.y + v2.y;
+	vector.z = v1.z + v2.z;
+	return (vector);
+}
+
+t_point	sub_vectors(t_point v1, t_point v2)
+{
+	t_point	vector;
+
+
+	vector.x = v1.x - v2.x;
+	vector.y = v1.y - v2.y;
+	vector.z = v1.z - v2.z;
 	return (vector);
 }
 /*
-double	norm_vector(t_point vector)
+double	norm_vector(t_point front)
 {
-	return (sqrt(vector.x * vector.x + vector.y * vector.y \
-		+ vector.z * vector.z));
+	return (sqrt(front.x * front.x + front.y * front.y \
+		+ front.z * front.z));
 }
 */
 t_point	scalar_multi(double lambda, t_point vector)
@@ -36,6 +47,16 @@ t_point	scalar_multi(double lambda, t_point vector)
 	lambda_vector.y = vector.y * lambda;
 	lambda_vector.z = vector.z * lambda;
 	return (lambda_vector);
+}
+
+t_point	cross_product(t_point v1, t_point v2)
+{
+	t_point	vector;
+
+	vector.x = v1.y * v2.z - v1.z * v2.y;
+	vector.y = v1.z * v2.x - v1.x * v2.z;
+	vector.z = v1.x * v2.y - v1.y * v2.x;
+	return (vector);
 }
 
 double	dot_product(t_point v1, t_point v2)
@@ -67,7 +88,7 @@ static int	set_coord(double *coord, char *item, char last)
 	return (SUCCESS);
 }
 
-int	parse_vector(t_point *vector, char *item)
+int	parse_vector(t_point *vector, char *item, char norm)
 {
 	if (!item)
 		return (print_error(ERROR, "A coordinate is missing"));
@@ -81,5 +102,9 @@ int	parse_vector(t_point *vector, char *item)
 		return (ERROR);
 	if (next_coord(item, YES))
 		return (print_error(ERROR, "Too many coordinate components"));
+	if (!(vector->x) && !(vector->y) && !(vector->z))
+		return (print_error(ERROR, "The vector can not be null"));
+	if (norm)
+		*vector = unit_vector(*vector);
 	return (SUCCESS);
 }

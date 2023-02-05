@@ -12,10 +12,15 @@
 
 #include "miniRT.h"
 
-int	create_trgb(unsigned char t, unsigned char r, \
+unsigned int	create_trgb(unsigned char t, unsigned char r, \
 		unsigned char g, unsigned char b)
 {
-	return (*(int *)(unsigned char [4]){b, g, r, t});
+	return (*(unsigned int *)(unsigned char [4]){b, g, r, t});
+}
+
+unsigned int	color_trgb(t_color color)
+{
+	return (*(unsigned int *)(unsigned char [4]){color.b, color.g, color.r, 0});
 }
 
 unsigned char	color_get_t(int trgb)
