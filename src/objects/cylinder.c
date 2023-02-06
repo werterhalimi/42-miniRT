@@ -20,8 +20,8 @@ int	is_cylinder(t_point point, t_cylinder cylinder)
 	double	radius_p;
 
 	vector_p = sub_vectors(point, cylinder.coord);
-	proj_p = scalar_multi(dot_product(vector_p, cylinder.vector) * \
-		inv_sqrt(norm_square(cylinder.vector)), cylinder.vector);
+	proj_p = scalar_multi(dot_product(vector_p, cylinder.direction) * \
+		inv_sqrt(norm_square(cylinder.direction)), cylinder.direction);
 	height_p = norm_square(proj_p);
 	radius_p = norm_square(sub_vectors(vector_p, proj_p));
 	if ((height_p == cylinder.semi_height * cylinder.semi_height \
@@ -32,6 +32,99 @@ int	is_cylinder(t_point point, t_cylinder cylinder)
 	return (NO);
 }
 
+static void	update_cylinder(t_scene *scene, void *object)
+{
+	t_cylinder	*cylinder;
+
+	cylinder = (t_cylinder *)object;
+	cylinder->center_top = add_vectors(cylinder->coord, \
+		scalar_multi(cylinder->semi_height, cylinder->direction));
+	cylinder->center_down = add_vectors(cylinder->coord, \
+		scalar_multi(-cylinder->semi_height, cylinder->direction));
+	cylinder->relative_center_top = sub_vectors(cylinder->coord, cylinder->center_top);
+	cylinder->relative_center_down = sub_vectors(cylinder->coord, cylinder->center_down);
+	cylinder->relative_coord = sub_vectors(scene->camera->coord, cylinder->coord);
+	cylinder->value = dot_product(cylinder->relative_coord, cylinder->direction);
+	cylinder->vector_quad = sub_vectors(cylinder->relative_coord, \
+		scalar_multi(dot_product(cylinder->relative_coord, \
+		cylinder->direction), cylinder->direction));
+	cylinder->radius_square = cylinder->radius * cylinder->radius;
+	cylinder->value_quad = norm_square(cylinder->vector_quad) \
+		- cylinder->radius_square;
+}
+
+static double	cylinder_end(t_cylinder *cylinder, t_point ray, double div)
+{
+	double	t1;
+	double	t2;
+
+	t1 = (cylinder->semi_height + cylinder->value) / div;
+	t2 = (-cylinder->semi_height + cylinder->value) / div;
+	if (norm_square(add_vectors(scalar_multi(t1, ray), \
+		cylinder->relative_center_top)))
+		t1 = INFINITY;
+	if (norm_square(add_vectors(scalar_multi(t2, ray), \
+		cylinder->relative_center_down)))
+		t2 = INFINITY;
+	if (isfinite(t1) && t1 >= 0.0 && t1 < t2)
+		return (t1);
+	if (isfinite(t2) && t2 >= 0.0)
+		return (t2);
+	return (INFINITY);
+}
+
+static double	cylinder_side(t_cylinder *cylinder, t_point ray)
+{
+	double	t1;
+	double	t2;
+	double	limit;
+	t_point	vector;
+
+	vector = sub_vectors(ray, cylinder->direction);
+	t1 = quad_solv(norm_square(vector), 2.0 * dot_product(vector, \
+		cylinder->vector_quad), cylinder->value_quad, &t2);
+	limit = t1 + cylinder->value;
+	if (!isnan(t1) && t1 < t2 && t1 >= 0.0 \
+		&& -cylinder->semi_height < limit && limit < cylinder->semi_height)
+		return (t1);
+	limit = t2 + cylinder->value;
+	if (!isnan(t2) && t2 >= 0.0 \
+		&& -cylinder->semi_height < limit && limit < cylinder->semi_height)
+		return (t2);
+	return (INFINITY);
+}
+
+static double	intersect_cylinder(t_point ray, void *object)
+{
+	t_cylinder	*cylinder;
+	double		div;
+	double		t1;
+	double		t2;
+
+	cylinder = (t_cylinder *)object;
+	t1 = INFINITY;
+	t2 = INFINITY;
+	div = dot_product(ray, cylinder->direction);
+	if (div)
+		t1 = cylinder_end(cylinder, ray, div);
+	else if (-1.0 < div && div < 1.0)
+		t2 = cylinder_side(cylinder, ray);
+	if (isfinite(t1) && t1 >= 0.0 && t1 < t2)
+		return (t1);
+	if (isfinite(t2) && t2 >= 0.0)
+		return (t2);
+	return (INFINITY);
+}
+
+static unsigned int	get_color_cylinder(t_scene *scene, void *object)
+{
+	t_cylinder	*cylinder;
+
+	(void)scene;
+	cylinder = (t_cylinder *)object;
+	return (color_trgb(cylinder->color));
+}
+
 static int	sub_parse_cylinder(t_cylinder *cylinder, t_list *current)
 {
 	char	*item;
@@ -40,7 +133,7 @@ static int	sub_parse_cylinder(t_cylinder *cylinder, t_list *current)
 	if (parse_coord(&(cylinder->coord), item))
 		return (ERROR);
 	item = next_item(item);
-	if (parse_vector(&(cylinder->vector), item, YES))
+	if (parse_vector(&(cylinder->direction), item, YES))
 		return (ERROR);
 	item = next_item(item);
 	if (parse_length(&(cylinder->radius), item, "Diameter", YES))
@@ -56,20 +149,20 @@ static int	sub_parse_cylinder(t_cylinder *cylinder, t_list *current)
 	return (SUCCESS);
 }
 
-int	parse_cylinder(t_scene *scene, t_list *current)
+int	parse_cylinder(t_scene *scene, t_list *current, t_objects *object)
 {
-	int			i;
 	t_cylinder	*cylinder;
 
-	i = 1;
-	while ((scene->objects)[i])
-		i++;
-	(scene->objects_type)[i] = CYLINDER;
+	(void)scene;
+	object->type = CYLINDER;
 	cylinder = ft_calloc(1, sizeof (t_cylinder));
 	if (!cylinder)
 		return (print_error(ERROR, "Cylinder allocation failed"));
 	if (sub_parse_cylinder(cylinder, current))
 		return (ERROR);
-	(scene->objects)[i] = cylinder;
+	object->object = cylinder;
+	object->get_color = &get_color_cylinder;
+	object->intersect = &intersect_cylinder;
+	object->update = &update_cylinder;
 	return (SUCCESS);
 }

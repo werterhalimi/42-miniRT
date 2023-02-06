@@ -153,6 +153,7 @@ typedef struct s_camera
 typedef struct s_light
 {
 	t_point	coord;
+	t_point	relative_coord;
 	t_color	color;
 	double	ratio;
 }	t_light;
@@ -160,32 +161,45 @@ typedef struct s_light
 typedef struct s_sphere
 {
 	t_point	coord;
+	t_point	relative_coord;
 	t_color	color;
 	double	radius;
+	double	value;
 }	t_sphere;
 
 typedef struct s_plane
 {
 	t_point	coord;
-	t_point	vector;
+	t_point	normal;
 	t_color	color;
+	double	value;
 }	t_plane;
 
 typedef struct s_cylinder
 {
 	t_point	coord;
-	t_point	vector;
+	t_point	relative_coord;
+	t_point	direction;
+	t_point	center_top;
+	t_point	center_down;
+	t_point	relative_center_top;
+	t_point	relative_center_down;
+	t_point	vector_quad;
 	t_color	color;
 	double	radius;
+	double	radius_square;
 	double	semi_height;
+	double	value;
+	double	value_quad;
 }	t_cylinder;
 
 typedef struct s_objects
 {
-	int 			*objects_type;
-	void			**objects;
-	unsigned int	(**get_color)(struct s_scene *, int);
-	double 			(**intersect)(struct s_scene *, t_point, int);
+	void			*object;
+	unsigned int	(*get_color)(struct s_scene *, void *);
+	double 			(*intersect)(t_point, void *);
+	void			(*update)(struct s_scene *, void *);
+	int 			type;
 }	t_objects;
 
 typedef struct s_scene
@@ -194,8 +208,7 @@ typedef struct s_scene
 	t_amb_light	*amb_light;
 	t_camera	*camera;
 	t_light		*light;
-	int 		*objects_type;
-	void		**objects;
+	t_objects	**objects;
 	void		*mlx;
 	void		*window;
 	void		*image;
@@ -205,7 +218,6 @@ typedef struct s_scene
 	int			endian;
 	int			width;
 	int			height;
-	int			nb_objects;
 }	t_scene;
 
 /* utils */
@@ -222,6 +234,8 @@ int				str_to_d(char *str, double *d, int last);
 
 double			inv_sqrt(double d);
 
+double			quad_solv(double a, double b, double c, double *x);
+
 /* items */
 
 int				parse_color(t_color *color, char *item);
@@ -236,11 +250,13 @@ char			*next_coord(char *item, char last);
 
 int				parse_coord(t_point *coord, char *item);
 
+int				is_null(t_point vector);
+
 t_point			add_vectors(t_point v1, t_point v2);
 
 t_point			sub_vectors(t_point v1, t_point v2);
 /*
-double			norm_vector(t_point front);
+double			norm_vector(t_point normal);
 */
 t_point			scalar_multi(double lambda, t_point vector);
 
@@ -256,23 +272,23 @@ int				parse_vector(t_point *vector, char *item, char norm);
 
 /* objects */
 
-int				parse_amb_light(t_scene *scene, t_list *current);
+int				parse_amb_light(t_scene *scene, t_list *current, t_objects *object);
 
-int				parse_camera(t_scene *scene, t_list *current);
+int				parse_camera(t_scene *scene, t_list *current, t_objects *object);
 
-int				parse_light(t_scene *scene, t_list *current);
+int				parse_light(t_scene *scene, t_list *current, t_objects *object);
 
 int				is_sphere(t_point point, t_sphere sphere);
 
-int				parse_sphere(t_scene *scene, t_list *current);
+int				parse_sphere(t_scene *scene, t_list *current, t_objects *object);
 
 int				is_plane(t_point point, t_plane plane);
 
-int				parse_plane(t_scene *scene, t_list *current);
+int				parse_plane(t_scene *scene, t_list *current, t_objects *object);
 
 int				is_cylinder(t_point point, t_cylinder cylinder);
 
-int				parse_cylinder(t_scene *scene, t_list *current);
+int				parse_cylinder(t_scene *scene, t_list *current, t_objects *object);
 
 /* print */
 

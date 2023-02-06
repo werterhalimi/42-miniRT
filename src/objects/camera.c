@@ -31,6 +31,7 @@ static void	info_camera(t_scene *scene)
 	t_point		tmp;
 
 	camera = scene->camera;
+	camera->fov = camera->fov * M_PI / 180.0;
 	tmp = camera->front;
 	if (tmp.x || tmp.y)
 		tmp.z += 1.0;
@@ -46,16 +47,17 @@ static void	info_camera(t_scene *scene)
 		/ (double)(scene->width - 1);
 	camera->shift_x = scalar_multi(camera->pixel_size, camera->right);
 	camera->shift_y = scalar_multi(camera->pixel_size, camera->down);
-	tmp = sub_vectors(scalar_multi(camera->size_x, camera->right), \
+	tmp = add_vectors(scalar_multi(camera->size_x, camera->right), \
 		scalar_multi(camera->size_y, camera->down));
 	scene->window_corner = sub_vectors(camera->coord, tmp);
 }
 
-int	parse_camera(t_scene *scene, t_list *current)
+int	parse_camera(t_scene *scene, t_list *current, t_objects *object)
 {
 	char		*item;
 	t_camera	*camera;
 
+	(void)object;
 	camera = scene->camera;
 	if (camera)
 		return (print_error(ERROR, \
@@ -74,7 +76,7 @@ int	parse_camera(t_scene *scene, t_list *current)
 		return (ERROR);
 	if (next_item(item))
 		return (print_error(ERROR, "Too many items for camera"));
-	info_camera(scene);
 	scene->camera = camera;
+	info_camera(scene);
 	return (SUCCESS);
 }

@@ -12,7 +12,37 @@
 
 #include "miniRT.h"
 
-int	parse_light(t_scene *scene, t_list *current)
+static void	update_light(t_scene *scene, void *object)
+{
+	t_light	*light;
+
+	light = (t_light *)object;
+	light->relative_coord = sub_vectors(light->coord, scene->camera->coord);
+}
+
+static double	intersect_light(t_point ray, void *object)
+{
+	t_light	*light;
+	double	t;
+
+	light = (t_light *)object;
+	t = light->relative_coord.x / ray.x;
+	if (is_null(add_vectors(scalar_multi(t, ray), \
+		light->relative_coord)) && t >= 0.0)
+		return (t);
+	return (INFINITY);
+}
+
+static unsigned int	get_color_light(t_scene *scene, void *object)
+{
+	t_light	*light;
+
+	(void)scene;
+	light = (t_light *)object;
+	return (color_trgb(light->color));
+}
+
+int	parse_light(t_scene *scene, t_list *current, t_objects *object)
 {
 	char	*item;
 	t_light	*light;
@@ -36,7 +66,10 @@ int	parse_light(t_scene *scene, t_list *current)
 	if (next_item(item))
 		return (print_error(ERROR, "Too many items for main light"));
 	scene->light = light;
-	(scene->objects)[0] = light;
-	(scene->objects_type)[0] = MAIN_LIGHT;
+	object->object = light;
+	object->get_color = &get_color_light;
+	object->intersect = &intersect_light;
+	object->update = &update_light;
+	object->type = MAIN_LIGHT;
 	return (SUCCESS);
 }

@@ -12,6 +12,11 @@
 
 #include "miniRT.h"
 
+int	is_null(t_point vector)
+{
+	return (!(vector.x || vector.y || vector.z));
+}
+
 t_point	add_vectors(t_point v1, t_point v2)
 {
 	t_point	vector;
@@ -26,17 +31,16 @@ t_point	sub_vectors(t_point v1, t_point v2)
 {
 	t_point	vector;
 
-
 	vector.x = v1.x - v2.x;
 	vector.y = v1.y - v2.y;
 	vector.z = v1.z - v2.z;
 	return (vector);
 }
 /*
-double	norm_vector(t_point front)
+double	norm_vector(t_point normal)
 {
-	return (sqrt(front.x * front.x + front.y * front.y \
-		+ front.z * front.z));
+	return (sqrt(normal.x * normal.x + normal.y * normal.y \
+		+ normal.z * normal.z));
 }
 */
 t_point	scalar_multi(double lambda, t_point vector)
@@ -103,7 +107,7 @@ int	parse_vector(t_point *vector, char *item, char norm)
 	if (next_coord(item, YES))
 		return (print_error(ERROR, "Too many coordinate components"));
 	if (!(vector->x) && !(vector->y) && !(vector->z))
-		return (print_error(ERROR, "The vector can not be null"));
+		return (print_error(ERROR, "The normal can not be null"));
 	if (norm)
 		*vector = unit_vector(*vector);
 	return (SUCCESS);

@@ -13,7 +13,7 @@
 #include "miniRT.h"
 
 static void	init_static(char **obj_names, \
-	int (*fct_array[])(t_scene *, t_list *))
+	int (*fct_array[])(t_scene *, t_list *, t_objects *))
 {
 	obj_names[0] = "A ";
 	fct_array[0] = &parse_amb_light;
@@ -31,37 +31,47 @@ static void	init_static(char **obj_names, \
 
 static int	parse_selector(t_scene *scene, t_list *current)
 {
-	static int	(*fct_array[NB_OBJECTS])(t_scene *, t_list *);
+	static int	(*fct_array[NB_OBJECTS])(t_scene *, t_list *, t_objects *);
 	static char	*obj_names[NB_OBJECTS];
 	int			i;
+	int 		j;
 
 	if (!(*fct_array))
 		init_static(obj_names, fct_array);
 	i = -1;
 	while (++i < NB_OBJECTS)
+	{
 		if (!ft_strncmp(current->content, obj_names[i], \
-			ft_strlen(obj_names[i])))
-			return (fct_array[i](scene, current));
+            ft_strlen(obj_names[i])))
+		{
+			if (i < 2)
+				return (fct_array[i](scene, current, NULL));
+			j = 0;
+			if (i > 2)
+				j = 1;
+			while ((scene->objects)[j])
+				j++;
+			(scene->objects)[j] = ft_calloc(1, sizeof (t_objects));
+			if (!(scene->objects)[j])
+				return (print_error(ERROR, "Object allocation failed"));
+			return (fct_array[i](scene, current, (scene->objects)[j]));
+		}
+	}
 	return (print_error(ERROR, "Unknown object"));
 }
 
-static int	objects_parsing(t_scene *scene, t_list **objects)
+static int	objects_parsing(t_scene *scene, t_list **list, int nb_objects)
 {
-	scene->objects = ft_calloc(scene->nb_objects - 1, \
-		sizeof (*(scene->objects)));
+	scene->objects = ft_calloc(nb_objects - 1, sizeof (*(scene->objects)));
 	if (!(scene->objects))
-		return (print_error(ERROR, "Scene allocation failed"));
-	scene->objects_type = ft_calloc(scene->nb_objects - 2, \
-		sizeof (*(scene->objects_type)));
-	if (!(scene->objects))
-		return (print_error(ERROR, "Scene allocation failed"));
-	while (*objects)
+		return (print_error(ERROR, "Objects allocation failed"));
+	while (*list)
 	{
-		if (parse_selector(scene, *objects))
+		if (parse_selector(scene, *list))
 			return (ERROR);
-		*objects = (*objects)->next;
+		*list = (*list)->next;
 	}
-	ft_lstclear(objects, ft_free);
+	ft_lstclear(list, ft_free);
 	if (!(scene->amb_light))
 		return (print_error(ERROR, "An ambient light is missing"));
 	if (!(scene->camera))
@@ -94,17 +104,18 @@ static int	init_mlx(t_scene *scene)
 int	init(int argc, char **argv, t_scene **scene)
 {
 	t_list	*objects;
+	int		nb_objects;
 
 	objects = NULL;
 	*scene = ft_calloc(1, sizeof (**scene));
 	if (!(*scene))
 		return (print_error(ERROR, "Scene allocation failed"));
-	(*scene)->nb_objects = read_file(argc, argv, &objects);
-	if ((*scene)->nb_objects < 0)
+	nb_objects = read_file(argc, argv, &objects);
+	if (nb_objects < 0)
 		return (ERROR);
 	(*scene)->width = 1920;
 	(*scene)->height = 1080;
-	if (objects_parsing(*scene, &objects))
+	if (objects_parsing(*scene, &objects, nb_objects))
 		return (ERROR);
 	return (init_mlx(*scene));
 }

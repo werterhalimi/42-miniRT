@@ -11,7 +11,7 @@
 # **************************************************************************** #
 
 SRCS_FILES		:=	utils/error.c		utils/str_to_d.c	utils/hook.c \
-					utils/quit.c		utils/quake.c \
+					utils/quit.c		utils/quake.c		utils/quad_solv.c \
 					items/color.c		items/light_ratio.c	items/double_length.c \
 					items/coord.c		items/vector.c \
 					objects/camera.c	objects/light.c		objects/amb_light.c \
