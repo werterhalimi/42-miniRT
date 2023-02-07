@@ -17,4 +17,4 @@
 # Optional objects  |                  |             |                 |                 |
 # Sphere            |                  |             | Diameter as     |                 |
 #                   |                  |             | positive double |                 |
-  sp                  15,0,0                           20                                  255,0,0
+  sp                  15,0,0                           2                                  255,255,255

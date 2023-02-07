@@ -23,22 +23,22 @@ unsigned int	color_trgb(t_color color)
 	return (*(unsigned int *)(unsigned char [4]){color.b, color.g, color.r, 0});
 }
 
-unsigned char	color_get_t(int trgb)
+unsigned char	color_get_t(unsigned int trgb)
 {
 	return (((unsigned char *)&trgb)[3]);
 }
 
-unsigned char	color_get_r(int trgb)
+unsigned char	color_get_r(unsigned int trgb)
 {
 	return (((unsigned char *)&trgb)[2]);
 }
 
-unsigned char	color_get_g(int trgb)
+unsigned char	color_get_g(unsigned int trgb)
 {
 	return (((unsigned char *)&trgb)[1]);
 }
 
-unsigned char	color_get_b(int trgb)
+unsigned char	color_get_b(unsigned int trgb)
 {
 	return (((unsigned char *)&trgb)[0]);
 }

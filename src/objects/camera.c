@@ -43,13 +43,13 @@ static void	info_camera(t_scene *scene)
 	camera->down = cross_product(camera->front, camera->right);
 	camera->size_x = tan(camera->fov * 0.5);
 	camera->pixel_size = 2.0 * camera->size_x / (double)(scene->width);
-	camera->size_y = camera->size_x * (double)(scene->height - 1) \
-		/ (double)(scene->width - 1);
+	camera->size_y = camera->size_x * (double)(scene->height) \
+		/ (double)(scene->width);
 	camera->shift_x = scalar_multi(camera->pixel_size, camera->right);
 	camera->shift_y = scalar_multi(camera->pixel_size, camera->down);
 	tmp = add_vectors(scalar_multi(camera->size_x, camera->right), \
 		scalar_multi(camera->size_y, camera->down));
-	scene->window_corner = sub_vectors(camera->coord, tmp);
+	scene->window_corner = sub_vectors(add_vectors(camera->coord, camera->front), tmp);
 }
 
 int	parse_camera(t_scene *scene, t_list *current, t_objects *object)

@@ -180,8 +180,8 @@ typedef struct s_cylinder
 	t_point	coord;
 	t_point	relative_coord;
 	t_point	direction;
-	t_point	center_top;
-	t_point	center_down;
+//	t_point	center_top;
+//	t_point	center_down;
 	t_point	relative_center_top;
 	t_point	relative_center_down;
 	t_point	vector_quad;
@@ -246,6 +246,8 @@ int				parse_length(double *length, char *item, char *name, char half);
 /*
 double			dist_op(t_point o, t_point p);
 */
+t_point			new_point(double x, double y, double z);
+
 char			*next_coord(char *item, char last);
 
 int				parse_coord(t_point *coord, char *item);
@@ -297,13 +299,13 @@ unsigned int	create_trgb(unsigned char t, unsigned char r, \
 
 unsigned int	color_trgb(t_color color);
 
-unsigned char	color_get_t(int trgb);
+unsigned char	color_get_t(unsigned int trgb);
 
-unsigned char	color_get_r(int trgb);
+unsigned char	color_get_r(unsigned int trgb);
 
-unsigned char	color_get_g(int trgb);
+unsigned char	color_get_g(unsigned int trgb);
 
-unsigned char	color_get_b(int trgb);
+unsigned char	color_get_b(unsigned int trgb);
 
 void			put_pixel(t_scene *scene, int x, int y, unsigned int color);
 

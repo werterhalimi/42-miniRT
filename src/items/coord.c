@@ -17,6 +17,17 @@ double	dist_op(t_point o, t_point p)
 	return (norm_vector(sub_vectors(p, o)));
 }
 */
+
+t_point	new_point(double x, double y, double z)
+{
+	t_point	point;
+
+	point.x = x;
+	point.y = y;
+	point.z = z;
+	return (point);
+}
+
 char	*next_coord(char *item, char last)
 {
 	if (*item == '-')

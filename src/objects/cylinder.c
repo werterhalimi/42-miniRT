@@ -35,14 +35,16 @@ int	is_cylinder(t_point point, t_cylinder cylinder)
 static void	update_cylinder(t_scene *scene, void *object)
 {
 	t_cylinder	*cylinder;
+	t_point		center_top;
+	t_point		center_down;
 
 	cylinder = (t_cylinder *)object;
-	cylinder->center_top = add_vectors(cylinder->coord, \
+	center_top = add_vectors(cylinder->coord, \
 		scalar_multi(cylinder->semi_height, cylinder->direction));
-	cylinder->center_down = add_vectors(cylinder->coord, \
+	center_down = add_vectors(cylinder->coord, \
 		scalar_multi(-cylinder->semi_height, cylinder->direction));
-	cylinder->relative_center_top = sub_vectors(cylinder->coord, cylinder->center_top);
-	cylinder->relative_center_down = sub_vectors(cylinder->coord, cylinder->center_down);
+	cylinder->relative_center_top = sub_vectors(scene->camera->coord, center_top);
+	cylinder->relative_center_down = sub_vectors(scene->camera->coord, center_down);
 	cylinder->relative_coord = sub_vectors(scene->camera->coord, cylinder->coord);
 	cylinder->value = dot_product(cylinder->relative_coord, cylinder->direction);
 	cylinder->vector_quad = sub_vectors(cylinder->relative_coord, \
@@ -61,10 +63,10 @@ static double	cylinder_end(t_cylinder *cylinder, t_point ray, double div)
 	t1 = (cylinder->semi_height + cylinder->value) / div;
 	t2 = (-cylinder->semi_height + cylinder->value) / div;
 	if (norm_square(add_vectors(scalar_multi(t1, ray), \
-		cylinder->relative_center_top)))
+		cylinder->relative_center_top)) > cylinder->radius_square)
 		t1 = INFINITY;
 	if (norm_square(add_vectors(scalar_multi(t2, ray), \
-		cylinder->relative_center_down)))
+		cylinder->relative_center_down)) > cylinder->radius_square)
 		t2 = INFINITY;
 	if (isfinite(t1) && t1 >= 0.0 && t1 < t2)
 		return (t1);
@@ -80,14 +82,17 @@ static double	cylinder_side(t_cylinder *cylinder, t_point ray)
 	double	limit;
 	t_point	vector;
 
-	vector = sub_vectors(ray, cylinder->direction);
+	vector = sub_vectors(ray, scalar_multi(dot_product(ray, \
+		cylinder->direction), cylinder->direction));
 	t1 = quad_solv(norm_square(vector), 2.0 * dot_product(vector, \
 		cylinder->vector_quad), cylinder->value_quad, &t2);
-	limit = t1 + cylinder->value;
+	limit = dot_product(add_vectors(scalar_multi(t1, ray), \
+		cylinder->relative_coord), cylinder->relative_coord);
 	if (!isnan(t1) && t1 < t2 && t1 >= 0.0 \
 		&& -cylinder->semi_height < limit && limit < cylinder->semi_height)
 		return (t1);
-	limit = t2 + cylinder->value;
+	limit = dot_product(add_vectors(scalar_multi(t2, ray), \
+		cylinder->relative_coord), cylinder->relative_coord);
 	if (!isnan(t2) && t2 >= 0.0 \
 		&& -cylinder->semi_height < limit && limit < cylinder->semi_height)
 		return (t2);
@@ -107,7 +112,7 @@ static double	intersect_cylinder(t_point ray, void *object)
 	div = dot_product(ray, cylinder->direction);
 	if (div)
 		t1 = cylinder_end(cylinder, ray, div);
-	else if (-1.0 < div && div < 1.0)
+	if (-1.0 < div && div < 1.0)
 		t2 = cylinder_side(cylinder, ray);
 	if (isfinite(t1) && t1 >= 0.0 && t1 < t2)
 		return (t1);

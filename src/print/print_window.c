@@ -18,7 +18,7 @@ static void	update_objects(t_scene *scene)
 
 	i = -1;
 	while ((scene->objects)[++i])
-		(scene->objects)[i]->update(scene, ((scene->objects)[i])->object);
+		(scene->objects)[i]->update(scene, (scene->objects)[i]->object);
 }
 
 static unsigned int	find_color_pixel(t_scene *scene, t_point ray)
@@ -51,6 +51,7 @@ int	print_window(t_scene *scene)
 	int		y;
 	t_point	tmp;
 	t_point	ray;
+	t_point unit;
 
 	x = -1;
 	tmp = scene->window_corner;
@@ -61,7 +62,10 @@ int	print_window(t_scene *scene)
 		ray = tmp;
 		while (++y < scene->height)
 		{
-			put_pixel(scene, x, y, find_color_pixel(scene, unit_vector(ray)));
+			unit = unit_vector(ray);
+			if (x == 960 && y == 540)
+				printf("Center : (%lf, %lf, %lf)\n", unit.x, unit.y, unit.z);
+			put_pixel(scene, x, y, find_color_pixel(scene, unit));
 			ray = add_vectors(ray, scene->camera->shift_y);
 		}
 		tmp = add_vectors(tmp, scene->camera->shift_x);
