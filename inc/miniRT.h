@@ -6,7 +6,7 @@
 /*   By: ncotte <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/29 11:02:34 by ncotte            #+#    #+#             */
-/*   Updated: 2023/01/29 11:02:36 by ncotte           ###   ########.fr       */
+/*   Updated: 2023/02/08 22:00:43 by shalimi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -261,6 +261,8 @@ t_point			sub_vectors(t_point v1, t_point v2);
 double			norm_vector(t_point normal);
 */
 t_point			scalar_multi(double lambda, t_point vector);
+
+t_point			scalar_sub(double lambda, t_point vector);
 
 t_point			cross_product(t_point v1, t_point v2);
 

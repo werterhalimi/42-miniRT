@@ -6,7 +6,7 @@
 /*   By: ncotte <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 14:39:19 by ncotte            #+#    #+#             */
-/*   Updated: 2023/02/01 14:39:21 by ncotte           ###   ########.fr       */
+/*   Updated: 2023/02/08 22:03:42 by shalimi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,12 @@ static unsigned int	find_color_pixel(t_scene *scene, t_point ray)
 	unsigned int	color;
 	double			first_intersect;
 	double			tmp;
+	t_objects		*obj;
 	int				i;
 
 	i = -1;
 	color = 0;
+	obj = 0;
 	first_intersect = INFINITY;
 	while ((scene->objects)[++i])
 	{
@@ -38,9 +40,27 @@ static unsigned int	find_color_pixel(t_scene *scene, t_point ray)
 		if (!isinf(tmp) && tmp < first_intersect)
 		{
 			first_intersect = tmp;
+			obj = (scene->objects)[i];
 			color = ((scene->objects)[i])->get_color(scene, \
 				((scene->objects)[i])->object);
 		}
+	}
+	if (obj && obj->type == SPHERE)
+	{
+		t_sphere *sphere = ((t_sphere *)obj->object);
+		t_point	center = sphere->coord;
+		t_point origin = scene->camera->coord;
+		t_point hit_point = add_vectors(origin, scalar_multi(first_intersect, ray));
+		t_point	normal = unit_vector(sub_vectors(hit_point, center));
+		double dot = dot_product(ray, normal);
+		double angle = acos(dot);
+		t_point dir = add_vectors(add_vectors(hit_point, ray), scalar_multi(2, normal));
+		printf("%f %f\n", dir.x, unit_vector(dir).x);
+		t_point rebound = sub_vectors(ray, scalar_multi(2.0 * dot, normal));
+		if (rebound.x != unit_vector(rebound).x)
+			printf("nop\n");
+		return create_trgb(1, 0, 100, angle*55);
+
 	}
 	return (color);
 }

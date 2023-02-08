@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   front.c                                           :+:      :+:    :+:   */
+/*   vector.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ncotte <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 13:59:46 by ncotte            #+#    #+#             */
-/*   Updated: 2023/01/30 13:59:48 by ncotte           ###   ########.fr       */
+/*   Updated: 2023/02/08 22:00:01 by shalimi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,17 @@ double	norm_vector(t_point normal)
 		+ normal.z * normal.z));
 }
 */
+
+t_point	scalar_sub(double lambda, t_point vector)
+{
+	t_point	lambda_vector;
+
+	lambda_vector.x = vector.x * lambda;
+	lambda_vector.y = vector.y * lambda;
+	lambda_vector.z = vector.z * lambda;
+	return (lambda_vector);
+}
+
 t_point	scalar_multi(double lambda, t_point vector)
 {
 	t_point	lambda_vector;
