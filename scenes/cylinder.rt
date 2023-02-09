@@ -1,4 +1,4 @@
-# valid.rt
+# cylinder.rt
 
 # Object            | Coordinates      | Orientation | Info 1          | Info 2          | Color
 #                   | x,y,z as doubles | x,y,z in    |                 |                 | R,G,B in

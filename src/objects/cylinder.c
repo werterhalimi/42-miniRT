@@ -20,14 +20,14 @@ int	is_cylinder(t_point point, t_cylinder cylinder)
 	double	radius_p;
 
 	vector_p = sub_vectors(point, cylinder.coord);
-	proj_p = scalar_multi(dot_product(vector_p, cylinder.direction) * \
-		inv_sqrt(norm_square(cylinder.direction)), cylinder.direction);
+	proj_p = scalar_multi(dot_product(vector_p, \
+		cylinder.direction), cylinder.direction);
 	height_p = norm_square(proj_p);
 	radius_p = norm_square(sub_vectors(vector_p, proj_p));
-	if ((height_p == cylinder.semi_height * cylinder.semi_height \
-		&& radius_p < cylinder.radius * cylinder.radius) \
-		|| (height_p < cylinder.semi_height * cylinder.semi_height \
-		&& radius_p == cylinder.radius * cylinder.radius))
+	if ((height_p == cylinder.semi_height_square \
+		&& radius_p < cylinder.radius_square) \
+		|| (height_p < cylinder.semi_height_square \
+		&& radius_p == cylinder.radius_square))
 		return (YES);
 	return (NO);
 }

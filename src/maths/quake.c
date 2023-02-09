@@ -24,5 +24,6 @@ double	inv_sqrt(double d)
 	y = *(double *)&l;
 	y = y * (1.5 - (d * y * y));
 	y = y * (1.5 - (d * y * y));
+	y = y * (1.5 - (d * y * y));
 	return (y);
 }

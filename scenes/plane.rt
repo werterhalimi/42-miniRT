@@ -1,8 +1,8 @@
-# valid.rt
+# plane.rt
 
 # Object            | Coordinates      | Orientation | Info 1          | Info 2          | Color
-#                   | x,y,z as         | x,y,z in    |                 |                 | R,G,B in
-#                   | positive doubles | [-1.0; 1.0] |                 |                 | {0; ...; 255}
+#                   | x,y,z as doubles | x,y,z in    |                 |                 | R,G,B in
+#                   |                  | [-1.0; 1.0] |                 |                 | {0; ...; 255}
 # Mandatory objects |                  |             |                 |                 |
 # Ambient light     |                  |             | Ratio in        |                 |
 #                   |                  |             | [0.0; 1.0]      |                 |
