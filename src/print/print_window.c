@@ -63,8 +63,8 @@ int	print_window(t_scene *scene)
 		while (++y < scene->height)
 		{
 			unit = unit_vector(ray);
-			if (x == 960 && y == 540)
-				printf("Center : (%lf, %lf, %lf)\n", unit.x, unit.y, unit.z);
+//			if (x == 960 && y == 540)
+//				printf("Center : (%lf, %lf, %lf)\n", unit.x, unit.y, unit.z);
 			put_pixel(scene, x, y, find_color_pixel(scene, unit));
 			ray = add_vectors(ray, scene->camera->shift_y);
 		}

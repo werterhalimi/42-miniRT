@@ -92,7 +92,7 @@ static int	set_coord(double *coord, char *item, char last)
 	return (SUCCESS);
 }
 
-int	parse_vector(t_point *vector, char *item, char norm)
+int	parse_vector(t_point *vector, char *item, char unit)
 {
 	if (!item)
 		return (print_error(ERROR, "A coordinate is missing"));
@@ -108,7 +108,7 @@ int	parse_vector(t_point *vector, char *item, char norm)
 		return (print_error(ERROR, "Too many coordinate components"));
 	if (!(vector->x) && !(vector->y) && !(vector->z))
 		return (print_error(ERROR, "The normal can not be null"));
-	if (norm)
+	if (unit)
 		*vector = unit_vector(*vector);
 	return (SUCCESS);
 }

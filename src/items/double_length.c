@@ -33,6 +33,6 @@ int	parse_length(double *length, char *item, char *name, char half)
 	if (*length < 0.0)
 		return (custom_error("The ", name, " must be positive"));
 	if (half)
-		*length /= 2;
+		*length = *length / 2;
 	return (SUCCESS);
 }

@@ -180,16 +180,18 @@ typedef struct s_cylinder
 	t_point	coord;
 	t_point	relative_coord;
 	t_point	direction;
-//	t_point	center_top;
-//	t_point	center_down;
+	t_point	vector_semi_height;
 	t_point	relative_center_top;
 	t_point	relative_center_down;
-	t_point	vector_quad;
 	t_color	color;
 	double	radius;
 	double	radius_square;
 	double	semi_height;
+	double	semi_height_square;
 	double	value;
+	double	value_top;
+	double	value_down;
+	double	value_semi_height;
 	double	value_quad;
 }	t_cylinder;
 
@@ -270,7 +272,7 @@ double			norm_square(t_point vector);
 
 t_point			unit_vector(t_point vector);
 
-int				parse_vector(t_point *vector, char *item, char norm);
+int				parse_vector(t_point *vector, char *item, char unit);
 
 /* objects */
 
