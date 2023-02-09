@@ -1,24 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing.c                                          :+:      :+:    :+:   */
+/*   parse_ratio.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ncotte <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/30 10:12:49 by ncotte            #+#    #+#             */
-/*   Updated: 2023/01/30 10:12:53 by ncotte           ###   ########.fr       */
+/*   Created: 2023/01/30 11:42:27 by ncotte            #+#    #+#             */
+/*   Updated: 2023/01/30 11:42:29 by ncotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
-char	*next_item(char *line)
+int	parse_ratio(double *ratio, char *item)
 {
-	while (*line && *line != '\n' && *line != ' ')
-		line++;
-	while (*line == ' ')
-		line++;
-	if (!(*line) || *line == '\n')
-		return (NULL);
-	return (line);
+	if (!item)
+		return (print_error(ERROR, "A light ratio is missing"));
+	if (str_to_double(item, ratio, YES))
+		return (print_error(ERROR, \
+			"Invalid light ratio format. Required: one double"));
+	if (*ratio < 0.0 || 1.0 < *ratio)
+		return (print_error(ERROR, \
+			"The light ratio must be included in [0.0; 1.0]"));
+	return (SUCCESS);
 }

@@ -12,7 +12,7 @@
 
 #include "miniRT.h"
 
-static void	init_static(char **obj_names, \
+static void	init_arrays(char **obj_names, \
 	int (*fct_array[])(t_scene *, t_list *, t_objects *))
 {
 	obj_names[0] = "A ";
@@ -29,20 +29,17 @@ static void	init_static(char **obj_names, \
 	fct_array[5] = &parse_cylinder;
 }
 
-static int	parse_selector(t_scene *scene, t_list *current)
+static int	parse_selector(t_scene *scene, t_list *current, char *obj_names[], \
+	int (*fct_array[])(t_scene *, t_list *, t_objects *))
 {
-	static int	(*fct_array[NB_OBJECTS])(t_scene *, t_list *, t_objects *);
-	static char	*obj_names[NB_OBJECTS];
 	int			i;
-	int 		j;
+	int			j;
 
-	if (!(*fct_array))
-		init_static(obj_names, fct_array);
 	i = -1;
 	while (++i < NB_OBJECTS)
 	{
 		if (!ft_strncmp(current->content, obj_names[i], \
-            ft_strlen(obj_names[i])))
+			ft_strlen(obj_names[i])))
 		{
 			if (i < 2)
 				return (fct_array[i](scene, current, NULL));
@@ -62,12 +59,16 @@ static int	parse_selector(t_scene *scene, t_list *current)
 
 static int	objects_parsing(t_scene *scene, t_list **list, int nb_objects)
 {
+	int		(*fct_array[NB_OBJECTS])(t_scene *, t_list *, t_objects *);
+	char	*obj_names[NB_OBJECTS];
+
 	scene->objects = ft_calloc(nb_objects - 1, sizeof (*(scene->objects)));
 	if (!(scene->objects))
 		return (print_error(ERROR, "Objects allocation failed"));
+	init_arrays(obj_names, fct_array);
 	while (*list)
 	{
-		if (parse_selector(scene, *list))
+		if (parse_selector(scene, *list, obj_names, fct_array))
 			return (ERROR);
 		*list = (*list)->next;
 	}

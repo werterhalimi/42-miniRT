@@ -1,32 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   coord.c                                            :+:      :+:    :+:   */
+/*   parse_coord.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ncotte <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/30 13:59:56 by ncotte            #+#    #+#             */
-/*   Updated: 2023/01/30 13:59:58 by ncotte           ###   ########.fr       */
+/*   Created: 2023/02/09 13:58:05 by ncotte            #+#    #+#             */
+/*   Updated: 2023/02/09 13:58:06 by ncotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
-/*
-double	dist_op(t_point o, t_point p)
-{
-	return (norm_vector(sub_vectors(p, o)));
-}
-*/
-
-t_point	new_point(double x, double y, double z)
-{
-	t_point	point;
-
-	point.x = x;
-	point.y = y;
-	point.z = z;
-	return (point);
-}
 
 char	*next_coord(char *item, char last)
 {
@@ -55,7 +39,7 @@ static int	set_coord(double *coord, char *item, char last)
 	if (!item)
 		return (print_error(ERROR, \
 			"Invalid coordinate format. Expected: x,y,z"));
-	if (str_to_d(item, coord, last))
+	if (str_to_double(item, coord, last))
 		return (print_error(ERROR, \
 			"The coordinate components must be a double"));
 	return (SUCCESS);

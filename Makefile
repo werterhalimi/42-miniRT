@@ -10,14 +10,18 @@
 #                                                                              #
 # **************************************************************************** #
 
-SRCS_FILES		:=	utils/error.c		utils/str_to_d.c	utils/hook.c \
-					utils/quit.c		utils/quake.c		utils/quad_solv.c \
-					items/color.c		items/light_ratio.c	items/double_length.c \
-					items/coord.c		items/vector.c \
+SRCS_FILES		:=	utils/error.c		utils/hook.c		utils/quit.c \
+					maths/point.c		maths/vector.c		maths/quad_solv.c \
+					maths/quake.c		maths/str_to_double.c \
 					objects/camera.c	objects/light.c		objects/amb_light.c \
 					objects/plane.c		objects/sphere.c	objects/cylinder.c \
-					print/color_trgb.c	print/put_pixel.c	print/print_window.c \
-					init/parsing.c		init/read_file.c	init/init.c \
+					print/color_trgb.c	print/put_pixel.c	print/get_color.c \
+					print/print_window.c \
+					init/next_item.c	init/parse_color.c	init/parse_coord.c \
+					init/parse_vector.c	init/parse_light.c	init/parse_amb_light.c \
+					init/parse_camera.c	init/parse_ratio.c	init/parse_length.c \
+					init/parse_plane.c	init/parse_sphere.c	init/parse_cylinder.c \
+					init/read_file.c	init/init.c \
 					main.c
 
 SRCS_DIR		:= ./src/
@@ -25,7 +29,7 @@ SRCS			:= $(addprefix $(SRCS_DIR),$(SRCS_FILES))
 
 OBJS_FILES		:= $(SRCS_FILES:.c=.o)
 OBJS_DIR		:= ./bin/
-OBJS_SUB_DIR	:= 	$(OBJS_DIR)objects	$(OBJS_DIR)items	$(OBJS_DIR)init \
+OBJS_SUB_DIR	:= 	$(OBJS_DIR)objects	$(OBJS_DIR)maths	$(OBJS_DIR)init \
 					$(OBJS_DIR)utils	$(OBJS_DIR)print
 OBJS			:= $(addprefix $(OBJS_DIR),$(OBJS_FILES))
 

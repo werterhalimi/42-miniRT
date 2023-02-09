@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   str_to_d.c                                         :+:      :+:    :+:   */
+/*   str_to_double.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ncotte <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,7 +12,7 @@
 
 #include "miniRT.h"
 
-int	str_to_d(char *str, double *d, int last)
+int	str_to_double(char *str, double *d, int last)
 {
 	double	decimal;
 	int		sign;

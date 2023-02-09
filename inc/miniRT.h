@@ -114,7 +114,7 @@ enum {
 
 /* Structures */
 
-struct s_scene;
+struct	s_scene;
 
 typedef struct s_point
 {
@@ -199,9 +199,9 @@ typedef struct s_objects
 {
 	void			*object;
 	unsigned int	(*get_color)(struct s_scene *, void *);
-	double 			(*intersect)(t_point, void *);
+	double			(*intersect)(t_point, void *);
 	void			(*update)(struct s_scene *, void *);
-	int 			type;
+	int				type;
 }	t_objects;
 
 typedef struct s_scene
@@ -232,36 +232,26 @@ int				mouse_hook(int mouse_code, int x, int y, t_scene *scene);
 
 int				print_error(int error_code, char *error_msg);
 
-int				str_to_d(char *str, double *d, int last);
+/* maths */
 
 double			inv_sqrt(double d);
 
 double			quad_solv(double a, double b, double c, double *x);
 
-/* items */
+int				str_to_double(char *str, double *d, int last);
 
-int				parse_color(t_color *color, char *item);
+//double		dist_op(t_point o, t_point p);
 
-int				parse_ratio(double *ratio, char *item);
-
-int				parse_length(double *length, char *item, char *name, char half);
-/*
-double			dist_op(t_point o, t_point p);
-*/
 t_point			new_point(double x, double y, double z);
-
-char			*next_coord(char *item, char last);
-
-int				parse_coord(t_point *coord, char *item);
 
 int				is_null(t_point vector);
 
 t_point			add_vectors(t_point v1, t_point v2);
 
 t_point			sub_vectors(t_point v1, t_point v2);
-/*
-double			norm_vector(t_point normal);
-*/
+
+//double		norm_vector(t_point normal);
+
 t_point			scalar_multi(double lambda, t_point vector);
 
 t_point			cross_product(t_point v1, t_point v2);
@@ -272,27 +262,37 @@ double			norm_square(t_point vector);
 
 t_point			unit_vector(t_point vector);
 
-int				parse_vector(t_point *vector, char *item, char unit);
-
 /* objects */
 
-int				parse_amb_light(t_scene *scene, t_list *current, t_objects *object);
+void			update_light(t_scene *scene, void *object);
 
-int				parse_camera(t_scene *scene, t_list *current, t_objects *object);
+double			intersect_light(t_point ray, void *object);
 
-int				parse_light(t_scene *scene, t_list *current, t_objects *object);
+unsigned int	get_color_light(t_scene *scene, void *object);
 
 int				is_sphere(t_point point, t_sphere sphere);
 
-int				parse_sphere(t_scene *scene, t_list *current, t_objects *object);
+void			update_sphere(t_scene *scene, void *object);
+
+double			intersect_sphere(t_point ray, void *object);
+
+unsigned int	get_color_sphere(t_scene *scene, void *object);
 
 int				is_plane(t_point point, t_plane plane);
 
-int				parse_plane(t_scene *scene, t_list *current, t_objects *object);
+void			update_plane(t_scene *scene, void *object);
+
+double			intersect_plane(t_point ray, void *object);
+
+unsigned int	get_color_plane(t_scene *scene, void *object);
 
 int				is_cylinder(t_point point, t_cylinder cylinder);
 
-int				parse_cylinder(t_scene *scene, t_list *current, t_objects *object);
+void			update_cylinder(t_scene *scene, void *object);
+
+double			intersect_cylinder(t_point ray, void *object);
+
+unsigned int	get_color_cylinder(t_scene *scene, void *object);
 
 /* print */
 
@@ -311,11 +311,39 @@ unsigned char	color_get_b(unsigned int trgb);
 
 void			put_pixel(t_scene *scene, int x, int y, unsigned int color);
 
-int 			print_window(t_scene *scene);
+int				print_window(t_scene *scene);
 
 /* init */
 
 char			*next_item(char *line);
+
+int				parse_color(t_color *color, char *item);
+
+int				parse_ratio(double *ratio, char *item);
+
+int				parse_length(double *length, char *item, char *name, char half);
+
+char			*next_coord(char *item, char last);
+
+int				parse_coord(t_point *coord, char *item);
+
+int				parse_vector(t_point *vector, char *item, char unit);
+
+int				parse_amb_light(t_scene *scene, t_list *current, \
+					t_objects *object);
+
+int				parse_camera(t_scene *scene, t_list *current, \
+					t_objects *object);
+
+int				parse_light(t_scene *scene, t_list *current, t_objects *object);
+
+int				parse_sphere(t_scene *scene, t_list *current, \
+					t_objects *object);
+
+int				parse_plane(t_scene *scene, t_list *current, t_objects *object);
+
+int				parse_cylinder(t_scene *scene, t_list *current, \
+					t_objects *object);
 
 int				read_file(int argc, char **argv, t_list **objects);
 

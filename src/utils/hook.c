@@ -26,20 +26,6 @@ int	key_hook(int key_code, t_scene *scene)
 		printf("Blue  = %d\n", scene->amb_light->color.b);
 		print_window(scene);
 	}
-	if (key_code == KEY_W && scene->amb_light->color.r < 255)
-	{
-		(scene->amb_light->color.r)++;
-		(scene->amb_light->color.g)++;
-		(scene->amb_light->color.b)++;
-		print_window(scene);
-	}
-	if (key_code == KEY_K && scene->amb_light->color.r > 0)
-	{
-		(scene->amb_light->color.r)--;
-		(scene->amb_light->color.g)--;
-		(scene->amb_light->color.b)--;
-		print_window(scene);
-	}
 	return (0);
 }
 

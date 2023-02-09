@@ -20,7 +20,7 @@ int	is_sphere(t_point point, t_sphere sphere)
 	return (NO);
 }
 
-static void	update_sphere(t_scene *scene, void *object)
+void	update_sphere(t_scene *scene, void *object)
 {
 	t_sphere	*sphere;
 
@@ -30,7 +30,7 @@ static void	update_sphere(t_scene *scene, void *object)
 		- sphere->radius * sphere->radius;
 }
 
-static double	intersect_sphere(t_point ray, void *object)
+double	intersect_sphere(t_point ray, void *object)
 {
 	t_sphere	*sphere;
 	double		t1;
@@ -46,39 +46,11 @@ static double	intersect_sphere(t_point ray, void *object)
 	return (INFINITY);
 }
 
-static unsigned int	get_color_sphere(t_scene *scene, void *object)
+unsigned int	get_color_sphere(t_scene *scene, void *object)
 {
 	t_sphere	*sphere;
 
 	(void)scene;
 	sphere = (t_sphere *)object;
 	return (color_trgb(sphere->color));
-}
-
-int	parse_sphere(t_scene *scene, t_list *current, t_objects *object)
-{
-	char		*item;
-	t_sphere	*sphere;
-
-	(void)scene;
-	object->type = SPHERE;
-	sphere = ft_calloc(1, sizeof (t_sphere));
-	if (!sphere)
-		return (print_error(ERROR, "Sphere allocation failed"));
-	item = next_item((char *)(current->content));
-	if (parse_coord(&(sphere->coord), item))
-		return (ERROR);
-	item = next_item(item);
-	if (parse_length(&(sphere->radius), item, "Diameter", YES))
-		return (ERROR);
-	item = next_item(item);
-	if (parse_color(&(sphere->color), item))
-		return (ERROR);
-	if (next_item(item))
-		return (print_error(ERROR, "Too many items for sphere"));
-	object->object = sphere;
-	object->get_color = &get_color_sphere;
-	object->intersect = &intersect_sphere;
-	object->update = &update_sphere;
-	return (SUCCESS);
 }

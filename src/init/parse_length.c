@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   double_length.c                                    :+:      :+:    :+:   */
+/*   parse_length.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ncotte <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -27,7 +27,7 @@ int	parse_length(double *length, char *item, char *name, char half)
 {
 	if (!item)
 		return (custom_error("A ", name, " is missing"));
-	if (str_to_d(item, length, YES))
+	if (str_to_double(item, length, YES))
 		return (custom_error("Invalid ", name, \
 			" format. Required: one double"));
 	if (*length < 0.0)
