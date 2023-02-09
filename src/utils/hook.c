@@ -24,6 +24,7 @@ static void	print_info(t_scene *scene)
 	printf("x = %lf\n", scene->camera->front.x);
 	printf("y = %lf\n", scene->camera->front.y);
 	printf("z = %lf\n", scene->camera->front.z);
+	printf("FOV = %lf\n", scene->camera->fov);
 	int i = -1;
 	t_light *light;
 	t_plane	*plane;
@@ -143,10 +144,24 @@ int	key_hook(int key_code, t_scene *scene)
 
 int	mouse_hook(int mouse_code, int x, int y, t_scene *scene)
 {
+	printf("KEY = %d\n", mouse_code);
 	if (mouse_code == RIGHT_CLICK)
 	{
 		mlx_mouse_get_pos(scene->window, &x, &y);
 		printf("Click at ( %d, %d )\n", x, y);
 	}
+	if (mouse_code == SCROLL_UP && scene->camera->fov < M_PI)
+	{
+		printf("FOV\n");
+		scene->camera->fov += 0.01;
+		update_camera(scene, FOV);
+	}
+	if (mouse_code == SCROLL_DOWN && scene->camera->fov > 0.0)
+	{
+		printf("FOV\n");
+		scene->camera->fov -= 0.01;
+		update_camera(scene, FOV);
+	}
+	print_window(scene);
 	return (0);
 }
