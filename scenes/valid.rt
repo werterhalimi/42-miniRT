@@ -1,25 +1,25 @@
 # valid.rt
 
 # Object            | Coordinates      | Orientation | Info 1          | Info 2          | Color
-#                   | x,y,z as         | x,y,z in    |                 |                 | R,G,B in
-#                   | positive doubles | [-1.0; 1.0] |                 |                 | {0; ...; 255}
+#                   | x,y,z as doubles | x,y,z in    |                 |                 | R,G,B in
+#                   |                  | [-1.0; 1.0] |                 |                 | {0; ...; 255}
 # Mandatory objects |                  |             |                 |                 |
 # Ambient light     |                  |             | Ratio in        |                 |
 #                   |                  |             | [0.0; 1.0]      |                 |
   A                                                    0.2                                 255,255,255
 # Camera            |                  |             | FOV in          |                 |
 #                   |                  |             | [0.0; 180.0]    |                 |
-  C                   -50,1,20           1.0,0,0       70
+  C                   0.0,0.0,0.0        1.0,0.0,0.0   90.0
 # Main light        |                  |             | Ratio in        |                 |
 #                   |                  |             | [0.0; 1.0]      |                 |
-  L                   -40,0,30                         0.7                                 255,255,255
+  L                   -5.0,0.0,5.0                     0.7                                 255,255,255
 
 # Optional objects  |                  |             |                 |                 |
 # Plane             |                  |             |                 |                 |
-  pl                  0,0,0              0,1.0,0                                           255,0,225
+  pl                  0.0,0.0,-1.0       0.0,0.0,1.0                                       255,0,225
 # Sphere            |                  |             | Diameter as     |                 |
 #                   |                  |             | positive double |                 |
-  sp                  0,0,20                           20                                  255,0,0
+  sp                  1.0,1.0,0.0                      0.5                                255,0,0
 # Cylinder          |                  |             | Diameter as     | Height as       |
 #                   |                  |             | positive double | positive double |
-  cy                  50.0,0.0,20.6      0,0,1.0       14.2              21.42             10,0,255
+  cy                  1.0,0.0,0.0        0.0,0.0,1.0   0.2               0.4               10,0,255

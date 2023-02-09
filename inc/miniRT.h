@@ -46,14 +46,23 @@
 
 /* Error/return codes */
 
-# define SUCCESS	0
-# define ERROR		1
-# define ERROR_NEG	-1
+# define SUCCESS		0
+# define ERROR			1
+# define ERROR_NEG		-1
 
 /* Bool codes */
 
-# define NO			0
-# define YES		1
+# define NO				0
+# define YES			1
+
+/* Camera modes */
+
+# define ALL			0
+# define FOV			1
+# define ROTATION_PITCH	2
+# define ROTATION_YAW	3
+# define ROTATION_ROLL	4
+# define TRANSLATION	5
 
 /* Number of objects */
 
@@ -89,27 +98,134 @@ enum {
 
 /// @brief Keyboard buttons
 enum {
-	KEY_ESC = 53,
-	KEY_SPACE = 49,
-	KEY_LEFT = 123,
-	KEY_RIGHT = 124,
-	KEY_DOWN = 125,
-	KEY_UP = 126,
-	KEY_PLUS = 69,
-	KEY_MINUS = 78,
-	KEY_LEFT_SHIFT = 57,
-	KEY_K = 40,
-	KEY_R = 15,
-	KEY_G = 5,
-	KEY_B = 11,
-	KEY_Y = 16,
-	KEY_C = 8,
-	KEY_M = 46,
-	KEY_D = 2,
-	KEY_W = 13,
-	KEY_S = 1,
-	KEY_PAGE_UP = 116,
-	KEY_PAGE_DOWN = 121
+	KEY_A,
+	KEY_S,
+	KEY_D,
+	KEY_F,
+	KEY_H,
+	KEY_G,
+	KEY_Z,
+	KEY_X,
+	KEY_C,
+	KEY_V,
+	UNKNOWN_10_,
+	KEY_B,
+	KEY_Q,
+	KEY_W,
+	KEY_E,
+	KEY_R,
+	KEY_Y,
+	KEY_T,
+	KEY_1,
+	KEY_2,
+	KEY_3,
+	KEY_4,
+	KEY_6,
+	KEY_5,
+	KEY_EQUAL,
+	KEY_9,
+	KEY_7,
+	KEY_MINUS,
+	KEY_8,
+	KEY_0,
+	KEY_CLOSE_SQUARE_BRACKET,
+	KEY_O,
+	KEY_U,
+	KEY_OPEN_SQUARE_BRACKET,
+	KEY_I,
+	KEY_P,
+	KEY_RETURN,
+	KEY_L,
+	KEY_J,
+	KEY_APOSTROPHE,
+	KEY_K,
+	KEY_SEMICOLON,
+	KEY_BACKSLASH,
+	KEY_COMMA,
+	KEY_SLASH,
+	KEY_N,
+	KEY_M,
+	KEY_PERIOD,
+	KEY_TAB,
+	KEY_SPACE,
+	KEY_BACKTICK,
+	KEY_DELETE,
+	UNKNOWN_52_,
+	KEY_ESC,
+	UNKNOWN_54_,
+	KEY_CMD,
+	UNKNOWN_56_,
+	KEY_LEFT_SHIFT,
+	KEY_LEFT_ALT,
+	KEY_LEFT_CTRL,
+	KEY_RIGHT_SHIFT,
+	KEY_RIGHT_ALT,
+	KEY_RIGHT_CTRL,
+	KEY_FN,
+	KEY_F17,
+	NUMPAD_DOT,
+	UNKNOWN_66_,
+	NUMPAD_ASTERISK,
+	UNKNOWN_68_,
+	NUMPAD_PLUS,
+	UNKNOWN_70_,
+	NUMPAD_CLEAR,
+	UNKNOWN_72_,
+	UNKNOWN_73_,
+	UNKNOWN_74_,
+	NUMPAD_SLASH,
+	NUMPAD_ENTER,
+	UNKNOWN_77_,
+	NUMPAD_MINUS,
+	KEY_F18,
+	KEY_F19,
+	NUMPAD_EQUAL,
+	NUMPAD_0,
+	NUMPAD_1,
+	NUMPAD_2,
+	NUMPAD_3,
+	NUMPAD_4,
+	NUMPAD_5,
+	NUMPAD_6,
+	NUMPAD_7,
+	KEY_F20,
+	NUMPAD_8,
+	NUMPAD_9,
+	UNKNOWN_93_,
+	UNKNOWN_94_,
+	UNKNOWN_95_,
+	KEY_F5,
+	KEY_F6,
+	KEY_F7,
+	KEY_F3,
+	KEY_F8,
+	KEY_F9,
+	UNKNOWN_102_,
+	KEY_F11,
+	UNKNOWN_104_,
+	KEY_F13,
+	KEY_F16,
+	KEY_F14,
+	UNKNOWN_108_,
+	KEY_F10,
+	UNKNOWN_110_,
+	KEY_F12,
+	UNKNOWN_112_,
+	KEY_F15,
+	UNKNOWN_114_,
+	KEY_HOME,
+	KEY_PAGE_UP,
+	UNKNOWN_117_,
+	KEY_F4,
+	KEY_END,
+	KEY_F2,
+	KEY_PAGE_DOWN,
+	KEY_F1,
+	KEY_LEFT,
+	KEY_RIGHT,
+	KEY_DOWN,
+	KEY_UP,
+	UNKNOWN_127_,
 };
 
 /* Structures */
@@ -263,6 +379,8 @@ double			norm_square(t_point vector);
 t_point			unit_vector(t_point vector);
 
 /* objects */
+
+void			update_camera(t_scene *scene, char mode);
 
 void			update_light(t_scene *scene, void *object);
 
