@@ -15,22 +15,20 @@
 static int	parse_fov(double *fov, char *item)
 {
 	if (!item)
-		return (print_error(ERROR, "A FOV is missing"));
+		return (print_error(ERROR, "A CAMERA_FOV is missing"));
 	if (str_to_double(item, fov, YES))
 		return (print_error(ERROR, \
-			"Invalid FOV format. Required: one double"));
+			"Invalid CAMERA_FOV format. Required: one double"));
 	if (*fov < 0.0 || 180.0 < *fov)
 		return (print_error(ERROR, \
-			"The FOV must be included in [0.0; 180.0]"));
+			"The CAMERA_FOV must be included in [0.0; 180.0]"));
 	return (SUCCESS);
 }
 
-static void	info_camera(t_scene *scene)
+static void	info_camera(t_camera *camera)
 {
-	t_camera	*camera;
 	t_point		tmp;
 
-	camera = scene->camera;
 	camera->fov = camera->fov * M_PI / 180.0;
 	tmp = camera->front;
 	if (tmp.x || tmp.y)
@@ -40,7 +38,6 @@ static void	info_camera(t_scene *scene)
 	else
 		tmp.x += 1.0;
 	camera->right = unit_vector(cross_product(camera->front, tmp));
-	update_camera(scene, ALL);
 }
 
 int	parse_camera(t_scene *scene, t_list *current, t_objects *object)
@@ -67,7 +64,7 @@ int	parse_camera(t_scene *scene, t_list *current, t_objects *object)
 		return (ERROR);
 	if (next_item(item))
 		return (print_error(ERROR, "Too many items for camera"));
+	info_camera(camera);
 	scene->camera = camera;
-	info_camera(scene);
 	return (SUCCESS);
 }

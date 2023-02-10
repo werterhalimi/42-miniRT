@@ -48,6 +48,7 @@ int	parse_light(t_scene *scene, t_list *current, t_objects *object)
 	object->get_color = &get_color_light;
 	object->intersect = &intersect_light;
 	object->update = &update_light;
+	object->translation_absolute = &translation_absolute_light;
 	object->type = MAIN_LIGHT;
 	return (SUCCESS);
 }

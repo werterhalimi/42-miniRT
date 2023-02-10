@@ -51,5 +51,9 @@ int	parse_cylinder(t_scene *scene, t_list *current, t_objects *object)
 	object->get_color = &get_color_cylinder;
 	object->intersect = &intersect_cylinder;
 	object->update = &update_cylinder;
+	object->translation_relative = &translation_relative_cylinder;
+	object->rotation_relative = &rotation_relative_cylinder;
+	object->translation_absolute = &translation_absolute_cylinder;
+	object->rotation_absolute = &rotation_absolute_cylinder;
 	return (SUCCESS);
 }

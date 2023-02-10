@@ -15,6 +15,7 @@
 
 # include "../libft/libft.h"
 # include "../mlx/mlx.h"
+# include "hooks.h"
 # include <stdlib.h>
 # include <unistd.h>
 # include <stdio.h>
@@ -26,47 +27,80 @@
 
 /* Color codes */
 
-# define RESET_COLOR		"\033[0m"
-# define BLACK				"\033[0m\033[30m"
-# define RED				"\033[0m\033[31m"
-# define GREEN				"\033[0m\033[32m"
-# define YELLOW				"\033[0m\033[33m"
-# define BLUE				"\033[0m\033[34m"
-# define MAGENTA			"\033[0m\033[35m"
-# define CYAN				"\033[0m\033[36m"
-# define WHITE				"\033[0m\033[37m"
-# define BOLD_BLACK			"\033[1m\033[30m"
-# define BOLD_RED			"\033[1m\033[31m"
-# define BOLD_GREEN			"\033[1m\033[32m"
-# define BOLD_YELLOW		"\033[1m\033[33m"
-# define BOLD_BLUE			"\033[1m\033[34m"
-# define BOLD_MAGENTA		"\033[1m\033[35m"
-# define BOLD_CYAN			"\033[1m\033[36m"
-# define BOLD_WHITE			"\033[1m\033[37m"
+# define RESET_COLOR			"\033[0m"
+# define BLACK					"\033[0m\033[30m"
+# define RED					"\033[0m\033[31m"
+# define GREEN					"\033[0m\033[32m"
+# define YELLOW					"\033[0m\033[33m"
+# define BLUE					"\033[0m\033[34m"
+# define MAGENTA				"\033[0m\033[35m"
+# define CYAN					"\033[0m\033[36m"
+# define WHITE					"\033[0m\033[37m"
+# define BOLD_BLACK				"\033[1m\033[30m"
+# define BOLD_RED				"\033[1m\033[31m"
+# define BOLD_GREEN				"\033[1m\033[32m"
+# define BOLD_YELLOW			"\033[1m\033[33m"
+# define BOLD_BLUE				"\033[1m\033[34m"
+# define BOLD_MAGENTA			"\033[1m\033[35m"
+# define BOLD_CYAN				"\033[1m\033[36m"
+# define BOLD_WHITE				"\033[1m\033[37m"
 
 /* Error/return codes */
 
-# define SUCCESS		0
-# define ERROR			1
-# define ERROR_NEG		-1
+# define SUCCESS				0
+# define ERROR					1
+# define ERROR_NEG				-1
 
 /* Bool codes */
 
-# define NO				0
-# define YES			1
+# define NO						0
+# define YES					1
 
-/* Camera modes */
+/* Move modes */
 
-# define ALL			0
-# define FOV			1
-# define ROTATION_PITCH	2
-# define ROTATION_YAW	3
-# define ROTATION_ROLL	4
-# define TRANSLATION	5
+# define RELATIVE				0
+# define ABSOLUTE				1
+
+/* Updates flags */
+
+# define UPDATE_NONE			0x00000000
+
+# define CAMERA_TRANSLATION		0x00000001
+# define CAMERA_PITCH			0x00000002
+# define CAMERA_YAW				0x00000004
+# define CAMERA_ROLL			0x00000008
+# define CAMERA_FOV				0x00000010
+# define CAMERA_ALL				0x0000001F
+
+# define LIGHT_TRANSLATION		0x00000100
+
+# define PLANE_TRANSLATION		0x00001000
+# define PLANE_ROTATION			0x00002000
+# define PLANE_ALL				0x00003000
+
+# define SPHERE_TRANSLATION		0x00010000
+# define SPHERE_RADIUS			0x00020000
+# define SPHERE_ALL				0x00030000
+
+# define CYLINDER_TRANSLATION	0x00100000
+# define CYLINDER_ROTATION		0x00200000
+# define CYLINDER_RADIUS		0x00400000
+# define CYLINDER_HEIGHT		0x00800000
+# define CYLINDER_ALL			0x00F00000
+
+# define UPDATE_ALL				0xFFFFFFFF
 
 /* Number of objects */
 
-# define NB_OBJECTS	6
+# define NB_OBJECTS				6
+
+/* Translation & rotation factors */
+
+# define TRANSLATION_FACTOR		0.05
+# define ROTATION_FACTOR		0.05
+# define FOV_FACTOR				0.05
+# define RADIUS_FACTOR			0.05
+# define HEIGHT_FACTOR			0.05
 
 /* Objects */
 enum {
@@ -74,158 +108,6 @@ enum {
 	SPHERE = 1,
 	PLANE = 2,
 	CYLINDER = 3
-};
-
-/// @brief Hooks
-enum {
-	ON_KEYDOWN = 2,
-	ON_KEYUP = 3,
-	ON_MOUSEDOWN = 4,
-	ON_MOUSEUP = 5,
-	ON_MOUSEMOVE = 6,
-	ON_EXPOSE = 12,
-	ON_DESTROY = 17
-};
-
-/// @brief Mouse buttons
-enum {
-	LEFT_CLICK = 1,
-	RIGHT_CLICK = 2,
-	MIDDLE_CLICK = 3,
-	SCROLL_UP = 4,
-	SCROLL_DOWN = 5
-};
-
-/// @brief Keyboard buttons
-enum {
-	KEY_A,
-	KEY_S,
-	KEY_D,
-	KEY_F,
-	KEY_H,
-	KEY_G,
-	KEY_Z,
-	KEY_X,
-	KEY_C,
-	KEY_V,
-	UNKNOWN_10_,
-	KEY_B,
-	KEY_Q,
-	KEY_W,
-	KEY_E,
-	KEY_R,
-	KEY_Y,
-	KEY_T,
-	KEY_1,
-	KEY_2,
-	KEY_3,
-	KEY_4,
-	KEY_6,
-	KEY_5,
-	KEY_EQUAL,
-	KEY_9,
-	KEY_7,
-	KEY_MINUS,
-	KEY_8,
-	KEY_0,
-	KEY_CLOSE_SQUARE_BRACKET,
-	KEY_O,
-	KEY_U,
-	KEY_OPEN_SQUARE_BRACKET,
-	KEY_I,
-	KEY_P,
-	KEY_RETURN,
-	KEY_L,
-	KEY_J,
-	KEY_APOSTROPHE,
-	KEY_K,
-	KEY_SEMICOLON,
-	KEY_BACKSLASH,
-	KEY_COMMA,
-	KEY_SLASH,
-	KEY_N,
-	KEY_M,
-	KEY_PERIOD,
-	KEY_TAB,
-	KEY_SPACE,
-	KEY_BACKTICK,
-	KEY_DELETE,
-	UNKNOWN_52_,
-	KEY_ESC,
-	UNKNOWN_54_,
-	KEY_CMD,
-	UNKNOWN_56_,
-	KEY_LEFT_SHIFT,
-	KEY_LEFT_ALT,
-	KEY_LEFT_CTRL,
-	KEY_RIGHT_SHIFT,
-	KEY_RIGHT_ALT,
-	KEY_RIGHT_CTRL,
-	KEY_FN,
-	KEY_F17,
-	NUMPAD_DOT,
-	UNKNOWN_66_,
-	NUMPAD_ASTERISK,
-	UNKNOWN_68_,
-	NUMPAD_PLUS,
-	UNKNOWN_70_,
-	NUMPAD_CLEAR,
-	UNKNOWN_72_,
-	UNKNOWN_73_,
-	UNKNOWN_74_,
-	NUMPAD_SLASH,
-	NUMPAD_ENTER,
-	UNKNOWN_77_,
-	NUMPAD_MINUS,
-	KEY_F18,
-	KEY_F19,
-	NUMPAD_EQUAL,
-	NUMPAD_0,
-	NUMPAD_1,
-	NUMPAD_2,
-	NUMPAD_3,
-	NUMPAD_4,
-	NUMPAD_5,
-	NUMPAD_6,
-	NUMPAD_7,
-	KEY_F20,
-	NUMPAD_8,
-	NUMPAD_9,
-	UNKNOWN_93_,
-	UNKNOWN_94_,
-	UNKNOWN_95_,
-	KEY_F5,
-	KEY_F6,
-	KEY_F7,
-	KEY_F3,
-	KEY_F8,
-	KEY_F9,
-	UNKNOWN_102_,
-	KEY_F11,
-	UNKNOWN_104_,
-	KEY_F13,
-	KEY_F16,
-	KEY_F14,
-	UNKNOWN_108_,
-	KEY_F10,
-	UNKNOWN_110_,
-	KEY_F12,
-	UNKNOWN_112_,
-	KEY_F15,
-	UNKNOWN_114_,
-	KEY_HOME,
-	KEY_PAGE_UP,
-	UNKNOWN_117_,
-	KEY_F4,
-	KEY_END,
-	KEY_F2,
-	KEY_PAGE_DOWN,
-	KEY_F1,
-	KEY_LEFT,
-	KEY_RIGHT,
-	KEY_DOWN,
-	KEY_UP,
-	UNKNOWN_127_,
 };
 
 /* Structures */
@@ -238,6 +120,13 @@ typedef struct s_point
 	double	y;
 	double	z;
 }	t_point;
+
+typedef struct s_matrix
+{
+	t_point	a;
+	t_point	b;
+	t_point	c;
+}	t_matrix;
 
 typedef struct s_color
 {
@@ -316,7 +205,11 @@ typedef struct s_objects
 	void			*object;
 	unsigned int	(*get_color)(struct s_scene *, void *);
 	double			(*intersect)(t_point, void *);
-	void			(*update)(struct s_scene *, void *);
+	void			(*update)(struct s_scene *, void *, unsigned int);
+	void			(*translation_relative)(int, struct s_scene *);
+	void			(*rotation_relative)(int, struct s_scene *);
+	void			(*translation_absolute)(struct s_scene *, t_point);
+	void			(*rotation_absolute)(struct s_scene *, t_matrix);
 	int				type;
 }	t_objects;
 
@@ -336,15 +229,14 @@ typedef struct s_scene
 	int			endian;
 	int			width;
 	int			height;
+	int			index;
+	int			nb_objects;
+	int 		mode;
 }	t_scene;
 
 /* utils */
 
 void			quit(t_scene *scene);
-
-int				key_hook(int key_code, t_scene *scene);
-
-int				mouse_hook(int mouse_code, int x, int y, t_scene *scene);
 
 int				print_error(int error_code, char *error_msg);
 
@@ -355,6 +247,12 @@ double			inv_sqrt(double d);
 double			quad_solv(double a, double b, double c, double *x);
 
 int				str_to_double(char *str, double *d, int last);
+
+double			cos_rot(void);
+
+double			sin_rot(void);
+
+double			n_sin_rot(void);
 
 //double		dist_op(t_point o, t_point p);
 
@@ -378,11 +276,25 @@ double			norm_square(t_point vector);
 
 t_point			unit_vector(t_point vector);
 
+t_matrix		new_matrix(t_point a, t_point b, t_point c);
+
+t_point			matrix_vector_multi(t_matrix matrix, t_point vector);
+
 /* objects */
 
-void			update_camera(t_scene *scene, char mode);
+void			translation_relative_camera(int key_code, t_scene *scene);
 
-void			update_light(t_scene *scene, void *object);
+void			rotation_relative_camera(int key_code, t_scene *scene);
+
+void			translation_absolute_camera(t_scene *scene, t_point vector);
+
+void			rotation_absolute_camera(t_scene *scene, t_matrix matrix);
+
+void			update_camera(t_scene *scene, unsigned int flags);
+
+void			translation_absolute_light(t_scene *scene, t_point vector);
+
+void			update_light(t_scene *scene, void *object, unsigned int flags);
 
 double			intersect_light(t_point ray, void *object);
 
@@ -390,7 +302,9 @@ unsigned int	get_color_light(t_scene *scene, void *object);
 
 int				is_sphere(t_point point, t_sphere sphere);
 
-void			update_sphere(t_scene *scene, void *object);
+void			update_sphere(t_scene *scene, void *object, unsigned int flags);
+
+void			translation_absolute_sphere(t_scene *scene, t_point vector);
 
 double			intersect_sphere(t_point ray, void *object);
 
@@ -398,7 +312,15 @@ unsigned int	get_color_sphere(t_scene *scene, void *object);
 
 int				is_plane(t_point point, t_plane plane);
 
-void			update_plane(t_scene *scene, void *object);
+void			update_plane(t_scene *scene, void *object, unsigned int flags);
+
+void			translation_relative_plane(int key_code, t_scene *scene);
+
+void			rotation_relative_plane(int key_code, t_scene *scene);
+
+void			translation_absolute_plane(t_scene *scene, t_point vector);
+
+void			rotation_absolute_plane(t_scene *scene, t_matrix matrix);
 
 double			intersect_plane(t_point ray, void *object);
 
@@ -406,7 +328,16 @@ unsigned int	get_color_plane(t_scene *scene, void *object);
 
 int				is_cylinder(t_point point, t_cylinder cylinder);
 
-void			update_cylinder(t_scene *scene, void *object);
+void			update_cylinder(t_scene *scene, \
+					void *object, unsigned int flags);
+
+void			translation_relative_cylinder(int key_code, t_scene *scene);
+
+void			rotation_relative_cylinder(int key_code, t_scene *scene);
+
+void			translation_absolute_cylinder(t_scene *scene, t_point vector);
+
+void			rotation_absolute_cylinder(t_scene *scene, t_matrix matrix);
 
 double			intersect_cylinder(t_point ray, void *object);
 
@@ -427,9 +358,23 @@ unsigned char	color_get_g(unsigned int trgb);
 
 unsigned char	color_get_b(unsigned int trgb);
 
+void			update_scene(t_scene *scene, unsigned int flags);
+
 void			put_pixel(t_scene *scene, int x, int y, unsigned int color);
 
+double			find_intersect(t_scene *scene, t_point ray, int *index);
+
 int				print_window(t_scene *scene);
+
+/* hooks */
+
+int				is_key_translation(int key_code);
+
+int				is_key_rotation(int key_code);
+
+int				key_hook(int key_code, t_scene *scene);
+
+int				mouse_hook(int mouse_code, int x, int y, t_scene *scene);
 
 /* init */
 

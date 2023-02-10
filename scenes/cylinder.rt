@@ -7,14 +7,14 @@
 # Ambient light     |                  |             | Ratio in        |                 |
 #                   |                  |             | [0.0; 1.0]      |                 |
   A                                                    0.2                                 255,255,255
-# Camera            |                  |             | FOV in          |                 |
+# Camera            |                  |             | CAMERA_FOV in          |                 |
 #                   |                  |             | [0.0; 180.0]    |                 |
   C                   0,0,0              1.0,0,0       70
 # Main light        |                  |             | Ratio in        |                 |
 #                   |                  |             | [0.0; 1.0]      |                 |
-  L                   -40,0,30                         0.7                                 255,255,255
+  L                   12,0,0                         0.7                                 255,255,255
 
 # Optional objects  |                  |             |                 |                 |
 # Cylinder          |                  |             | Diameter as     | Height as       |
 #                   |                  |             | positive double | positive double |
-  cy                  50.0,0.0,0.0       0,0,1.0       15                15             10,0,255
+  cy                  10.0,0.0,0.0       1.0,0,0.0       3                5             10,0,255

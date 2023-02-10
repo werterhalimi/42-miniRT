@@ -12,26 +12,14 @@
 
 #include "miniRT.h"
 
-static void	update_objects(t_scene *scene)
+double	find_intersect(t_scene *scene, t_point ray, int *index)
 {
-	int	i;
-
-	i = -1;
-	while ((scene->objects)[++i])
-		(scene->objects)[i]->update(scene, (scene->objects)[i]->object);
-}
-
-static unsigned int	find_color_pixel(t_scene *scene, t_point ray)
-{
-	unsigned int	color;
 	double			first_intersect;
-	t_objects       *obj;
 	double			tmp;
 	int				i;
 
 	i = -1;
-	obj = 0;
-	color = 0;
+	*index = 0;
 	first_intersect = INFINITY;
 	while ((scene->objects)[++i])
 	{
@@ -40,11 +28,24 @@ static unsigned int	find_color_pixel(t_scene *scene, t_point ray)
 		if (!isinf(tmp) && tmp < first_intersect)
 		{
 			first_intersect = tmp;
-			obj = (scene->objects)[i];
-			color = ((scene->objects)[i])->get_color(scene, \
-				((scene->objects)[i])->object);
+			*index = i + 1;
 		}
 	}
+	return (first_intersect);
+}
+
+static unsigned int	find_color_pixel(t_scene *scene, t_point ray)
+{
+	unsigned int	color;
+	double			first_intersect;
+	t_objects       *obj;
+	int				i;
+
+	first_intersect = find_intersect(scene, ray, &i);
+	if (!i--)
+		return (0);
+	obj = (scene->objects)[i];
+	color = obj->get_color(scene, obj->object);
     if (obj && obj->type == SPHERE)
     {
         t_sphere *sphere = ((t_sphere *)obj->object);
@@ -113,7 +114,6 @@ int	print_window(t_scene *scene)
 
 	x = -1;
 	tmp = scene->window_corner;
-	update_objects(scene);
 	while (++x < scene->width)
 	{
 		y = -1;

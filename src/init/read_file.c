@@ -84,5 +84,5 @@ int	read_file(int argc, char **argv, t_list **objects)
 			return (quit_read(ERROR_NEG, fd, 0));
 		line = get_next_line(fd);
 	}
-	return (quit_read(SUCCESS, fd, size));
+	return (quit_read(SUCCESS, fd, size - 2));
 }

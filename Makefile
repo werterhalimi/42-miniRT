@@ -10,13 +10,15 @@
 #                                                                              #
 # **************************************************************************** #
 
-SRCS_FILES		:=	utils/error.c		utils/hook.c		utils/quit.c \
+SRCS_FILES		:=	utils/error.c		utils/quit.c \
 					maths/point.c		maths/vector.c		maths/quad_solv.c \
-					maths/quake.c		maths/str_to_double.c \
+					maths/matrix.c		maths/quake.c		maths/str_to_double.c \
+					maths/trigo.c \
 					objects/camera.c	objects/light.c		objects/amb_light.c \
 					objects/plane.c		objects/sphere.c	objects/cylinder.c \
-					print/color_trgb.c	print/put_pixel.c	print/get_color.c \
-					print/print_window.c \
+					print/color_trgb.c	print/put_pixel.c	print/update_scene.c \
+					print/get_color.c	print/print_window.c \
+					hooks/is_key.c		hooks/mouse_hook.c	hooks/key_hook.c \
 					init/next_item.c	init/parse_color.c	init/parse_coord.c \
 					init/parse_vector.c	init/parse_light.c	init/parse_amb_light.c \
 					init/parse_camera.c	init/parse_ratio.c	init/parse_length.c \
@@ -24,33 +26,33 @@ SRCS_FILES		:=	utils/error.c		utils/hook.c		utils/quit.c \
 					init/read_file.c	init/init.c \
 					main.c
 
-SRCS_DIR		:= ./src/
-SRCS			:= $(addprefix $(SRCS_DIR),$(SRCS_FILES))
+SRCS_DIR		:=	./src/
+SRCS			:=	$(addprefix $(SRCS_DIR),$(SRCS_FILES))
 
-OBJS_FILES		:= $(SRCS_FILES:.c=.o)
-OBJS_DIR		:= ./bin/
+OBJS_FILES		:=	$(SRCS_FILES:.c=.o)
+OBJS_DIR		:=	./bin/
 OBJS_SUB_DIR	:= 	$(OBJS_DIR)objects	$(OBJS_DIR)maths	$(OBJS_DIR)init \
-					$(OBJS_DIR)utils	$(OBJS_DIR)print
-OBJS			:= $(addprefix $(OBJS_DIR),$(OBJS_FILES))
+					$(OBJS_DIR)utils	$(OBJS_DIR)print	$(OBJS_DIR)hooks
+OBJS			:=	$(addprefix $(OBJS_DIR),$(OBJS_FILES))
 
-LIBFT_DIR		:= ./libft/
-LIBFT			:= -L $(LIBFT_DIR) -lft
+LIBFT_DIR		:=	./libft/
+LIBFT			:=	-L $(LIBFT_DIR) -lft
 
-MINILIBX_DIR	:= ./mlx/
-MINILIBX		:= -L $(MINILIBX_DIR) -lmlx -framework OpenGL -framework AppKit
+MINILIBX_DIR	:=	./mlx/
+MINILIBX		:=	-L $(MINILIBX_DIR) -lmlx -framework OpenGL -framework AppKit
 
-INC_DIR			:= ./inc/
-INC				:= miniRT.h
-HEADERS 		:= $(addprefix $(INC_DIR),$(INC))
+INC_DIR			:=	./inc/
+INC				:=	miniRT.h	hooks.h
+HEADERS 		:=	$(addprefix $(INC_DIR),$(INC))
 
-CC				:= @gcc
-CFLAGS			:= -g -Wall -Wextra -Werror -I $(INC_DIR)
-DEBUG			:= -g3 -fsanitize=undefined
+CC				:=	@gcc
+CFLAGS			:=	-g -Wall -Wextra -Werror -I $(INC_DIR)
+DEBUG			:=	-g3 -fsanitize=undefined
 
-RM				:= @rm -f
-UNIT			:= ""
-TMP				:= .tmp.txt
-NAME			:= miniRT
+RM				:=	@rm -f
+UNIT			:=	""
+TMP				:=	.tmp.txt
+NAME			:=	miniRT
 
 
 RESET_COLOR		:=	"\033[0m"

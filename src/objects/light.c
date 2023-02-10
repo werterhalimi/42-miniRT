@@ -12,10 +12,12 @@
 
 #include "miniRT.h"
 
-void	update_light(t_scene *scene, void *object)
+void	update_light(t_scene *scene, void *object, unsigned int flags)
 {
 	t_light	*light;
 
+	if (!(flags & (CAMERA_TRANSLATION | LIGHT_TRANSLATION)))
+		return ;
 	light = (t_light *)object;
 	light->relative_coord = sub_vectors(light->coord, scene->camera->coord);
 }
@@ -31,6 +33,12 @@ double	intersect_light(t_point ray, void *object)
 		light->relative_coord)) && t >= 0.0)
 		return (t);
 	return (INFINITY);
+}
+
+void	translation_absolute_light(t_scene *scene, t_point vector)
+{
+	scene->light->coord = add_vectors(scene->light->coord, vector);
+	update_scene(scene, LIGHT_TRANSLATION);
 }
 
 unsigned int	get_color_light(t_scene *scene, void *object)

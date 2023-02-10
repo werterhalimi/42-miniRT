@@ -20,14 +20,16 @@ int	is_sphere(t_point point, t_sphere sphere)
 	return (NO);
 }
 
-void	update_sphere(t_scene *scene, void *object)
+void	update_sphere(t_scene *scene, void *object, unsigned int flags)
 {
-	t_sphere	*sphere;
+	t_sphere	*sp;
 
-	sphere = (t_sphere *)object;
-	sphere->relative_coord = sub_vectors(scene->camera->coord, sphere->coord);
-	sphere->value = norm_square(sphere->relative_coord) \
-		- sphere->radius * sphere->radius;
+	if (!(flags & (CAMERA_TRANSLATION | SPHERE_ALL)))
+		return ;
+	sp = (t_sphere *)object;
+	if (flags & (CAMERA_TRANSLATION | SPHERE_TRANSLATION))
+		sp->relative_coord = sub_vectors(scene->camera->coord, sp->coord);
+	sp->value = norm_square(sp->relative_coord) - sp->radius * sp->radius;
 }
 
 double	intersect_sphere(t_point ray, void *object)
@@ -44,6 +46,15 @@ double	intersect_sphere(t_point ray, void *object)
 	if (!isnan(t2) && t2 >= 0.0)
 		return (t2);
 	return (INFINITY);
+}
+
+void	translation_absolute_sphere(t_scene *scene, t_point vector)
+{
+	t_sphere	*sphere;
+
+	sphere = (t_sphere *)(scene->objects[scene->index - 1]->object);
+	sphere->coord = add_vectors(sphere->coord, vector);
+	update_scene(scene, SPHERE_TRANSLATION);
 }
 
 unsigned int	get_color_sphere(t_scene *scene, void *object)

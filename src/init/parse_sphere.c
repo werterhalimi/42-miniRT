@@ -37,5 +37,6 @@ int	parse_sphere(t_scene *scene, t_list *current, t_objects *object)
 	object->get_color = &get_color_sphere;
 	object->intersect = &intersect_sphere;
 	object->update = &update_sphere;
+	object->translation_absolute = &translation_absolute_sphere;
 	return (SUCCESS);
 }

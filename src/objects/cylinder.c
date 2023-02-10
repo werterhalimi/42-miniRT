@@ -32,29 +32,49 @@ int	is_cylinder(t_point point, t_cylinder cylinder)
 	return (NO);
 }
 
-void	update_cylinder(t_scene *scene, void *object)
+static void	update_top_down(t_cylinder *cy, t_point eye, unsigned int flags)
 {
-	t_cylinder	*cy;
-	t_point		center_top;
-	t_point		center_down;
+	static t_point	center_top;
+	static t_point	center_down;
 
-	cy = (t_cylinder *)object;
-	cy->vector_semi_height = scalar_multi(cy->semi_height, cy->direction);
-	center_top = add_vectors(cy->coord, cy->vector_semi_height);
-	center_down = add_vectors(cy->coord, \
-		scalar_multi(-cy->semi_height, cy->direction));
-	cy->relative_center_top = sub_vectors(scene->camera->coord, center_top);
-	cy->relative_center_down = sub_vectors(scene->camera->coord, center_down);
-	cy->relative_coord = sub_vectors(scene->camera->coord, cy->coord);
+	if (flags & CYLINDER_ALL)
+	{
+		center_top = add_vectors(cy->coord, cy->vector_semi_height);
+		center_down = add_vectors(cy->coord, \
+			scalar_multi(-cy->semi_height, cy->direction));
+	}
 	cy->value_semi_height = dot_product(cy->relative_coord, \
 		cy->vector_semi_height);
-	cy->value = dot_product(cy->relative_coord, cy->direction);
-	cy->value_top = cy->semi_height + cy->value;
-	cy->value_down = -cy->semi_height + cy->value;
-	cy->radius_square = cy->radius * cy->radius;
-	cy->semi_height_square = cy->semi_height * cy->semi_height;
-	cy->value_quad = norm_square(cy->relative_coord) \
-		- cy->value * cy->value - cy->radius_square;
+	cy->relative_center_top = sub_vectors(center_top, eye);
+	cy->relative_center_down = sub_vectors(center_down, eye);
+	cy->value_top = dot_product(cy->relative_center_top, cy->direction);
+	cy->value_down = dot_product(cy->relative_center_down, cy->direction);
+}
+
+void	update_cylinder(t_scene *scene, void *object, unsigned int flags)
+{
+	t_cylinder	*cy;
+
+	if (!(flags & (CAMERA_TRANSLATION | CYLINDER_ALL)))
+		return ;
+	cy = (t_cylinder *)object;
+	if (flags & CYLINDER_RADIUS)
+		cy->radius_square = cy->radius * cy->radius;
+	if (flags & CYLINDER_HEIGHT)
+		cy->semi_height_square = cy->semi_height * cy->semi_height;
+	if (flags & (CYLINDER_HEIGHT | CYLINDER_ROTATION))
+		cy->vector_semi_height = scalar_multi(cy->semi_height, cy->direction);
+	if (flags & (CYLINDER_TRANSLATION | CAMERA_TRANSLATION))
+		cy->relative_coord = sub_vectors(scene->camera->coord, cy->coord);
+	if (flags & (CYLINDER_ROTATION | CYLINDER_TRANSLATION | CAMERA_TRANSLATION))
+		cy->value = dot_product(cy->relative_coord, cy->direction);
+	if (flags == UPDATE_ALL \
+		|| flags & ((CYLINDER_ALL & ~CYLINDER_RADIUS) | CAMERA_TRANSLATION))
+		update_top_down(cy, scene->camera->coord, flags);
+	if (flags == UPDATE_ALL \
+		|| flags & ((CYLINDER_ALL & ~CYLINDER_HEIGHT) | CAMERA_TRANSLATION))
+		cy->value_quad = norm_square(cy->relative_coord) \
+			- cy->value * cy->value - cy->radius_square;
 }
 
 static double	cylinder_end(t_cylinder *cylinder, t_point ray, double div)
@@ -64,10 +84,10 @@ static double	cylinder_end(t_cylinder *cylinder, t_point ray, double div)
 
 	t1 = cylinder->value_top / div;
 	t2 = cylinder->value_down / div;
-	if (norm_square(add_vectors(scalar_multi(t1, ray), \
+	if (norm_square(sub_vectors(scalar_multi(t1, ray), \
 		cylinder->relative_center_top)) > cylinder->radius_square)
 		t1 = INFINITY;
-	if (norm_square(add_vectors(scalar_multi(t2, ray), \
+	if (norm_square(sub_vectors(scalar_multi(t2, ray), \
 		cylinder->relative_center_down)) > cylinder->radius_square)
 		t2 = INFINITY;
 	if (isfinite(t1) && t1 >= 0.0 && t1 < t2)
@@ -123,6 +143,44 @@ double	intersect_cylinder(t_point ray, void *object)
 	if (isfinite(t2) && t2 >= 0.0)
 		return (t2);
 	return (INFINITY);
+}
+
+void	translation_relative_cylinder(int key_code, t_scene *scene)
+{
+	t_point		vector;
+	t_cylinder	*cylinder;
+
+	cylinder = (t_cylinder *)(scene->objects[scene->index - 1]->object);
+	vector = new_point(0.0, 0.0, 0.0);
+	if (key_code == KEY_W)
+		vector = scalar_multi(TRANSLATION_FACTOR, cylinder->direction);
+	else if (key_code == KEY_S)
+		vector = scalar_multi(-TRANSLATION_FACTOR, cylinder->direction);
+	cylinder->coord = add_vectors(cylinder->coord, vector);
+	update_scene(scene, PLANE_TRANSLATION);
+}
+
+void	rotation_relative_cylinder(int key_code, t_scene *scene)
+{
+	(void) key_code;
+	(void) scene;
+}
+
+void	translation_absolute_cylinder(t_scene *scene, t_point vector)
+{
+	t_cylinder	*cylinder;
+
+	cylinder = (t_cylinder *)(scene->objects[scene->index - 1]->object);
+	cylinder->coord = add_vectors(cylinder->coord, vector);
+	update_scene(scene, CYLINDER_TRANSLATION);
+}
+
+void	rotation_absolute_cylinder(t_scene *scene, t_matrix matrix)
+{
+	t_cylinder	*cylinder;
+	cylinder = (t_cylinder *)(scene->objects[scene->index - 1]->object);
+	cylinder->direction = matrix_vector_multi(matrix, cylinder->direction);
+	update_scene(scene, CYLINDER_ROTATION);
 }
 
 unsigned int	get_color_cylinder(t_scene *scene, void *object)

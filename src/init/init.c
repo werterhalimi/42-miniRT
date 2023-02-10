@@ -57,12 +57,12 @@ static int	parse_selector(t_scene *scene, t_list *current, char *obj_names[], \
 	return (print_error(ERROR, "Unknown object"));
 }
 
-static int	objects_parsing(t_scene *scene, t_list **list, int nb_objects)
+static int	objects_parsing(t_scene *scene, t_list **list)
 {
 	int		(*fct_array[NB_OBJECTS])(t_scene *, t_list *, t_objects *);
 	char	*obj_names[NB_OBJECTS];
 
-	scene->objects = ft_calloc(nb_objects - 1, sizeof (*(scene->objects)));
+	scene->objects = ft_calloc(scene->nb_objects + 1, sizeof (*(scene->objects)));
 	if (!(scene->objects))
 		return (print_error(ERROR, "Objects allocation failed"));
 	init_arrays(obj_names, fct_array);
@@ -105,18 +105,18 @@ static int	init_mlx(t_scene *scene)
 int	init(int argc, char **argv, t_scene **scene)
 {
 	t_list	*objects;
-	int		nb_objects;
 
 	objects = NULL;
 	*scene = ft_calloc(1, sizeof (**scene));
 	if (!(*scene))
 		return (print_error(ERROR, "Scene allocation failed"));
-	nb_objects = read_file(argc, argv, &objects);
-	if (nb_objects < 0)
+	(*scene)->nb_objects = read_file(argc, argv, &objects);
+	if ((*scene)->nb_objects < 0)
 		return (ERROR);
 	(*scene)->width = 1920;
 	(*scene)->height = 1080;
-	if (objects_parsing(*scene, &objects, nb_objects))
+	if (objects_parsing(*scene, &objects))
 		return (ERROR);
+	update_scene(*scene, UPDATE_ALL);
 	return (init_mlx(*scene));
 }

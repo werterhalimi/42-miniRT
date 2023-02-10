@@ -37,5 +37,9 @@ int	parse_plane(t_scene *scene, t_list *current, t_objects *object)
 	object->get_color = &get_color_plane;
 	object->intersect = &intersect_plane;
 	object->update = &update_plane;
+	object->translation_relative = &translation_relative_plane;
+	object->rotation_relative = &rotation_relative_plane;
+	object->translation_absolute = &translation_absolute_plane;
+	object->rotation_absolute = &rotation_absolute_plane;
 	return (SUCCESS);
 }
