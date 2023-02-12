@@ -19,7 +19,6 @@ void	quit(t_scene *scene)
 		mlx_destroy_image(scene->mlx, scene->image);
 	if (scene->window)
 		mlx_destroy_window(scene->mlx, scene->window);
-//	free(scene->mlx); // TODO ???
 	ft_flush();
 	exit(SUCCESS);
 }

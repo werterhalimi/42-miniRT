@@ -34,21 +34,21 @@ static void	update_radius(int mouse_code, t_scene *scene)
 
 	sphere = (t_sphere *)(scene->objects[scene->index - 1]->object);
 	if (mouse_code == SCROLL_UP)
-		sphere->radius += RADIUS_FACTOR;
-	else if (sphere->radius > RADIUS_FACTOR)
-		sphere->radius -= RADIUS_FACTOR;
+		sphere->radius *= (1 + RADIUS_FACTOR);
+	else if (sphere->radius > 0.0)
+		sphere->radius *= (1 - RADIUS_FACTOR);
 	update_scene(scene, SPHERE_RADIUS);
 }
 
 static void	update_height(int mouse_code, t_scene *scene)
 {
-	t_cylinder 	*cylinder;
+	t_cylinder	*cylinder;
 
 	cylinder = (t_cylinder *)(scene->objects[scene->index - 1]->object);
 	if (mouse_code == SCROLL_UP)
-		cylinder->semi_height += HEIGHT_FACTOR;
-	else if (cylinder->radius > HEIGHT_FACTOR)
-		cylinder->semi_height -= HEIGHT_FACTOR;
+		cylinder->semi_height *= (1 + HEIGHT_FACTOR);
+	else if (cylinder->radius > 0.0)
+		cylinder->semi_height *= (1 - HEIGHT_FACTOR);
 	update_scene(scene, CYLINDER_HEIGHT);
 }
 

@@ -1,23 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   light.c                                            :+:      :+:    :+:   */
+/*   translation_sphere.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ncotte <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/29 19:27:01 by ncotte            #+#    #+#             */
-/*   Updated: 2023/01/29 19:27:05 by ncotte           ###   ########.fr       */
+/*   Created: 2023/02/12 14:03:14 by ncotte            #+#    #+#             */
+/*   Updated: 2023/02/12 14:03:16 by ncotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
-void	update_light(t_scene *scene, void *object, unsigned int flags)
+void	translation_absolute_sphere(t_scene *scene, t_point vector)
 {
-	t_light	*light;
+	t_sphere	*sphere;
 
-	if (!(flags & (CAMERA_TRANSLATION | LIGHT_TRANSLATION)))
-		return ;
-	light = (t_light *)object;
-	light->relative_coord = sub_vectors(light->coord, scene->camera->coord);
+	sphere = (t_sphere *)(scene->objects[scene->index - 1]->object);
+	sphere->coord = add_vectors(sphere->coord, vector);
+	update_scene(scene, SPHERE_TRANSLATION);
 }

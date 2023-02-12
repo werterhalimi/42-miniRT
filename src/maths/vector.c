@@ -12,12 +12,6 @@
 
 #include "miniRT.h"
 
-//double	norm_vector(t_point normal)
-//{
-//	return (sqrt(normal.x * normal.x + normal.y * normal.y \
-//		+ normal.z * normal.z));
-//}
-
 t_point	cross_product(t_point v1, t_point v2)
 {
 	t_point	vector;
@@ -45,7 +39,7 @@ t_point	unit_vector(t_point vector)
 
 t_point	orthogonal_base(t_point vector, t_point *orthogonal)
 {
-	t_point tmp;
+	t_point	tmp;
 
 	tmp = vector;
 	if (tmp.x || tmp.y)

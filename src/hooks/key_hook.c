@@ -81,87 +81,11 @@ static void	print_info(t_scene *scene)
 			printf("x = %lf\n", cylinder->direction.x);
 			printf("y = %lf\n", cylinder->direction.y);
 			printf("z = %lf\n", cylinder->direction.z);
+			printf("Radius : %lf\n", cylinder->radius);
+			printf("Height : %lf\n", cylinder->semi_height);
 		}
 		printf("\n");
 	}
-}
-
-static t_point	vector_translation(int key_code)
-{
-	if (key_code == KEY_W)
-		return (new_point(TRANSLATION_FACTOR, 0.0, 0.0));
-	if (key_code == KEY_S)
-		return (new_point(-TRANSLATION_FACTOR, 0.0, 0.0));
-	if (key_code == KEY_A)
-		return (new_point(0.0, TRANSLATION_FACTOR, 0.0));
-	if (key_code == KEY_D)
-		return (new_point(0.0, -TRANSLATION_FACTOR, 0.0));
-	if (key_code == KEY_E)
-		return (new_point(0.0, 0.0, TRANSLATION_FACTOR));
-	return (new_point(0.0, 0.0, -TRANSLATION_FACTOR));
-}
-
-static t_matrix	matrix_rotation_absolute(int key_code)
-{
-	if (key_code == NUMPAD_8)
-		return (new_matrix(new_point(cos_rot(), 0.0, sin_rot()), \
-		new_point(0.0, 1.0, 0.0), \
-		new_point(n_sin_rot(), 0.0, cos_rot())));
-	if (key_code == NUMPAD_2)
-		return (new_matrix(new_point(cos_rot(), 0.0, n_sin_rot()), \
-		new_point(0.0, 1.0, 0.0), \
-		new_point(sin_rot(), 0.0, cos_rot())));
-	if (key_code == NUMPAD_4)
-		return (new_matrix(new_point(cos_rot(), n_sin_rot(), 0.0), \
-		new_point(sin_rot(), cos_rot(), 0.0), \
-		new_point(0.0, 0.0, 1.0)));
-	if (key_code == NUMPAD_6)
-		return (new_matrix(new_point(cos_rot(), sin_rot(), 0.0), \
-		new_point(n_sin_rot(), cos_rot(), 0.0), \
-		new_point(0.0, 0.0, 1.0)));
-	if (key_code == NUMPAD_7)
-		return (new_matrix(new_point(1.0, 0.0, 0.0), \
-			new_point(0.0, cos_rot(), sin_rot()), \
-			new_point(0.0, n_sin_rot(), cos_rot())));
-	return (new_matrix(new_point(1.0, 0.0, 0.0), \
-		new_point(0.0, cos_rot(), n_sin_rot()), \
-		new_point(0.0, sin_rot(), cos_rot())));
-}
-
-static void	translation(int key_code, t_scene *scene)
-{
-	t_point	vector;
-
-	if (scene->mode == ABSOLUTE)
-		vector = vector_translation(key_code);
-	if (!scene->index && scene->mode == RELATIVE)
-		translation_relative_camera(key_code, scene);
-	else if (!scene->index)
-		translation_absolute_camera(scene, vector);
-	else if (scene->mode == RELATIVE \
-		&& scene->objects[scene->index - 1]->translation_relative)
-		scene->objects[scene->index - 1]->translation_relative(key_code, scene);
-	else if (scene->mode == ABSOLUTE \
-		&& scene->objects[scene->index - 1]->translation_absolute)
-		scene->objects[scene->index - 1]->translation_absolute(scene, vector);
-}
-
-static void	rotation(int key_code, t_scene *scene)
-{
-	t_matrix	matrix;
-
-	if (scene->mode == ABSOLUTE)
-		matrix = matrix_rotation_absolute(key_code);
-	if (!scene->index && scene->mode == RELATIVE)
-		rotation_relative_camera(key_code, scene);
-	else if (!scene->index)
-		rotation_absolute_camera(scene, matrix);
-	else if (scene->mode == RELATIVE \
-		&& scene->objects[scene->index - 1]->rotation_relative)
-		scene->objects[scene->index - 1]->rotation_relative(key_code, scene);
-	else if (scene->mode == ABSOLUTE \
-		&& scene->objects[scene->index - 1]->rotation_absolute)
-		scene->objects[scene->index - 1]->rotation_absolute(scene, matrix);
 }
 
 static void	change_mode(t_scene *scene)
@@ -175,29 +99,29 @@ static void	change_mode(t_scene *scene)
 
 static void	update_radius(int key_code, t_scene *scene)
 {
-	t_cylinder 	*cylinder;
+	t_cylinder	*cylinder;
 
 	cylinder = (t_cylinder *)(scene->objects[scene->index - 1]->object);
 	if (key_code == NUMPAD_PLUS)
-		cylinder->radius += RADIUS_FACTOR;
-	else if (cylinder->radius > RADIUS_FACTOR)
-		cylinder->radius -= RADIUS_FACTOR;
+		cylinder->radius *= (1 + RADIUS_FACTOR);
+	else if (cylinder->radius > 0.0)
+		cylinder->radius *= (1 - RADIUS_FACTOR);
 	update_scene(scene, CYLINDER_RADIUS);
 }
 
 static void	update_numpad(int key_code, t_scene *scene)
 {
 	if (!scene->index && key_code == NUMPAD_PLUS \
-		&& scene->amb_light->ratio < 1 - LIGHT_RATIO_FACTOR)
+		&& scene->amb_light->ratio <= 1 - LIGHT_RATIO_FACTOR)
 		scene->amb_light->ratio += LIGHT_RATIO_FACTOR;
 	else if (!scene->index && key_code == NUMPAD_MINUS \
-		&& scene->amb_light->ratio > LIGHT_RATIO_FACTOR)
+		&& scene->amb_light->ratio >= LIGHT_RATIO_FACTOR)
 		scene->amb_light->ratio -= LIGHT_RATIO_FACTOR;
 	else if (scene->index == 1 && key_code == NUMPAD_PLUS \
-		&& scene->light->ratio < 1 - LIGHT_RATIO_FACTOR)
+		&& scene->light->ratio <= 1 - LIGHT_RATIO_FACTOR)
 		scene->light->ratio += LIGHT_RATIO_FACTOR;
 	else if (scene->index == 1 && key_code == NUMPAD_MINUS \
-		&& scene->light->ratio > LIGHT_RATIO_FACTOR)
+		&& scene->light->ratio >= LIGHT_RATIO_FACTOR)
 		scene->light->ratio -= LIGHT_RATIO_FACTOR;
 	else if (scene->index && scene->objects[scene->index - 1]->type == CYLINDER)
 		update_radius(key_code, scene);

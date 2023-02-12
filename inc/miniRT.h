@@ -175,8 +175,8 @@ typedef struct s_plane
 {
 	t_point	coord;
 	t_point	normal;
-	t_point right;
-	t_point down;
+	t_point	right;
+	t_point	down;
 	t_color	color;
 	double	value;
 }	t_plane;
@@ -189,8 +189,8 @@ typedef struct s_cylinder
 	t_point	vector_semi_height;
 	t_point	relative_center_top;
 	t_point	relative_center_down;
-	t_point right;
-	t_point down;
+	t_point	right;
+	t_point	down;
 	t_color	color;
 	double	radius;
 	double	radius_square;
@@ -234,7 +234,7 @@ typedef struct s_scene
 	int			height;
 	int			index;
 	int			nb_objects;
-	int 		mode;
+	int			mode;
 }	t_scene;
 
 /* utils */
@@ -287,70 +287,26 @@ t_matrix		new_matrix(t_point a, t_point b, t_point c);
 
 t_point			matrix_vector_multi(t_matrix matrix, t_point vector);
 
-t_matrix		matrix_rotation_relative(t_point vector, double s);
+t_matrix		matrix_rotation(t_point vector, double s);
 
 /* objects */
 
-void			translation_relative_camera(int key_code, t_scene *scene);
-
-void			rotation_relative_camera(int key_code, t_scene *scene);
-
-void			translation_absolute_camera(t_scene *scene, t_point vector);
-
-void			rotation_absolute_camera(t_scene *scene, t_matrix matrix);
-
 void			update_camera(t_scene *scene, unsigned int flags);
 
-void			translation_absolute_light(t_scene *scene, t_point vector);
-
 void			update_light(t_scene *scene, void *object, unsigned int flags);
-
-double			intersect_light(t_point ray, void *object);
-
-unsigned int	get_color_light(t_scene *scene, void *object);
 
 int				is_sphere(t_point point, t_sphere sphere);
 
 void			update_sphere(t_scene *scene, void *object, unsigned int flags);
 
-void			translation_absolute_sphere(t_scene *scene, t_point vector);
-
-double			intersect_sphere(t_point ray, void *object);
-
-unsigned int	get_color_sphere(t_scene *scene, void *object);
-
 int				is_plane(t_point point, t_plane plane);
 
 void			update_plane(t_scene *scene, void *object, unsigned int flags);
-
-void			translation_relative_plane(int key_code, t_scene *scene);
-
-void			rotation_relative_plane(int key_code, t_scene *scene);
-
-void			translation_absolute_plane(t_scene *scene, t_point vector);
-
-void			rotation_absolute_plane(t_scene *scene, t_matrix matrix);
-
-double			intersect_plane(t_point ray, void *object);
-
-unsigned int	get_color_plane(t_scene *scene, void *object);
 
 int				is_cylinder(t_point point, t_cylinder cylinder);
 
 void			update_cylinder(t_scene *scene, \
 					void *object, unsigned int flags);
-
-void			translation_relative_cylinder(int key_code, t_scene *scene);
-
-void			rotation_relative_cylinder(int key_code, t_scene *scene);
-
-void			translation_absolute_cylinder(t_scene *scene, t_point vector);
-
-void			rotation_absolute_cylinder(t_scene *scene, t_matrix matrix);
-
-double			intersect_cylinder(t_point ray, void *object);
-
-unsigned int	get_color_cylinder(t_scene *scene, void *object);
 
 /* print */
 
@@ -367,6 +323,22 @@ unsigned char	color_get_g(unsigned int trgb);
 
 unsigned char	color_get_b(unsigned int trgb);
 
+double			intersect_light(t_point ray, void *object);
+
+unsigned int	get_color_light(t_scene *scene, void *object);
+
+double			intersect_sphere(t_point ray, void *object);
+
+unsigned int	get_color_sphere(t_scene *scene, void *object);
+
+double			intersect_plane(t_point ray, void *object);
+
+unsigned int	get_color_plane(t_scene *scene, void *object);
+
+double			intersect_cylinder(t_point ray, void *object);
+
+unsigned int	get_color_cylinder(t_scene *scene, void *object);
+
 void			update_scene(t_scene *scene, unsigned int flags);
 
 void			put_pixel(t_scene *scene, int x, int y, unsigned int color);
@@ -374,6 +346,42 @@ void			put_pixel(t_scene *scene, int x, int y, unsigned int color);
 double			find_intersect(t_scene *scene, t_point ray, int *index);
 
 int				print_window(t_scene *scene);
+
+/* rotations */
+
+void			rotation(int key_code, t_scene *scene);
+
+void			rotation_relative_camera(int key_code, t_scene *scene);
+
+void			rotation_absolute_camera(t_scene *scene, t_matrix matrix);
+
+void			rotation_relative_plane(int key_code, t_scene *scene);
+
+void			rotation_absolute_plane(t_scene *scene, t_matrix matrix);
+
+void			rotation_relative_cylinder(int key_code, t_scene *scene);
+
+void			rotation_absolute_cylinder(t_scene *scene, t_matrix matrix);
+
+/* translations */
+
+void			translation(int key_code, t_scene *scene);
+
+void			translation_relative_camera(int key_code, t_scene *scene);
+
+void			translation_absolute_camera(t_scene *scene, t_point vector);
+
+void			translation_absolute_light(t_scene *scene, t_point vector);
+
+void			translation_absolute_sphere(t_scene *scene, t_point vector);
+
+void			translation_relative_plane(int key_code, t_scene *scene);
+
+void			translation_absolute_plane(t_scene *scene, t_point vector);
+
+void			translation_relative_cylinder(int key_code, t_scene *scene);
+
+void			translation_absolute_cylinder(t_scene *scene, t_point vector);
 
 /* hooks */
 

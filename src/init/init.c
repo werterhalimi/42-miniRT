@@ -62,7 +62,8 @@ static int	objects_parsing(t_scene *scene, t_list **list)
 	int		(*fct_array[NB_OBJECTS])(t_scene *, t_list *, t_objects *);
 	char	*obj_names[NB_OBJECTS];
 
-	scene->objects = ft_calloc(scene->nb_objects + 1, sizeof (*(scene->objects)));
+	scene->objects = ft_calloc(scene->nb_objects + 1, \
+		sizeof (*(scene->objects)));
 	if (!(scene->objects))
 		return (print_error(ERROR, "Objects allocation failed"));
 	init_arrays(obj_names, fct_array);

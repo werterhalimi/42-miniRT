@@ -17,7 +17,13 @@ SRCS_FILES		:=	utils/error.c		utils/quit.c \
 					objects/camera.c	objects/light.c		objects/amb_light.c \
 					objects/plane.c		objects/sphere.c	objects/cylinder.c \
 					print/color_trgb.c	print/put_pixel.c	print/update_scene.c \
-					print/get_color.c	print/print_window.c \
+					print/get_color.c	print/print_plane.c	print/print_cylinder.c \
+					print/print_light.c	print/print_sphere.c	print/print_window.c \
+					rotations/rotation.c				rotations/rotation_camera.c \
+					rotations/rotation_plane.c			rotations/rotation_cylinder.c \
+					translations/translation.c			translations/translation_camera.c \
+					translations/translation_light.c	translations/translation_sphere.c \
+					translations/translation_plane.c	translations/translation_cylinder.c \
 					hooks/is_key.c		hooks/mouse_hook.c	hooks/key_hook.c \
 					init/next_item.c	init/parse_color.c	init/parse_coord.c \
 					init/parse_vector.c	init/parse_light.c	init/parse_amb_light.c \
@@ -31,8 +37,9 @@ SRCS			:=	$(addprefix $(SRCS_DIR),$(SRCS_FILES))
 
 OBJS_FILES		:=	$(SRCS_FILES:.c=.o)
 OBJS_DIR		:=	./bin/
-OBJS_SUB_DIR	:= 	$(OBJS_DIR)objects	$(OBJS_DIR)maths	$(OBJS_DIR)init \
-					$(OBJS_DIR)utils	$(OBJS_DIR)print	$(OBJS_DIR)hooks
+OBJS_SUB_DIR	:= 	$(OBJS_DIR)objects	$(OBJS_DIR)maths	$(OBJS_DIR)rotations \
+					$(OBJS_DIR)init		$(OBJS_DIR)utils	$(OBJS_DIR)translations \
+					$(OBJS_DIR)print	$(OBJS_DIR)hooks
 OBJS			:=	$(addprefix $(OBJS_DIR),$(OBJS_FILES))
 
 LIBFT_DIR		:=	./libft/
