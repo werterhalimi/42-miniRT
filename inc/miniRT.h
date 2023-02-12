@@ -66,27 +66,25 @@
 # define UPDATE_NONE			0x00000000
 
 # define CAMERA_TRANSLATION		0x00000001
-# define CAMERA_PITCH			0x00000002
-# define CAMERA_YAW				0x00000004
-# define CAMERA_ROLL			0x00000008
-# define CAMERA_FOV				0x00000010
-# define CAMERA_ALL				0x0000001F
+# define CAMERA_ROTATION		0x00000002
+# define CAMERA_FOV				0x00000004
+# define CAMERA_ALL				0x00000007
 
-# define LIGHT_TRANSLATION		0x00000100
+# define LIGHT_TRANSLATION		0x00000010
 
-# define PLANE_TRANSLATION		0x00001000
-# define PLANE_ROTATION			0x00002000
-# define PLANE_ALL				0x00003000
+# define PLANE_TRANSLATION		0x00000100
+# define PLANE_ROTATION			0x00000200
+# define PLANE_ALL				0x00000300
 
-# define SPHERE_TRANSLATION		0x00010000
-# define SPHERE_RADIUS			0x00020000
-# define SPHERE_ALL				0x00030000
+# define SPHERE_TRANSLATION		0x00001000
+# define SPHERE_RADIUS			0x00002000
+# define SPHERE_ALL				0x00003000
 
-# define CYLINDER_TRANSLATION	0x00100000
-# define CYLINDER_ROTATION		0x00200000
-# define CYLINDER_RADIUS		0x00400000
-# define CYLINDER_HEIGHT		0x00800000
-# define CYLINDER_ALL			0x00F00000
+# define CYLINDER_TRANSLATION	0x00010000
+# define CYLINDER_ROTATION		0x00020000
+# define CYLINDER_RADIUS		0x00040000
+# define CYLINDER_HEIGHT		0x00080000
+# define CYLINDER_ALL			0x000F0000
 
 # define UPDATE_ALL				0xFFFFFFFF
 
@@ -94,13 +92,14 @@
 
 # define NB_OBJECTS				6
 
-/* Translation & rotation factors */
+/* Translation, rotation & other factors */
 
 # define TRANSLATION_FACTOR		0.05
 # define ROTATION_FACTOR		0.05
 # define FOV_FACTOR				0.05
 # define RADIUS_FACTOR			0.05
 # define HEIGHT_FACTOR			0.05
+# define LIGHT_RATIO_FACTOR		0.05
 
 /* Objects */
 enum {
@@ -176,6 +175,8 @@ typedef struct s_plane
 {
 	t_point	coord;
 	t_point	normal;
+	t_point right;
+	t_point down;
 	t_color	color;
 	double	value;
 }	t_plane;
@@ -188,6 +189,8 @@ typedef struct s_cylinder
 	t_point	vector_semi_height;
 	t_point	relative_center_top;
 	t_point	relative_center_down;
+	t_point right;
+	t_point down;
 	t_color	color;
 	double	radius;
 	double	radius_square;
@@ -250,6 +253,8 @@ int				str_to_double(char *str, double *d, int last);
 
 double			cos_rot(void);
 
+double			cos_rot_1(void);
+
 double			sin_rot(void);
 
 double			n_sin_rot(void);
@@ -276,9 +281,13 @@ double			norm_square(t_point vector);
 
 t_point			unit_vector(t_point vector);
 
+t_point			orthogonal_base(t_point vector, t_point *orthogonal);
+
 t_matrix		new_matrix(t_point a, t_point b, t_point c);
 
 t_point			matrix_vector_multi(t_matrix matrix, t_point vector);
+
+t_matrix		matrix_rotation_relative(t_point vector, double s);
 
 /* objects */
 

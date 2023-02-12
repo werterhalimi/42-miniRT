@@ -52,3 +52,13 @@ t_point	sub_vectors(t_point v1, t_point v2)
 	vector.z = v1.z - v2.z;
 	return (vector);
 }
+
+t_point	scalar_multi(double lambda, t_point vector)
+{
+	t_point	lambda_vector;
+
+	lambda_vector.x = vector.x * lambda;
+	lambda_vector.y = vector.y * lambda;
+	lambda_vector.z = vector.z * lambda;
+	return (lambda_vector);
+}

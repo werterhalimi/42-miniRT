@@ -33,6 +33,7 @@ int	parse_plane(t_scene *scene, t_list *current, t_objects *object)
 		return (ERROR);
 	if (next_item(item))
 		return (print_error(ERROR, "Too many items for plane"));
+	plane->down = orthogonal_base(plane->normal, &plane->right);
 	object->object = plane;
 	object->get_color = &get_color_plane;
 	object->intersect = &intersect_plane;

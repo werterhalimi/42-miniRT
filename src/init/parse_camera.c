@@ -22,22 +22,8 @@ static int	parse_fov(double *fov, char *item)
 	if (*fov < 0.0 || 180.0 < *fov)
 		return (print_error(ERROR, \
 			"The CAMERA_FOV must be included in [0.0; 180.0]"));
+	*fov = *fov * M_PI / 180.0;
 	return (SUCCESS);
-}
-
-static void	info_camera(t_camera *camera)
-{
-	t_point		tmp;
-
-	camera->fov = camera->fov * M_PI / 180.0;
-	tmp = camera->front;
-	if (tmp.x || tmp.y)
-		tmp.z += 1.0;
-	else if (tmp.z > 0)
-		tmp.x -= 1.0;
-	else
-		tmp.x += 1.0;
-	camera->right = unit_vector(cross_product(camera->front, tmp));
 }
 
 int	parse_camera(t_scene *scene, t_list *current, t_objects *object)
@@ -64,7 +50,7 @@ int	parse_camera(t_scene *scene, t_list *current, t_objects *object)
 		return (ERROR);
 	if (next_item(item))
 		return (print_error(ERROR, "Too many items for camera"));
-	info_camera(camera);
+	camera->down = orthogonal_base(camera->front, &camera->right);
 	scene->camera = camera;
 	return (SUCCESS);
 }

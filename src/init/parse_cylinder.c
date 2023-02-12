@@ -47,6 +47,7 @@ int	parse_cylinder(t_scene *scene, t_list *current, t_objects *object)
 		return (print_error(ERROR, "Cylinder allocation failed"));
 	if (sub_parse_cylinder(cylinder, current))
 		return (ERROR);
+	cylinder->down = orthogonal_base(cylinder->direction, &cylinder->right);
 	object->object = cylinder;
 	object->get_color = &get_color_cylinder;
 	object->intersect = &intersect_cylinder;

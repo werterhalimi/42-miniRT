@@ -18,6 +18,10 @@ void	update_scene(t_scene *scene, unsigned int flags)
 
 	update_camera(scene, flags);
 	i = -1;
-	while ((scene->objects)[++i])
-		(scene->objects)[i]->update(scene, (scene->objects)[i]->object, flags);
+	if (flags & CAMERA_TRANSLATION)
+		while (scene->objects[++i])
+			scene->objects[i]->update(scene, scene->objects[i]->object, flags);
+	else if (scene->index)
+		scene->objects[scene->index - 1]->update(scene, \
+			scene->objects[scene->index - 1]->object, flags);
 }

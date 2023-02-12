@@ -101,7 +101,7 @@ static t_point	vector_translation(int key_code)
 	return (new_point(0.0, 0.0, -TRANSLATION_FACTOR));
 }
 
-static t_matrix	matrix_rotation(int key_code)
+static t_matrix	matrix_rotation_absolute(int key_code)
 {
 	if (key_code == NUMPAD_8)
 		return (new_matrix(new_point(cos_rot(), 0.0, sin_rot()), \
@@ -151,7 +151,7 @@ static void	rotation(int key_code, t_scene *scene)
 	t_matrix	matrix;
 
 	if (scene->mode == ABSOLUTE)
-		matrix = matrix_rotation(key_code);
+		matrix = matrix_rotation_absolute(key_code);
 	if (!scene->index && scene->mode == RELATIVE)
 		rotation_relative_camera(key_code, scene);
 	else if (!scene->index)
@@ -173,6 +173,36 @@ static void	change_mode(t_scene *scene)
 		printf("You are now in relative mode\n");
 }
 
+static void	update_radius(int key_code, t_scene *scene)
+{
+	t_cylinder 	*cylinder;
+
+	cylinder = (t_cylinder *)(scene->objects[scene->index - 1]->object);
+	if (key_code == NUMPAD_PLUS)
+		cylinder->radius += RADIUS_FACTOR;
+	else if (cylinder->radius > RADIUS_FACTOR)
+		cylinder->radius -= RADIUS_FACTOR;
+	update_scene(scene, CYLINDER_RADIUS);
+}
+
+static void	update_numpad(int key_code, t_scene *scene)
+{
+	if (!scene->index && key_code == NUMPAD_PLUS \
+		&& scene->amb_light->ratio < 1 - LIGHT_RATIO_FACTOR)
+		scene->amb_light->ratio += LIGHT_RATIO_FACTOR;
+	else if (!scene->index && key_code == NUMPAD_MINUS \
+		&& scene->amb_light->ratio > LIGHT_RATIO_FACTOR)
+		scene->amb_light->ratio -= LIGHT_RATIO_FACTOR;
+	else if (scene->index == 1 && key_code == NUMPAD_PLUS \
+		&& scene->light->ratio < 1 - LIGHT_RATIO_FACTOR)
+		scene->light->ratio += LIGHT_RATIO_FACTOR;
+	else if (scene->index == 1 && key_code == NUMPAD_MINUS \
+		&& scene->light->ratio > LIGHT_RATIO_FACTOR)
+		scene->light->ratio -= LIGHT_RATIO_FACTOR;
+	else if (scene->index && scene->objects[scene->index - 1]->type == CYLINDER)
+		update_radius(key_code, scene);
+}
+
 int	key_hook(int key_code, t_scene *scene)
 {
 	printf("KEY = %d\n", key_code);
@@ -184,6 +214,8 @@ int	key_hook(int key_code, t_scene *scene)
 		translation(key_code, scene);
 	else if (is_key_rotation(key_code))
 		rotation(key_code, scene);
+	else if (key_code == NUMPAD_PLUS || key_code == NUMPAD_MINUS)
+		update_numpad(key_code, scene);
 	else if (key_code == KEY_TAB)
 		change_mode(scene);
 	else if (key_code == KEY_PAGE_UP)

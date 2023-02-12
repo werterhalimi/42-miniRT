@@ -18,16 +18,6 @@
 //		+ normal.z * normal.z));
 //}
 
-t_point	scalar_multi(double lambda, t_point vector)
-{
-	t_point	lambda_vector;
-
-	lambda_vector.x = vector.x * lambda;
-	lambda_vector.y = vector.y * lambda;
-	lambda_vector.z = vector.z * lambda;
-	return (lambda_vector);
-}
-
 t_point	cross_product(t_point v1, t_point v2)
 {
 	t_point	vector;
@@ -51,4 +41,19 @@ double	norm_square(t_point vector)
 t_point	unit_vector(t_point vector)
 {
 	return (scalar_multi(inv_sqrt(norm_square(vector)), vector));
+}
+
+t_point	orthogonal_base(t_point vector, t_point *orthogonal)
+{
+	t_point tmp;
+
+	tmp = vector;
+	if (tmp.x || tmp.y)
+		tmp.z += 1.0;
+	else if (tmp.z > 0)
+		tmp.x -= 1.0;
+	else
+		tmp.x += 1.0;
+	*orthogonal = unit_vector(cross_product(vector, tmp));
+	return (cross_product(vector, *orthogonal));
 }

@@ -151,19 +151,37 @@ void	translation_relative_cylinder(int key_code, t_scene *scene)
 	t_cylinder	*cylinder;
 
 	cylinder = (t_cylinder *)(scene->objects[scene->index - 1]->object);
-	vector = new_point(0.0, 0.0, 0.0);
 	if (key_code == KEY_W)
 		vector = scalar_multi(TRANSLATION_FACTOR, cylinder->direction);
 	else if (key_code == KEY_S)
 		vector = scalar_multi(-TRANSLATION_FACTOR, cylinder->direction);
+	else
+		return ;
 	cylinder->coord = add_vectors(cylinder->coord, vector);
 	update_scene(scene, PLANE_TRANSLATION);
 }
 
 void	rotation_relative_cylinder(int key_code, t_scene *scene)
 {
-	(void) key_code;
-	(void) scene;
+	t_cylinder	*cylinder;
+
+	cylinder = (t_cylinder *)(scene->objects[scene->index - 1]->object);
+	if (key_code == NUMPAD_2)
+		cylinder->down = matrix_vector_multi(matrix_rotation_relative(cylinder->right, \
+			sin_rot()), cylinder->down);
+	else if (key_code == NUMPAD_8)
+		cylinder->down = matrix_vector_multi(matrix_rotation_relative(cylinder->right, \
+			n_sin_rot()), cylinder->down);
+	else if (key_code == NUMPAD_4)
+		cylinder->right = matrix_vector_multi(matrix_rotation_relative(cylinder->down, \
+			n_sin_rot()), cylinder->right);
+	else if (key_code == NUMPAD_6)
+		cylinder->right = matrix_vector_multi(matrix_rotation_relative(cylinder->down, \
+			sin_rot()), cylinder->right);
+	else
+		return ;
+	cylinder->direction = cross_product(cylinder->right, cylinder->down);
+	update_scene(scene, CYLINDER_ROTATION);
 }
 
 void	translation_absolute_cylinder(t_scene *scene, t_point vector)
@@ -178,8 +196,11 @@ void	translation_absolute_cylinder(t_scene *scene, t_point vector)
 void	rotation_absolute_cylinder(t_scene *scene, t_matrix matrix)
 {
 	t_cylinder	*cylinder;
+
 	cylinder = (t_cylinder *)(scene->objects[scene->index - 1]->object);
 	cylinder->direction = matrix_vector_multi(matrix, cylinder->direction);
+	cylinder->right = matrix_vector_multi(matrix, cylinder->right);
+	cylinder->down = cross_product(cylinder->direction, cylinder->right);
 	update_scene(scene, CYLINDER_ROTATION);
 }
 

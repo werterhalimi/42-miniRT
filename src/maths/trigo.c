@@ -21,6 +21,15 @@ double	cos_rot(void)
 	return (result);
 }
 
+double	cos_rot_1(void)
+{
+	static double	result;
+
+	if (!result)
+		result = 1.0 - cos_rot();
+	return (result);
+}
+
 double	sin_rot(void)
 {
 	static double	result;
@@ -35,6 +44,6 @@ double	n_sin_rot(void)
 	static double	result;
 
 	if (!result)
-		result = __sinpi(ROTATION_FACTOR) * -1.0;
+		result = sin_rot() * -1.0;
 	return (result);
 }
