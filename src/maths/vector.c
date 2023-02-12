@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   front.c                                           :+:      :+:    :+:   */
+/*   vector.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ncotte <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 13:59:46 by ncotte            #+#    #+#             */
-/*   Updated: 2023/01/30 13:59:48 by ncotte           ###   ########.fr       */
+/*   Updated: 2023/02/12 19:03:19 by shalimi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,22 @@ double	norm_square(t_point vector)
 t_point	unit_vector(t_point vector)
 {
 	return (scalar_multi(inv_sqrt(norm_square(vector)), vector));
+}
+
+t_point get_projection(t_point a, t_point b)
+{
+    double dot = dot_product(a, b);
+    double norm_squared = norm_square(b);
+    return scalar_multi(dot / norm_squared, b);
+}
+
+double	distance_square(t_point a, t_point b)
+{
+	return (
+			(a.x - b.x) * (a.x - b.x) +
+			(a.y - b.y) * (a.y - b.y) +
+			(a.z - b.z) * (a.z - b.z)
+		   );
 }
 
 t_point	orthogonal_base(t_point vector, t_point *orthogonal)

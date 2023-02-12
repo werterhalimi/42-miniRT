@@ -6,7 +6,7 @@
 /*   By: ncotte <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/29 11:02:34 by ncotte            #+#    #+#             */
-/*   Updated: 2023/01/29 11:02:36 by ncotte           ###   ########.fr       */
+/*   Updated: 2023/02/12 19:03:45 by shalimi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -288,6 +288,10 @@ double			dot_product(t_point v1, t_point v2);
 double			norm_square(t_point vector);
 
 t_point			unit_vector(t_point vector);
+
+t_point			get_projection(t_point a, t_point b);
+
+double			distance_square(t_point a, t_point b);
 
 t_point			orthogonal_base(t_point vector, t_point *orthogonal);
 
