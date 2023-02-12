@@ -25,6 +25,7 @@ SRCS_FILES		:=	utils/error.c		utils/quit.c		utils/info.c \
 					translations/translation_light.c	translations/translation_sphere.c \
 					translations/translation_plane.c	translations/translation_cylinder.c \
 					hooks/is_key.c		hooks/mouse_hook.c	hooks/key_hook.c \
+					hooks/release.c \
 					init/next_item.c	init/parse_color.c	init/parse_coord.c \
 					init/parse_vector.c	init/parse_light.c	init/parse_amb_light.c \
 					init/parse_camera.c	init/parse_ratio.c	init/parse_length.c \

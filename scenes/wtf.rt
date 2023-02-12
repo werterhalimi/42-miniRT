@@ -1,0 +1,25 @@
+# valid.rt
+
+# Object            | Coordinates      | Orientation | Info 1          | Info 2          | Color
+#                   | x,y,z as doubles | x,y,z in    |                 |                 | R,G,B in
+#                   |                  | [-1.0; 1.0] |                 |                 | {0; ...; 255}
+# Mandatory objects |                  |             |                 |                 |
+# Ambient light     |                  |             | Ratio in        |                 |
+#                   |                  |             | [0.0; 1.0]      |                 |
+  A                                                    0.2                                 255,255,255
+# Camera            |                  |             | CAMERA_FOV in          |                 |
+#                   |                  |             | [0.0; 180.0]    |                 |
+  C                   2.45660,9.31765,4.07535        -0.028684,-0.709901,-0.703717   90.0
+# Main light        |                  |             | Ratio in        |                 |
+#                   |                  |             | [0.0; 1.0]      |                 |
+  L                   -5.0,0.0,5.0                     0.7                                 255,255,255
+
+# Optional objects  |                  |             |                 |                 |
+# Plane             |                  |             |                 |                 |
+  pl                  0.0,0.0,-1.0       0.0,0.0,1.0                                       255,0,225
+# Sphere            |                  |             | Diameter as     |                 |
+#                   |                  |             | positive double |                 |
+  sp                  10.0,10.0,0.0                    5                                   255,0,0
+# Cylinder          |                  |             | Diameter as     | Height as       |
+#                   |                  |             | positive double | positive double |
+  cy                  10.0,0.0,0.0       0.0,0.0,1.0   2                 4                 10,0,255

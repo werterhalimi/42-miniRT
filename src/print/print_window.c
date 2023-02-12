@@ -104,13 +104,13 @@ static unsigned int	find_color_pixel(t_scene *scene, t_point ray)
 	return (color);
 }
 
-int	print_window(t_scene *scene)
+void	print_window(t_scene *scene, int offset)
 {
-	int		x;
-	int		y;
-	t_point	tmp;
-	t_point	ray;
-	t_point	unit;
+	int				x;
+	int				y;
+	t_point			tmp;
+	t_point			ray;
+	unsigned int	color;
 
 	x = -1;
 	tmp = scene->window_corner;
@@ -120,12 +120,15 @@ int	print_window(t_scene *scene)
 		ray = tmp;
 		while (++y < scene->height)
 		{
-			unit = unit_vector(ray);
-			put_pixel(scene, x, y, find_color_pixel(scene, unit));
+			if (!(x % offset) && !(y % offset))
+				color = find_color_pixel(scene, unit_vector(ray));
+			else if (x % offset && !(y % offset))
+				color = get_pixel_color(scene, x - x % offset, y);
+			put_pixel(scene, x, y, color);
 			ray = add_vectors(ray, scene->camera->shift_y);
 		}
+		color = get_pixel_color(scene, x, 0);
 		tmp = add_vectors(tmp, scene->camera->shift_x);
 	}
 	mlx_put_image_to_window(scene->mlx, scene->window, scene->image, 0, 0);
-	return (SUCCESS);
 }

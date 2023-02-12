@@ -22,7 +22,9 @@ int	main(int argc, char *argv[])
 		quit(scene);
 	printf("%sSUCCESS!%s\n", BOLD_GREEN, RESET_COLOR);
 	mlx_hook(scene->window, ON_KEYDOWN, 0, key_hook, scene);
+	mlx_key_hook(scene->window, key_release, scene);
 	mlx_mouse_hook(scene->window, mouse_hook, scene);
+	mlx_hook(scene->window, ON_MOUSEUP, 0, mouse_release, scene);
 	mlx_hook(scene->window, ON_DESTROY, 0, (void *)quit, scene);
 	mlx_loop(scene->mlx);
 }

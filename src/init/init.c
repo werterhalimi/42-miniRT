@@ -100,7 +100,8 @@ static int	init_mlx(t_scene *scene)
 		&scene->line_len, &scene->endian);
 	if (!(scene->address))
 		return (print_error(ERROR, "Image address not found"));
-	return (print_window(scene));
+	print_window(scene, 1);
+	return (SUCCESS);
 }
 
 int	init(int argc, char **argv, t_scene **scene)
