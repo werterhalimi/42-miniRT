@@ -6,7 +6,7 @@
 /*   By: ncotte <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 13:15:27 by ncotte            #+#    #+#             */
-/*   Updated: 2023/02/09 13:15:29 by ncotte           ###   ########.fr       */
+/*   Updated: 2023/02/12 21:40:44 by shalimi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ int	parse_light(t_scene *scene, t_list *current, t_objects *object)
 	object->object = light;
 	object->get_color = &get_color_light;
 	object->intersect = &intersect_light;
+	object->intersect_absolute = &intersect_light_absolute;
 	object->update = &update_light;
 	object->translation_absolute = &translation_absolute_light;
 	object->type = MAIN_LIGHT;

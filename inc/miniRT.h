@@ -6,7 +6,7 @@
 /*   By: ncotte <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/29 11:02:34 by ncotte            #+#    #+#             */
-/*   Updated: 2023/02/12 19:03:45 by shalimi          ###   ########.fr       */
+/*   Updated: 2023/02/12 21:50:48 by shalimi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -210,6 +210,7 @@ typedef struct s_objects
 	void			*object;
 	unsigned int	(*get_color)(struct s_scene *, void *);
 	double			(*intersect)(t_point, void *);
+	double			(*intersect_absolute)(t_point, void *, t_point);
 	void			(*update)(struct s_scene *, void *, unsigned int);
 	void			(*translation_relative)(int, struct s_scene *);
 	void			(*rotation_relative)(int, struct s_scene *);
@@ -338,18 +339,22 @@ unsigned char	color_get_g(unsigned int trgb);
 unsigned char	color_get_b(unsigned int trgb);
 
 double			intersect_light(t_point ray, void *object);
+double			intersect_light_absolute(t_point ray, void *object, t_point origin);
 
 unsigned int	get_color_light(t_scene *scene, void *object);
 
 double			intersect_sphere(t_point ray, void *object);
+double			intersect_sphere_absolute(t_point ray, void *object, t_point origin);
 
 unsigned int	get_color_sphere(t_scene *scene, void *object);
 
 double			intersect_plane(t_point ray, void *object);
+double			intersect_plane_absolute(t_point ray, void *object, t_point origin);
 
 unsigned int	get_color_plane(t_scene *scene, void *object);
 
 double			intersect_cylinder(t_point ray, void *object);
+double			intersect_cylinder_absolute(t_point ray, void *object, t_point origin);
 
 unsigned int	get_color_cylinder(t_scene *scene, void *object);
 

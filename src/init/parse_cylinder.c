@@ -6,7 +6,7 @@
 /*   By: ncotte <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 13:15:10 by ncotte            #+#    #+#             */
-/*   Updated: 2023/02/09 13:15:12 by ncotte           ###   ########.fr       */
+/*   Updated: 2023/02/12 21:37:31 by shalimi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ int	parse_cylinder(t_scene *scene, t_list *current, t_objects *object)
 	object->object = cylinder;
 	object->get_color = &get_color_cylinder;
 	object->intersect = &intersect_cylinder;
+	object->intersect_absolute = &intersect_cylinder_absolute;
 	object->update = &update_cylinder;
 	object->translation_relative = &translation_relative_cylinder;
 	object->rotation_relative = &rotation_relative_cylinder;

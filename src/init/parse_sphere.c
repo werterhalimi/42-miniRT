@@ -6,7 +6,7 @@
 /*   By: ncotte <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 13:15:00 by ncotte            #+#    #+#             */
-/*   Updated: 2023/02/09 13:15:02 by ncotte           ###   ########.fr       */
+/*   Updated: 2023/02/12 21:07:18 by shalimi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ int	parse_sphere(t_scene *scene, t_list *current, t_objects *object)
 	object->object = sphere;
 	object->get_color = &get_color_sphere;
 	object->intersect = &intersect_sphere;
+	object->intersect_absolute = &intersect_sphere_absolute;
 	object->update = &update_sphere;
 	object->translation_absolute = &translation_absolute_sphere;
 	return (SUCCESS);

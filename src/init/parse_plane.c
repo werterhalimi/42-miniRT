@@ -6,7 +6,7 @@
 /*   By: ncotte <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 13:14:45 by ncotte            #+#    #+#             */
-/*   Updated: 2023/02/09 13:14:51 by ncotte           ###   ########.fr       */
+/*   Updated: 2023/02/12 21:48:59 by shalimi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ int	parse_plane(t_scene *scene, t_list *current, t_objects *object)
 	object->object = plane;
 	object->get_color = &get_color_plane;
 	object->intersect = &intersect_plane;
+	object->intersect_absolute = &intersect_plane_absolute;
 	object->update = &update_plane;
 	object->translation_relative = &translation_relative_plane;
 	object->rotation_relative = &rotation_relative_plane;

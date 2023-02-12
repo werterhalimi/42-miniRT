@@ -6,7 +6,7 @@
 /*   By: ncotte <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 14:39:19 by ncotte            #+#    #+#             */
-/*   Updated: 2023/02/12 19:06:10 by shalimi          ###   ########.fr       */
+/*   Updated: 2023/02/13 00:05:32 by shalimi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,29 @@ double	find_intersect(t_scene *scene, t_point ray, int *index)
 	return (first_intersect);
 }
 
+int	find_intersect_light(t_scene *scene, t_point ray, t_point origin, t_objects *sender)
+{
+	double			first_intersect;
+	double			tmp;
+	int				i;
+	t_objects		*obj;
+
+	i = -1;
+	first_intersect = INFINITY;
+	obj = sender;
+	while ((scene->objects)[++i])
+	{
+		tmp = ((scene->objects)[i])->intersect_absolute(ray, \
+			((scene->objects)[i])->object, origin);
+		if (tmp < first_intersect && scene->objects[i] != sender)
+		{
+			first_intersect = tmp;
+			obj = scene->objects[i];
+		}
+	}
+	return obj != sender;
+}
+
 static unsigned int	find_color_pixel(t_scene *scene, t_point ray)
 {
 	unsigned int	color;
@@ -45,9 +68,14 @@ static unsigned int	find_color_pixel(t_scene *scene, t_point ray)
 	if (!i--)
 		return (0);
 	obj = (scene->objects)[i];
-	color = obj->get_color(scene, obj->object);
 	t_point origin = scene->camera->coord;
 	t_point hit_point = add_vectors(origin, scalar_multi(first_intersect, ray));
+	t_point hit_point_to_light = unit_vector(sub_vectors(scene->light->coord, hit_point));
+	if (find_intersect_light(scene, hit_point_to_light, hit_point, obj))
+	{
+		return (0);
+	}
+	color = obj->get_color(scene, obj->object);
     if (obj && obj->type == SPHERE)
     {
         t_sphere *sphere = ((t_sphere *)obj->object);
@@ -55,7 +83,6 @@ static unsigned int	find_color_pixel(t_scene *scene, t_point ray)
         t_point normal = unit_vector(sub_vectors(hit_point, center));
         double dot = dot_product(ray, normal);
         t_point rebound = unit_vector(sub_vectors(ray, scalar_multi(2.0 * dot, normal)));
-        t_point hit_point_to_light = unit_vector(sub_vectors(scene->light->coord, hit_point));
         double dot2 = dot_product(hit_point_to_light, rebound);
         double angle2 = acos(dot2);
         t_color base = sphere->color;
@@ -73,11 +100,10 @@ static unsigned int	find_color_pixel(t_scene *scene, t_point ray)
 		t_point normal = plane->normal;
         double dot = dot_product(ray, normal);
         t_point rebound = unit_vector(sub_vectors(ray, scalar_multi(2.0 * dot, normal)));
-        t_point hit_point_to_light = unit_vector(sub_vectors(scene->light->coord, hit_point));
+
         double dot2 = dot_product(hit_point_to_light, rebound);
         double angle2 = acos(dot2);
         t_color base = plane->color;
-
         base.r *= (-M_1_PI) * angle2 + 1;
         base.g *= (-M_1_PI) * angle2 + 1;
         base.b *= (-M_1_PI) * angle2 + 1;
@@ -97,7 +123,6 @@ static unsigned int	find_color_pixel(t_scene *scene, t_point ray)
 			normal = scalar_multi(-1.0, cy->direction);
 		double dot = dot_product(ray, normal);
         t_point rebound = unit_vector(sub_vectors(ray, scalar_multi(2.0 * dot, normal)));
-        t_point hit_point_to_light = unit_vector(sub_vectors(scene->light->coord, hit_point));
         double dot2 = dot_product(hit_point_to_light, rebound);
         double angle2 = acos(dot2);
         t_color base = cy->color;
