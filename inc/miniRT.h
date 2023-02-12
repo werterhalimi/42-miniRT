@@ -103,10 +103,10 @@
 
 /* Objects */
 enum {
-	MAIN_LIGHT = 0,
-	SPHERE = 1,
-	PLANE = 2,
-	CYLINDER = 3
+	MAIN_LIGHT,
+	SPHERE,
+	PLANE,
+	CYLINDER
 };
 
 /* Structures */
@@ -187,6 +187,8 @@ typedef struct s_cylinder
 	t_point	relative_coord;
 	t_point	direction;
 	t_point	vector_semi_height;
+	t_point	center_top;
+	t_point	center_down;
 	t_point	relative_center_top;
 	t_point	relative_center_down;
 	t_point	right;
@@ -242,6 +244,12 @@ typedef struct s_scene
 void			quit(t_scene *scene);
 
 int				print_error(int error_code, char *error_msg);
+
+int				write_type(t_scene *scene);
+
+void			write_point(t_point point, char *name);
+
+void			write_info(t_scene *scene);
 
 /* maths */
 

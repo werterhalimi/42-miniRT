@@ -34,19 +34,16 @@ int	is_cylinder(t_point point, t_cylinder cylinder)
 
 static void	update_top_down(t_cylinder *cy, t_point eye, unsigned int flags)
 {
-	static t_point	center_top;
-	static t_point	center_down;
-
 	if (flags & CYLINDER_ALL)
 	{
-		center_top = add_vectors(cy->coord, cy->vector_semi_height);
-		center_down = add_vectors(cy->coord, \
+		cy->center_top = add_vectors(cy->coord, cy->vector_semi_height);
+		cy->center_down = add_vectors(cy->coord, \
 			scalar_multi(-cy->semi_height, cy->direction));
 	}
 	cy->value_semi_height = dot_product(cy->relative_coord, \
 		cy->vector_semi_height);
-	cy->relative_center_top = sub_vectors(center_top, eye);
-	cy->relative_center_down = sub_vectors(center_down, eye);
+	cy->relative_center_top = sub_vectors(cy->center_top, eye);
+	cy->relative_center_down = sub_vectors(cy->center_down, eye);
 	cy->value_top = dot_product(cy->relative_center_top, cy->direction);
 	cy->value_down = dot_product(cy->relative_center_down, cy->direction);
 }

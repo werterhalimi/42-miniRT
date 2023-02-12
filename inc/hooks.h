@@ -162,7 +162,7 @@ enum {
 	KEY_RIGHT,
 	KEY_DOWN,
 	KEY_UP,
-	UNKNOWN_127_,
+	UNKNOWN_127_
 };
 
 #endif

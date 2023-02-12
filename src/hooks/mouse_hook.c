@@ -21,11 +21,7 @@ static void	select_object(int x, int y, t_scene *scene)
 		scene->camera->shift_x), scalar_multi(y, \
 		scene->camera->shift_y)), scene->window_corner));
 	find_intersect(scene, ray, &scene->index);
-	if (scene->index)
-		printf("An object of type #%d is now selected\n", \
-			scene->objects[scene->index - 1]->type);
-	else
-		printf("The camera is now selected\n");
+	write_type(scene);
 }
 
 static void	update_radius(int mouse_code, t_scene *scene)
@@ -70,7 +66,7 @@ static void	scroll_hook(int mouse_code, t_scene *scene)
 
 int	mouse_hook(int mouse_code, int x, int y, t_scene *scene)
 {
-	printf("MOUSE = %d\n", mouse_code);
+//	printf("MOUSE = %d\n", mouse_code);
 	if (mouse_code == RIGHT_CLICK)
 	{
 		mlx_mouse_get_pos(scene->window, &x, &y);

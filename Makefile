@@ -10,7 +10,7 @@
 #                                                                              #
 # **************************************************************************** #
 
-SRCS_FILES		:=	utils/error.c		utils/quit.c \
+SRCS_FILES		:=	utils/error.c		utils/quit.c		utils/info.c \
 					maths/point.c		maths/vector.c		maths/quad_solv.c \
 					maths/matrix.c		maths/quake.c		maths/str_to_double.c \
 					maths/trigo.c \
