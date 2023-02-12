@@ -43,4 +43,5 @@ void	translation(int key_code, t_scene *scene)
 	else if (scene->mode == ABSOLUTE \
 		&& scene->objects[scene->index - 1]->translation_absolute)
 		scene->objects[scene->index - 1]->translation_absolute(scene, vector);
+	print_window(scene, 10);
 }

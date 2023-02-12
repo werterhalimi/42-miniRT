@@ -327,6 +327,8 @@ unsigned int	create_trgb(unsigned char t, unsigned char r, \
 
 unsigned int	color_trgb(t_color color);
 
+unsigned int	get_pixel_color(t_scene *scene, int x, int y);
+
 unsigned char	color_get_t(unsigned int trgb);
 
 unsigned char	color_get_r(unsigned int trgb);
@@ -357,7 +359,7 @@ void			put_pixel(t_scene *scene, int x, int y, unsigned int color);
 
 double			find_intersect(t_scene *scene, t_point ray, int *index);
 
-int				print_window(t_scene *scene);
+void			print_window(t_scene *scene, int offset);
 
 /* rotations */
 
@@ -404,6 +406,10 @@ int				is_key_rotation(int key_code);
 int				key_hook(int key_code, t_scene *scene);
 
 int				mouse_hook(int mouse_code, int x, int y, t_scene *scene);
+
+int				key_release(int key_code, t_scene *scene);
+
+int				mouse_release(int mouse_code, int x, int y, t_scene *scene);
 
 /* init */
 

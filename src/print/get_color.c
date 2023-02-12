@@ -12,6 +12,12 @@
 
 #include "miniRT.h"
 
+unsigned int	get_pixel_color(t_scene *scene, int x, int y)
+{
+	return (*(unsigned int *)(scene->address + (y * scene->line_len \
+		+ x * (scene->bpp / 8))));
+}
+
 unsigned char	color_get_t(unsigned int trgb)
 {
 	return (((unsigned char *)&trgb)[3]);
