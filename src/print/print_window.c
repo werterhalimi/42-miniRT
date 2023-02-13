@@ -6,7 +6,7 @@
 /*   By: ncotte <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 14:39:19 by ncotte            #+#    #+#             */
-/*   Updated: 2023/02/13 22:57:46 by shalimi          ###   ########.fr       */
+/*   Updated: 2023/02/13 23:15:16 by shalimi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,8 @@ static unsigned int	find_color_pixel(t_scene *scene, t_point ray)
 		return 	print_plane(scene, (t_plane *) obj->object, hit_point, hit_point_to_light);
 	if(obj && obj->type == CYLINDER)
 		return 	print_cylinder(scene, (t_cylinder *) obj->object, hit_point, hit_point_to_light);
+	if(obj && obj->type == CONE)
+		return 	print_cone(scene, (t_cone *) obj->object, hit_point, hit_point_to_light);
 	return (color);
 }
 
