@@ -23,7 +23,8 @@ double	intersect_light(t_point ray, void *object, t_point *origin)
 	if (origin)
 		oc = sub_vectors(light->coord, *origin);
 	t = oc.x / ray.x;
-	if (is_null(add_vectors(scalar_multi(t, ray), oc)) && t >= 0.0)
+	oc = sub_vectors(scalar_multi(t, ray), oc);
+	if (!(oc.x || oc.y || oc.z) && t >= 0.0)
 		return (t);
 	return (INFINITY);
 }

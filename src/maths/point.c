@@ -11,17 +11,6 @@
 /* ************************************************************************** */
 
 #include "miniRT.h"
-/*
-double	dist_op(t_point o, t_point p)
-{
-	return (norm_vector(sub_vectors(p, o)));
-}
-*/
-
-int	is_null(t_point vector)
-{
-	return (!(vector.x || vector.y || vector.z));
-}
 
 t_point	new_point(double x, double y, double z)
 {
@@ -31,6 +20,11 @@ t_point	new_point(double x, double y, double z)
 	point.y = y;
 	point.z = z;
 	return (point);
+}
+
+double	distance_square(t_point a, t_point b)
+{
+	return (norm_square(sub_vectors(a, b)));
 }
 
 t_point	add_vectors(t_point v1, t_point v2)

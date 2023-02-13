@@ -55,5 +55,5 @@ void	rotation(int key_code, t_scene *scene)
 	else if (scene->mode == ABSOLUTE \
 		&& scene->objects[scene->index - 1]->rotation_absolute)
 		scene->objects[scene->index - 1]->rotation_absolute(scene, matrix);
-	print_window(scene, 10);
+	print_window(scene, PIXEL_RESOLUTION);
 }

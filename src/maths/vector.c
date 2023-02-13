@@ -32,19 +32,9 @@ double	norm_square(t_point vector)
 	return (dot_product(vector, vector));
 }
 
-t_point	unit_vector(t_point vector)
+t_point	get_projection_unit(t_point a, t_point b)
 {
-	return (scalar_multi(inv_sqrt(norm_square(vector)), vector));
-}
-
-t_point get_projection(t_point a, t_point b)
-{
-    return (scalar_multi(dot_product(a, b) / norm_square(b), b));
-}
-
-double	distance_square(t_point a, t_point b)
-{
-	return (norm_square(sub_vectors(a, b)));
+	return (scalar_multi(dot_product(a, b), b));
 }
 
 t_point	orthogonal_base(t_point vector, t_point *orthogonal)

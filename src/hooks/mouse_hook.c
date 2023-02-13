@@ -70,7 +70,7 @@ int	mouse_hook(int mouse_code, int x, int y, t_scene *scene)
 	if (mouse_code == SCROLL_UP || mouse_code == SCROLL_DOWN)
 	{
 		scroll_hook(mouse_code, scene);
-		print_window(scene, 10);
+		print_window(scene, PIXEL_RESOLUTION);
 	}
 	else if (mouse_code == RIGHT_CLICK)
 	{

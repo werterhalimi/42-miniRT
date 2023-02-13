@@ -27,3 +27,8 @@ double	inv_sqrt(double d)
 	y = y * (1.5 - (d * y * y));
 	return (y);
 }
+
+t_point	unit_vector(t_point vector)
+{
+	return (scalar_multi(inv_sqrt(norm_square(vector)), vector));
+}

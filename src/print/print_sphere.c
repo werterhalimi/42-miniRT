@@ -26,7 +26,7 @@ double	intersect_sphere(t_point ray, void *object, t_point *origin)
 	if (origin)
 	{
 		oc = sub_vectors(*origin, sphere->coord);
-		value = norm_square(oc) - sphere->radius;
+		value = norm_square(oc) - sphere->radius_2;
 	}
 	t1 = quad_solv(1.0, 2.0 * dot_product(ray, oc), value, &t2);
 	if (!isnan(t1) && t1 < t2 && t1 >= 0.0)

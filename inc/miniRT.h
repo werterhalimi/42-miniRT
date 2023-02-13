@@ -100,6 +100,7 @@
 # define RADIUS_FACTOR			0.05
 # define HEIGHT_FACTOR			0.05
 # define LIGHT_RATIO_FACTOR		0.05
+# define PIXEL_RESOLUTION		15
 
 /* Objects */
 enum {
@@ -272,7 +273,7 @@ double			n_sin_rot(void);
 
 t_point			new_point(double x, double y, double z);
 
-int				is_null(t_point vector);
+double			distance_square(t_point a, t_point b);
 
 t_point			add_vectors(t_point v1, t_point v2);
 
@@ -290,9 +291,7 @@ double			norm_square(t_point vector);
 
 t_point			unit_vector(t_point vector);
 
-t_point			get_projection(t_point a, t_point b);
-
-double			distance_square(t_point a, t_point b);
+t_point			get_projection_unit(t_point a, t_point b);
 
 t_point			orthogonal_base(t_point vector, t_point *orthogonal);
 
@@ -347,16 +346,12 @@ unsigned char	color_get_g(unsigned int trgb);
 unsigned char	color_get_b(unsigned int trgb);
 
 double			intersect_light(t_point ray, void *object, t_point *origin);
-//double			intersect_light_absolute(t_point ray, void *object, t_point origin);
 
 double			intersect_sphere(t_point ray, void *object, t_point *origin);
-//double			intersect_sphere_absolute(t_point ray, void *object, t_point origin);
 
 double			intersect_plane(t_point ray, void *object, t_point *origin);
-//double			intersect_plane_absolute(t_point ray, void *object, t_point origin);
 
 double			intersect_cylinder(t_point ray, void *object, t_point *origin);
-//double			intersect_cylinder_absolute(t_point ray, void *object, t_point origin);
 
 void			update_scene(t_scene *scene, unsigned int flags);
 

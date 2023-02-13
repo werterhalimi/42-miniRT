@@ -60,7 +60,7 @@ static void	update_numpad(int key_code, t_scene *scene)
 		scene->light->ratio -= LIGHT_RATIO_FACTOR;
 	else if (scene->index && scene->objects[scene->index - 1]->type == CYLINDER)
 		update_radius(key_code, scene);
-	print_window(scene, 10);
+	print_window(scene, PIXEL_RESOLUTION);
 }
 
 int	key_hook(int key_code, t_scene *scene)
