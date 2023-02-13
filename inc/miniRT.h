@@ -168,6 +168,7 @@ typedef struct s_sphere
 	t_point	relative_coord;
 	t_color	color;
 	double	radius;
+	double	radius_2;
 	double	value;
 }	t_sphere;
 
@@ -195,9 +196,9 @@ typedef struct s_cylinder
 	t_point	down;
 	t_color	color;
 	double	radius;
-	double	radius_square;
+	double	radius_2;
 	double	semi_height;
-	double	semi_height_square;
+	double	semi_height_2;
 	double	value;
 	double	value_top;
 	double	value_down;
@@ -209,8 +210,7 @@ typedef struct s_objects
 {
 	void			*object;
 	unsigned int	(*get_color)(struct s_scene *, void *);
-	double			(*intersect)(t_point, void *);
-	double			(*intersect_absolute)(t_point, void *, t_point);
+	double			(*intersect)(t_point, void *, t_point *);
 	void			(*update)(struct s_scene *, void *, unsigned int);
 	void			(*translation_relative)(int, struct s_scene *);
 	void			(*rotation_relative)(int, struct s_scene *);
@@ -308,18 +308,26 @@ void			update_camera(t_scene *scene, unsigned int flags);
 
 void			update_light(t_scene *scene, void *object, unsigned int flags);
 
+unsigned int	get_color_light(t_scene *scene, void *object);
+
 int				is_sphere(t_point point, t_sphere sphere);
 
 void			update_sphere(t_scene *scene, void *object, unsigned int flags);
+
+unsigned int	get_color_sphere(t_scene *scene, void *object);
 
 int				is_plane(t_point point, t_plane plane);
 
 void			update_plane(t_scene *scene, void *object, unsigned int flags);
 
+unsigned int	get_color_plane(t_scene *scene, void *object);
+
 int				is_cylinder(t_point point, t_cylinder cylinder);
 
 void			update_cylinder(t_scene *scene, \
 					void *object, unsigned int flags);
+
+unsigned int	get_color_cylinder(t_scene *scene, void *object);
 
 /* print */
 
@@ -338,25 +346,17 @@ unsigned char	color_get_g(unsigned int trgb);
 
 unsigned char	color_get_b(unsigned int trgb);
 
-double			intersect_light(t_point ray, void *object);
-double			intersect_light_absolute(t_point ray, void *object, t_point origin);
+double			intersect_light(t_point ray, void *object, t_point *origin);
+//double			intersect_light_absolute(t_point ray, void *object, t_point origin);
 
-unsigned int	get_color_light(t_scene *scene, void *object);
+double			intersect_sphere(t_point ray, void *object, t_point *origin);
+//double			intersect_sphere_absolute(t_point ray, void *object, t_point origin);
 
-double			intersect_sphere(t_point ray, void *object);
-double			intersect_sphere_absolute(t_point ray, void *object, t_point origin);
+double			intersect_plane(t_point ray, void *object, t_point *origin);
+//double			intersect_plane_absolute(t_point ray, void *object, t_point origin);
 
-unsigned int	get_color_sphere(t_scene *scene, void *object);
-
-double			intersect_plane(t_point ray, void *object);
-double			intersect_plane_absolute(t_point ray, void *object, t_point origin);
-
-unsigned int	get_color_plane(t_scene *scene, void *object);
-
-double			intersect_cylinder(t_point ray, void *object);
-double			intersect_cylinder_absolute(t_point ray, void *object, t_point origin);
-
-unsigned int	get_color_cylinder(t_scene *scene, void *object);
+double			intersect_cylinder(t_point ray, void *object, t_point *origin);
+//double			intersect_cylinder_absolute(t_point ray, void *object, t_point origin);
 
 void			update_scene(t_scene *scene, unsigned int flags);
 

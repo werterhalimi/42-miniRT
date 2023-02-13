@@ -29,3 +29,12 @@ void	update_plane(t_scene *scene, void *object, unsigned int flags)
 	plane->value = dot_product(sub_vectors(plane->coord, \
 		scene->camera->coord), plane->normal);
 }
+
+unsigned int	get_color_plane(t_scene *scene, void *object)
+{
+	t_plane	*plane;
+
+	(void)scene;
+	plane = (t_plane *)object;
+	return (color_trgb(plane->color));
+}

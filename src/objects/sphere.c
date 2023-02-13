@@ -29,5 +29,16 @@ void	update_sphere(t_scene *scene, void *object, unsigned int flags)
 	sp = (t_sphere *)object;
 	if (flags & (CAMERA_TRANSLATION | SPHERE_TRANSLATION))
 		sp->relative_coord = sub_vectors(scene->camera->coord, sp->coord);
-	sp->value = norm_square(sp->relative_coord) - sp->radius * sp->radius;
+	if (flags & SPHERE_RADIUS)
+		sp->radius_2 = sp->radius * sp->radius;
+	sp->value = norm_square(sp->relative_coord) - sp->radius_2;
+}
+
+unsigned int	get_color_sphere(t_scene *scene, void *object)
+{
+	t_sphere	*sphere;
+
+	(void)scene;
+	sphere = (t_sphere *)object;
+	return (color_trgb(sphere->color));
 }

@@ -24,10 +24,10 @@ int	is_cylinder(t_point point, t_cylinder cylinder)
 		cylinder.direction), cylinder.direction);
 	height_p = norm_square(proj_p);
 	radius_p = norm_square(sub_vectors(vector_p, proj_p));
-	if ((height_p == cylinder.semi_height_square \
-		&& radius_p < cylinder.radius_square) \
-		|| (height_p < cylinder.semi_height_square \
-		&& radius_p == cylinder.radius_square))
+	if ((height_p == cylinder.semi_height_2 \
+		&& radius_p < cylinder.radius_2) \
+		|| (height_p < cylinder.semi_height_2 \
+		&& radius_p == cylinder.radius_2))
 		return (YES);
 	return (NO);
 }
@@ -56,9 +56,9 @@ void	update_cylinder(t_scene *scene, void *object, unsigned int flags)
 		return ;
 	cy = (t_cylinder *)object;
 	if (flags & CYLINDER_RADIUS)
-		cy->radius_square = cy->radius * cy->radius;
+		cy->radius_2 = cy->radius * cy->radius;
 	if (flags & CYLINDER_HEIGHT)
-		cy->semi_height_square = cy->semi_height * cy->semi_height;
+		cy->semi_height_2 = cy->semi_height * cy->semi_height;
 	if (flags & (CYLINDER_HEIGHT | CYLINDER_ROTATION))
 		cy->vector_semi_height = scalar_multi(cy->semi_height, cy->direction);
 	if (flags & (CYLINDER_TRANSLATION | CAMERA_TRANSLATION))
@@ -71,5 +71,14 @@ void	update_cylinder(t_scene *scene, void *object, unsigned int flags)
 	if (flags == UPDATE_ALL \
 		|| flags & ((CYLINDER_ALL & ~CYLINDER_HEIGHT) | CAMERA_TRANSLATION))
 		cy->value_quad = norm_square(cy->relative_coord) \
-			- cy->value * cy->value - cy->radius_square;
+			- cy->value * cy->value - cy->radius_2;
+}
+
+unsigned int	get_color_cylinder(t_scene *scene, void *object)
+{
+	t_cylinder	*cylinder;
+
+	(void)scene;
+	cylinder = (t_cylinder *)object;
+	return (color_trgb(cylinder->color));
 }

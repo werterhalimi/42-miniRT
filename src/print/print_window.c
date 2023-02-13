@@ -24,7 +24,7 @@ double	find_intersect(t_scene *scene, t_point ray, int *index)
 	while ((scene->objects)[++i])
 	{
 		tmp = ((scene->objects)[i])->intersect(ray, \
-			((scene->objects)[i])->object);
+			((scene->objects)[i])->object, NULL);
 		if (!isinf(tmp) && tmp < first_intersect)
 		{
 			first_intersect = tmp;
@@ -46,8 +46,8 @@ int	find_intersect_light(t_scene *scene, t_point ray, t_point origin, t_objects 
 	obj = sender;
 	while ((scene->objects)[++i])
 	{
-		tmp = ((scene->objects)[i])->intersect_absolute(ray, \
-			((scene->objects)[i])->object, origin);
+		tmp = ((scene->objects)[i])->intersect(ray, \
+			((scene->objects)[i])->object, &origin);
 		if (tmp < first_intersect && scene->objects[i] != sender)
 		{
 			first_intersect = tmp;
@@ -117,9 +117,9 @@ static unsigned int	find_color_pixel(t_scene *scene, t_point ray)
 		 t_point	hit_vector = sub_vectors(hit_point, cy->coord);
 		 t_point	pro = add_vectors(get_projection(hit_vector, cy->direction), cy->coord);
 		 t_point	normal = sub_vectors(hit_point, pro);
-		if (distance_square(hit_point, cy->center_top) <= cy->radius_square)
+		if (distance_square(hit_point, cy->center_top) <= cy->radius_2)
 			normal = cy->direction;
- 		if (distance_square(hit_point, cy->center_down) <= cy->radius_square)
+ 		if (distance_square(hit_point, cy->center_down) <= cy->radius_2)
 			normal = scalar_multi(-1.0, cy->direction);
 		double dot = dot_product(ray, normal);
         t_point rebound = unit_vector(sub_vectors(ray, scalar_multi(2.0 * dot, normal)));

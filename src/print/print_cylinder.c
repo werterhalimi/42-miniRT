@@ -12,35 +12,18 @@
 
 #include "miniRT.h"
 
-static double	cylinder_end(t_cylinder *cylinder, t_point ray, double div, t_point *origin)
+static double	cylinder_end_camera(t_cylinder *cylinder, t_point ray, double div)
 {
 	double	t1;
 	double	t2;
-	t_point	oct;
-	t_point	ocd;
-	double	value[2];
 
-	if (origin)
-	{
-		oct = sub_vectors(*origin, cylinder->center_top);
-		ocd = sub_vectors(*origin, cylinder->center_down);
-		value[0] = dot_product(oct, cylinder->direction);
-		value[1] = dot_product(ocd, cylinder->direction);
-	}
-	else
-	{
-		oct = cylinder->relative_center_top;
-		ocd = cylinder->relative_center_down;
-		value[0] = cylinder->value_top;
-		value[1] = cylinder->value_down;
-	}
-	t1 = value[0] / div;
-	t2 = value[1] / div;
+	t1 = cylinder->value_top / div;
+	t2 = cylinder->value_down / div;
 	if (norm_square(sub_vectors(scalar_multi(t1, ray), \
-		oct)) > cylinder->radius_square)
+		cylinder->relative_center_top)) > cylinder->radius_2)
 		t1 = INFINITY;
 	if (norm_square(sub_vectors(scalar_multi(t2, ray), \
-		ocd)) > cylinder->radius_square)
+		cylinder->relative_center_down)) > cylinder->radius_2)
 		t2 = INFINITY;
 	if (isfinite(t1) && t1 >= 0.0 && t1 < t2)
 		return (t1);
@@ -49,57 +32,49 @@ static double	cylinder_end(t_cylinder *cylinder, t_point ray, double div, t_poin
 	return (INFINITY);
 }
 
-static double	cylinder_side(t_cylinder *cylinder, t_point ray, t_point *origin)
+static double	cylinder_side_camera(t_cylinder *cylinder, t_point ray)
 {
 	double	t1;
 	double	t2;
 	double	limit;
 	double	value;
-	t_point		oc;
 
-	if (origin)
-	{
-		oc = sub_vectors(*origin, cylinder->coord);
-	}
-	else
-	{
-		oc = cylinder->relative_coord;
-	}
 	value = dot_product(ray, cylinder->direction);
 	t1 = quad_solv(1 - value * value, 2.0 * (dot_product(ray, \
-		oc) - value * dot_product(oc, cylinder->direction)), \
-		(norm_square(oc) \
-			- dot_product(oc, cylinder->direction) * dot_product(oc, cylinder->direction) - cylinder->radius_square), &t2);
+		cylinder->relative_coord) - value * cylinder->value), \
+		cylinder->value_quad, &t2);
 	if (!isnan(t1))
 	{
 		value = dot_product(ray, cylinder->vector_semi_height);
-		limit = t1 * value + dot_product(oc, cylinder->vector_semi_height); 
-		if (t1 >= 0.0 && -(cylinder->semi_height_square) < limit \
-			&& limit < cylinder->semi_height_square && t1 < t2)
+		limit = t1 * value + cylinder->value_semi_height;
+		if (t1 >= 0.0 && -(cylinder->semi_height_2) < limit \
+			&& limit < cylinder->semi_height_2 && t1 < t2)
 			return (t1);
-		limit = t2 * value + dot_product(oc, cylinder->vector_semi_height);
-		if (t2 >= 0.0 && -(cylinder->semi_height_square) < limit \
-			&& limit < cylinder->semi_height_square)
+		limit = t2 * value + cylinder->value_semi_height;
+		if (t2 >= 0.0 && -(cylinder->semi_height_2) < limit \
+			&& limit < cylinder->semi_height_2)
 			return (t2);
 	}
 	return (INFINITY);
 }
 
-double	intersect_cylinder(t_point ray, void *object)
+static double	cylinder_end(t_cylinder *cylinder, t_point ray, double div, t_point origin)
 {
-	t_cylinder	*cylinder;
-	double		div;
-	double		t1;
-	double		t2;
+	double	t1;
+	double	t2;
+	t_point	oct;
+	t_point	ocd;
 
-	t1 = INFINITY;
-	t2 = INFINITY;
-	cylinder = (t_cylinder *)object;
-	div = dot_product(ray, cylinder->direction);
-	if (div)
-		t1 = cylinder_end(cylinder, ray, div,0);
-	if (-1.0 != div && div != 1.0)
-		t2 = cylinder_side(cylinder, ray, 0);
+	oct = sub_vectors(origin, cylinder->center_top);
+	ocd = sub_vectors(origin, cylinder->center_down);
+	t1 = dot_product(oct, cylinder->direction);
+	t2 = dot_product(ocd, cylinder->direction);
+	t1 /= div;
+	t2 /= div;
+	if (norm_square(sub_vectors(scalar_multi(t1, ray), oct)) > cylinder->radius_2)
+		t1 = INFINITY;
+	if (norm_square(sub_vectors(scalar_multi(t2, ray), ocd)) > cylinder->radius_2)
+		t2 = INFINITY;
 	if (isfinite(t1) && t1 >= 0.0 && t1 < t2)
 		return (t1);
 	if (isfinite(t2) && t2 >= 0.0)
@@ -107,7 +82,33 @@ double	intersect_cylinder(t_point ray, void *object)
 	return (INFINITY);
 }
 
-double	intersect_cylinder_absolute(t_point ray, void *object, t_point origin)
+static double	cylinder_side(t_cylinder *cy, t_point ray, t_point origin)
+{
+	double	t1;
+	double	t2;
+	double	limit;
+	double	value;
+	double	value_sh;
+
+	value = dot_product(ray, cy->direction);
+	t1 = dot_product(origin, cy->direction);
+	limit = norm_square(origin) - t1 * t1 - cy->radius_2;
+	value_sh = dot_product(origin, cy->vector_semi_height);
+	t1 = quad_solv(1 - value * value, 2.0 * (dot_product(ray, origin) - value * t1), limit, &t2);
+	if (!isnan(t1))
+	{
+		value = dot_product(ray, cy->vector_semi_height);
+		limit = t1 * value + value_sh;
+		if (t1 >= 0.0 && -(cy->semi_height_2) < limit && limit < cy->semi_height_2 && t1 < t2)
+			return (t1);
+		limit = t2 * value + value_sh;
+		if (t2 >= 0.0 && -(cy->semi_height_2) < limit && limit < cy->semi_height_2)
+			return (t2);
+	}
+	return (INFINITY);
+}
+
+double	intersect_cylinder(t_point ray, void *object, t_point *origin)
 {
 	t_cylinder	*cylinder;
 	double		div;
@@ -118,22 +119,17 @@ double	intersect_cylinder_absolute(t_point ray, void *object, t_point origin)
 	t1 = INFINITY;
 	t2 = INFINITY;
 	div = dot_product(ray, cylinder->direction);
-	if (div)
-		t1 = cylinder_end(cylinder, ray, div, &origin);
-	if (-1.0 != div && div != 1.0)
-		t2 = cylinder_side(cylinder, ray, &origin);
+	if (div && origin)
+		t1 = cylinder_end(cylinder, ray, div, *origin);
+	else if (div)
+		t1 = cylinder_end_camera(cylinder, ray, div);
+	if (-1.0 != div && div != 1.0 && origin)
+		t2 = cylinder_side(cylinder, ray, sub_vectors(*origin, cylinder->coord));
+	else if (-1.0 != div && div != 1.0)
+		t2 = cylinder_side_camera(cylinder, ray);
 	if (isfinite(t1) && t1 >= 0.0 && t1 < t2)
 		return (t1);
 	if (isfinite(t2) && t2 >= 0.0)
 		return (t2);
 	return (INFINITY);
-}
-
-unsigned int	get_color_cylinder(t_scene *scene, void *object)
-{
-	t_cylinder	*cylinder;
-
-	(void)scene;
-	cylinder = (t_cylinder *)object;
-	return (color_trgb(cylinder->color));
 }

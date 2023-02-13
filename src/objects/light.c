@@ -21,3 +21,12 @@ void	update_light(t_scene *scene, void *object, unsigned int flags)
 	light = (t_light *)object;
 	light->relative_coord = sub_vectors(light->coord, scene->camera->coord);
 }
+
+unsigned int	get_color_light(t_scene *scene, void *object)
+{
+	t_light	*light;
+
+	(void)scene;
+	light = (t_light *)object;
+	return (color_trgb(light->color));
+}
