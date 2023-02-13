@@ -6,7 +6,7 @@
 /*   By: ncotte <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/29 11:02:34 by ncotte            #+#    #+#             */
-/*   Updated: 2023/02/12 21:50:48 by shalimi          ###   ########.fr       */
+/*   Updated: 2023/02/13 22:53:24 by shalimi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -283,6 +283,10 @@ t_point			sub_vectors(t_point v1, t_point v2);
 
 t_point			scalar_multi(double lambda, t_point vector);
 
+double			vector_angle(t_point a, t_point b);
+
+t_point			reflection(t_point ray, t_point axis);
+
 t_point			cross_product(t_point v1, t_point v2);
 
 double			dot_product(t_point v1, t_point v2);
@@ -347,10 +351,14 @@ unsigned char	color_get_b(unsigned int trgb);
 
 double			intersect_light(t_point ray, void *object, t_point *origin);
 
+unsigned int	print_sphere(t_scene *scene, t_sphere *sphere, t_point hit_point, t_point hit_point_to_light);
 double			intersect_sphere(t_point ray, void *object, t_point *origin);
 
+unsigned int	print_plane(t_scene *scene, t_plane *plane, t_point hit_point, t_point hit_point_to_light);
 double			intersect_plane(t_point ray, void *object, t_point *origin);
 
+
+unsigned int	print_cylinder(t_scene *scene, t_cylinder *cy, t_point hit_point, t_point hit_point_to_light);
 double			intersect_cylinder(t_point ray, void *object, t_point *origin);
 
 void			update_scene(t_scene *scene, unsigned int flags);
@@ -360,6 +368,8 @@ void			put_pixel(t_scene *scene, int x, int y, unsigned int color);
 double			find_intersect(t_scene *scene, t_point ray, int *index);
 
 void			print_window(t_scene *scene, int offset);
+
+unsigned int	phong_color(t_scene *scene, t_color base, double dot);
 
 /* rotations */
 

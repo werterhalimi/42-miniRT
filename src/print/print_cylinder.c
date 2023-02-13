@@ -6,11 +6,36 @@
 /*   By: ncotte <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 14:36:28 by ncotte            #+#    #+#             */
-/*   Updated: 2023/02/12 23:19:15 by shalimi          ###   ########.fr       */
+/*   Updated: 2023/02/13 22:57:28 by shalimi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
+unsigned int	print_cylinder(t_scene *scene, t_cylinder *cy \
+		, t_point hit_point, t_point hit_point_to_light)
+{
+	t_color	base;
+	double	angle2;
+	t_point	rebound;
+	t_point	normal;
+
+	normal = add_vectors(get_projection_unit(sub_vectors(hit_point, cy->coord), cy->direction), cy->coord);
+	normal = unit_vector(sub_vectors(hit_point,normal));
+	if (distance_square(hit_point, cy->center_top) <= cy->radius_2)
+			normal = cy->direction;
+	if (distance_square(hit_point, cy->center_down) <= cy->radius_2)
+			normal = scalar_multi(-1.0, cy->direction);
+	angle2 = vector_angle(normal, unit_vector(sub_vectors(scene->light->coord, hit_point)));
+	rebound = reflection(sub_vectors(hit_point, scene->light->coord), normal);
+	base= cy->color;
+	if (angle2 >= M_PI_2)
+		return create_trgb(0,
+				(scene->amb_light->color.r + base.r) / 255 * scene->amb_light->ratio,
+				(scene->amb_light->color.g + base.g) / 255 * scene->amb_light->ratio,
+				(scene->amb_light->color.b + base.b) / 255 * scene->amb_light->ratio
+				);
+	return phong_color(scene, base, dot_product(normal, hit_point_to_light));
+}
 
 static double	cylinder_end_camera(t_cylinder *cy, t_point ray, double div)
 {

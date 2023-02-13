@@ -6,7 +6,7 @@
 #    By: ncotte <marvin@42lausanne.ch>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/12 11:39:15 by ncotte            #+#    #+#              #
-#    Updated: 2023/01/04 21:41:52 by shalimi          ###   ########.fr        #
+#    Updated: 2023/02/13 22:35:18 by shalimi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,6 +19,7 @@ SRCS_FILES		:=	utils/error.c		utils/quit.c		utils/info.c \
 					print/color_trgb.c	print/put_pixel.c	print/update_scene.c \
 					print/get_color.c	print/print_plane.c	print/print_cylinder.c \
 					print/print_light.c	print/print_sphere.c	print/print_window.c \
+					print/phong.c \
 					rotations/rotation.c				rotations/rotation_camera.c \
 					rotations/rotation_plane.c			rotations/rotation_cylinder.c \
 					translations/translation.c			translations/translation_camera.c \

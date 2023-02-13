@@ -6,11 +6,28 @@
 /*   By: ncotte <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 13:59:46 by ncotte            #+#    #+#             */
-/*   Updated: 2023/02/12 19:03:19 by shalimi          ###   ########.fr       */
+/*   Updated: 2023/02/13 22:26:43 by shalimi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
+
+double	vector_angle(t_point a, t_point b)
+{
+	double dot;
+
+	dot = dot_product(a, b);
+	return acos(dot);
+}
+
+t_point	reflection(t_point ray, t_point axis)
+{
+	double dot;
+
+	dot = dot_product(ray, axis);
+	return (unit_vector(sub_vectors(ray, scalar_multi(2.0 * dot, axis))));
+
+}
 
 t_point	cross_product(t_point v1, t_point v2)
 {

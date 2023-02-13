@@ -6,7 +6,7 @@
 /*   By: ncotte <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 14:39:19 by ncotte            #+#    #+#             */
-/*   Updated: 2023/02/13 00:05:32 by shalimi          ###   ########.fr       */
+/*   Updated: 2023/02/13 22:57:46 by shalimi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,8 @@ int	find_intersect_light(t_scene *scene, t_point ray, t_point origin, t_objects 
 	return (obj != sender);
 }
 
+
+
 static unsigned int	find_color_pixel(t_scene *scene, t_point ray)
 {
 	unsigned int	color;
@@ -71,72 +73,21 @@ static unsigned int	find_color_pixel(t_scene *scene, t_point ray)
 	t_point origin = scene->camera->coord;
 	t_point hit_point = add_vectors(origin, scalar_multi(first_intersect, ray));
 	t_point hit_point_to_light = unit_vector(sub_vectors(scene->light->coord, hit_point));
+	color = obj->get_color(scene, obj->object);
 	if (find_intersect_light(scene, hit_point_to_light, hit_point, obj))
 	{
-		return (0);
+		return create_trgb(0,
+				(scene->amb_light->color.r + color_get_r(color)) / 255 * scene->amb_light->ratio,
+				(scene->amb_light->color.g + color_get_g(color)) / 255 * scene->amb_light->ratio,
+				(scene->amb_light->color.b + color_get_b(color)) / 255 * scene->amb_light->ratio);
+
 	}
-	color = obj->get_color(scene, obj->object);
-    if (obj && obj->type == SPHERE)
-    {
-        t_sphere *sphere = ((t_sphere *)obj->object);
-        t_point center = sphere->coord;
-        t_point normal = unit_vector(sub_vectors(hit_point, center));
-        double dot = dot_product(ray, normal);
-        t_point rebound = unit_vector(sub_vectors(ray, scalar_multi(2.0 * dot, normal)));
-        double dot2 = dot_product(hit_point_to_light, rebound);
-        double angle2 = acos(dot2);
-        t_color base = sphere->color;
-
-        base.r *= (-M_1_PI) * angle2 + 1;
-        base.g *= (-M_1_PI) * angle2 + 1;
-        base.b *= (-M_1_PI) * angle2 + 1;
-
-        return color_trgb(base);
-    }
-
-	 if (obj && obj->type == PLANE)
-    {
-        t_plane *plane = ((t_plane *)obj->object);
-		t_point normal = plane->normal;
-        double dot = dot_product(ray, normal);
-        t_point rebound = unit_vector(sub_vectors(ray, scalar_multi(2.0 * dot, normal)));
-
-        double dot2 = dot_product(hit_point_to_light, rebound);
-        double angle2 = acos(dot2);
-        t_color base = plane->color;
-        base.r *= (-M_1_PI) * angle2 + 1;
-        base.g *= (-M_1_PI) * angle2 + 1;
-        base.b *= (-M_1_PI) * angle2 + 1;
-
-        return color_trgb(base);
-    }
-
-	 if(obj && obj->type == CYLINDER)
-	 {
-		 t_cylinder	*cy = (t_cylinder *) obj->object;
-		 t_point	hit_vector = sub_vectors(hit_point, cy->coord);
-		 t_point	pro = add_vectors(get_projection_unit(hit_vector, cy->direction), cy->coord);
-		 t_point	normal = sub_vectors(hit_point, pro);
-		if (distance_square(hit_point, cy->center_top) <= cy->radius_2)
-			normal = cy->direction;
- 		if (distance_square(hit_point, cy->center_down) <= cy->radius_2)
-			normal = scalar_multi(-1.0, cy->direction);
-		double dot = dot_product(ray, normal);
-        t_point rebound = unit_vector(sub_vectors(ray, scalar_multi(2.0 * dot, normal)));
-        double dot2 = dot_product(hit_point_to_light, rebound);
-        double angle2 = acos(dot2);
-        t_color base = cy->color;
-
-        base.r *= (-M_1_PI) * angle2 + 1;
-        base.g *= (-M_1_PI) * angle2 + 1;
-        base.b *= (-M_1_PI) * angle2 + 1;
-
-        return color_trgb(base);
-
-	 }
-
-
-
+	if (obj && obj->type == SPHERE)
+		return 	print_sphere(scene, (t_sphere *) obj->object, hit_point, hit_point_to_light);
+	if (obj && obj->type == PLANE)
+		return 	print_plane(scene, (t_plane *) obj->object, hit_point, hit_point_to_light);
+	if(obj && obj->type == CYLINDER)
+		return 	print_cylinder(scene, (t_cylinder *) obj->object, hit_point, hit_point_to_light);
 	return (color);
 }
 
