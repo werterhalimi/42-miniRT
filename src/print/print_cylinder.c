@@ -32,16 +32,15 @@ static double	cylinder_end_camera(t_cylinder *cy, t_point ray, double div)
 	return (INFINITY);
 }
 
-static double	cylinder_side_camera(t_cylinder *cylinder, t_point ray)
+static double	cylinder_side_camera(t_cylinder *cylinder, t_point ray, double div)
 {
 	double	t1;
 	double	t2;
 	double	limit;
 	double	value;
 
-	value = dot_product(ray, cylinder->direction);
-	t1 = quad_solv(1 - value * value, 2.0 * (dot_product(ray, \
-		cylinder->relative_coord) - value * cylinder->value), \
+	t1 = quad_solv(1 - div * div, 2.0 * (dot_product(ray, \
+		cylinder->relative_coord) - div * cylinder->value), \
 		cylinder->value_quad, &t2);
 	if (!isnan(t1))
 	{
@@ -81,7 +80,8 @@ static double	cylinder_end(t_cylinder *cy, t_point ray, \
 	return (INFINITY);
 }
 
-static double	cylinder_side(t_cylinder *cy, t_point ray, t_point origin)
+static double	cylinder_side(t_cylinder *cy, t_point ray, \
+					double div, t_point origin)
 {
 	double	t1;
 	double	t2;
@@ -89,12 +89,11 @@ static double	cylinder_side(t_cylinder *cy, t_point ray, t_point origin)
 	double	value;
 	double	value_sh;
 
-	value = dot_product(ray, cy->direction);
 	t1 = dot_product(origin, cy->direction);
 	limit = norm_square(origin) - t1 * t1 - cy->radius_2;
 	value_sh = dot_product(origin, cy->vector_semi_height);
-	t1 = quad_solv(1 - value * value, 2.0 * (dot_product(ray, \
-		origin) - value * t1), limit, &t2);
+	t1 = quad_solv(1 - div * div, 2.0 * (dot_product(ray, \
+		origin) - div * t1), limit, &t2);
 	if (!isnan(t1))
 	{
 		value = dot_product(ray, cy->vector_semi_height);
@@ -126,10 +125,10 @@ double	intersect_cylinder(t_point ray, void *object, t_point *origin)
 	else if (div)
 		t1 = cylinder_end_camera(cylinder, ray, div);
 	if (-1.0 != div && div != 1.0 && origin)
-		t2 = cylinder_side(cylinder, ray, \
+		t2 = cylinder_side(cylinder, ray, div, \
 			sub_vectors(*origin, cylinder->coord));
 	else if (-1.0 != div && div != 1.0)
-		t2 = cylinder_side_camera(cylinder, ray);
+		t2 = cylinder_side_camera(cylinder, ray, div);
 	if (isfinite(t1) && t1 >= 0.0 && t1 < t2)
 		return (t1);
 	if (isfinite(t2) && t2 >= 0.0)

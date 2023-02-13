@@ -27,6 +27,8 @@ static void	init_arrays(char **obj_names, \
 	fct_array[4] = &parse_plane;
 	obj_names[5] = "cy ";
 	fct_array[5] = &parse_cylinder;
+	obj_names[6] = "co ";
+	fct_array[6] = &parse_cone;
 }
 
 static int	parse_selector(t_scene *scene, t_list *current, char *obj_names[], \

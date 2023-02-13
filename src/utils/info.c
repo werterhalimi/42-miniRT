@@ -23,6 +23,7 @@ static char	**init_type_name(void)
 	type_name[SPHERE] = "sphere";
 	type_name[PLANE] = "plane";
 	type_name[CYLINDER] = "cylinder";
+	type_name[CONE] = "cone";
 	return (type_name);
 }
 

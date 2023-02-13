@@ -16,21 +16,25 @@ SRCS_FILES		:=	utils/error.c		utils/quit.c		utils/info.c \
 					maths/trigo.c \
 					objects/camera.c	objects/light.c		objects/amb_light.c \
 					objects/plane.c		objects/sphere.c	objects/cylinder.c \
+					objects/cone.c \
 					print/color_trgb.c	print/put_pixel.c	print/update_scene.c \
-					print/get_color.c	print/print_plane.c	print/print_cylinder.c \
-					print/print_light.c	print/print_sphere.c	print/print_window.c \
+					print/get_color.c	print/print_light.c	print/print_sphere.c \
+					print/print_plane.c	print/print_cone.c	print/print_cylinder.c \
+					print/print_window.c \
 					rotations/rotation.c				rotations/rotation_camera.c \
 					rotations/rotation_plane.c			rotations/rotation_cylinder.c \
+					rotations/rotation_cone.c \
 					translations/translation.c			translations/translation_camera.c \
 					translations/translation_light.c	translations/translation_sphere.c \
 					translations/translation_plane.c	translations/translation_cylinder.c \
+					translations/translation_cone.c \
 					hooks/is_key.c		hooks/mouse_hook.c	hooks/key_hook.c \
 					hooks/release.c \
 					init/next_item.c	init/parse_color.c	init/parse_coord.c \
 					init/parse_vector.c	init/parse_light.c	init/parse_amb_light.c \
 					init/parse_camera.c	init/parse_ratio.c	init/parse_length.c \
 					init/parse_plane.c	init/parse_sphere.c	init/parse_cylinder.c \
-					init/read_file.c	init/init.c \
+					init/parse_cone.c	init/read_file.c	init/init.c \
 					main.c
 
 SRCS_DIR		:=	./src/

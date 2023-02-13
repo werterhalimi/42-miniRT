@@ -56,7 +56,7 @@ static void	scroll_hook(int mouse_code, t_scene *scene)
 			scene->camera->fov += FOV_FACTOR;
 		else if (mouse_code == SCROLL_DOWN && scene->camera->fov > FOV_FACTOR)
 			scene->camera->fov -= FOV_FACTOR;
-		update_camera(scene, CAMERA_FOV);
+		update_scene(scene, CAMERA_FOV);
 	}
 	else if (scene->objects[scene->index - 1]->type == SPHERE)
 		update_radius(mouse_code, scene);

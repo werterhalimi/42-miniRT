@@ -14,8 +14,8 @@
 
 void	update_camera(t_scene *scene, unsigned int flags)
 {
-	t_camera	*camera;
-	t_point		tmp;
+	t_camera		*camera;
+	static t_point	tmp;
 
 	if (!(flags & CAMERA_ALL))
 		return ;
@@ -28,13 +28,12 @@ void	update_camera(t_scene *scene, unsigned int flags)
 		scene->camera->size_y = scene->camera->size_x * (double)(scene->height) \
 		/ (double)(scene->width);
 	}
-	if (flags == UPDATE_ALL || !(flags & CAMERA_TRANSLATION))
+	if (flags == UPDATE_ALL || flags & (CAMERA_ROTATION | CAMERA_FOV))
 	{
 		camera->shift_x = scalar_multi(camera->pixel_size, camera->right);
 		camera->shift_y = scalar_multi(camera->pixel_size, camera->down);
+		tmp = sub_vectors(camera->front, add_vectors(scalar_multi(camera->size_x, \
+			camera->right), scalar_multi(camera->size_y, camera->down)));
 	}
-	tmp = add_vectors(scalar_multi(camera->size_x, camera->right), \
-		scalar_multi(camera->size_y, camera->down));
-	scene->window_corner = sub_vectors(add_vectors(camera->coord, \
-		camera->front), tmp);
+	scene->window_corner = add_vectors(camera->coord, tmp);
 }

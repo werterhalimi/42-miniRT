@@ -86,11 +86,17 @@
 # define CYLINDER_HEIGHT		0x00080000
 # define CYLINDER_ALL			0x000F0000
 
+# define CONE_TRANSLATION		0x00100000
+# define CONE_ROTATION			0x00200000
+# define CONE_RADIUS			0x00400000
+# define CONE_HEIGHT			0x00800000
+# define CONE_ALL				0x00F00000
+
 # define UPDATE_ALL				0xFFFFFFFF
 
 /* Number of objects */
 
-# define NB_OBJECTS				6
+# define NB_OBJECTS				7
 
 /* Translation, rotation & other factors */
 
@@ -107,7 +113,8 @@ enum {
 	MAIN_LIGHT,
 	SPHERE,
 	PLANE,
-	CYLINDER
+	CYLINDER,
+	CONE
 };
 
 /* Structures */
@@ -206,6 +213,28 @@ typedef struct s_cylinder
 	double	value_semi_height;
 	double	value_quad;
 }	t_cylinder;
+
+typedef struct s_cone
+{
+	t_point	coord;
+	t_point	relative_coord;
+	t_point	direction;
+	t_point	vector_height;
+	t_point	center_base;
+	t_point	relative_center_base;
+	t_point	right;
+	t_point	down;
+	t_color	color;
+	double	radius;
+	double	radius_2;
+	double	height;
+	double	height_2;
+	double	value;
+	double	ratio;
+	double	value_base;
+	double	value_height;
+	double	value_quad;
+}	t_cone;
 
 typedef struct s_objects
 {
@@ -328,6 +357,10 @@ void			update_cylinder(t_scene *scene, \
 
 unsigned int	get_color_cylinder(t_scene *scene, void *object);
 
+void			update_cone(t_scene *scene, void *object, unsigned int flags);
+
+unsigned int	get_color_cone(t_scene *scene, void *object);
+
 /* print */
 
 unsigned int	create_trgb(unsigned char t, unsigned char r, \
@@ -353,6 +386,8 @@ double			intersect_plane(t_point ray, void *object, t_point *origin);
 
 double			intersect_cylinder(t_point ray, void *object, t_point *origin);
 
+double			intersect_cone(t_point ray, void *object, t_point *origin);
+
 void			update_scene(t_scene *scene, unsigned int flags);
 
 void			put_pixel(t_scene *scene, int x, int y, unsigned int color);
@@ -377,6 +412,10 @@ void			rotation_relative_cylinder(int key_code, t_scene *scene);
 
 void			rotation_absolute_cylinder(t_scene *scene, t_matrix matrix);
 
+void			rotation_relative_cone(int key_code, t_scene *scene);
+
+void			rotation_absolute_cone(t_scene *scene, t_matrix matrix);
+
 /* translations */
 
 void			translation(int key_code, t_scene *scene);
@@ -396,6 +435,10 @@ void			translation_absolute_plane(t_scene *scene, t_point vector);
 void			translation_relative_cylinder(int key_code, t_scene *scene);
 
 void			translation_absolute_cylinder(t_scene *scene, t_point vector);
+
+void			translation_relative_cone(int key_code, t_scene *scene);
+
+void			translation_absolute_cone(t_scene *scene, t_point vector);
 
 /* hooks */
 
@@ -442,6 +485,8 @@ int				parse_plane(t_scene *scene, t_list *current, t_objects *object);
 
 int				parse_cylinder(t_scene *scene, t_list *current, \
 					t_objects *object);
+
+int				parse_cone(t_scene *scene, t_list *current, t_objects *object);
 
 int				read_file(int argc, char **argv, t_list **objects);
 

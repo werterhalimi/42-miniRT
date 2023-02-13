@@ -23,3 +23,6 @@
 # Cylinder          |                  |             | Diameter as     | Height as       |
 #                   |                  |             | positive double | positive double |
   cy                  1.0,0.0,0.0        0.0,0.0,1.0   0.2               0.4               10,0,255
+# Cone              |                  |             | Diameter as     | Height as       |
+#                   |                  |             | positive double | positive double |
+  co                  1.0,-1.0,0.0       0.0,0.0,1.0   0.2               0.4               30,255,30
