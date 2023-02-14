@@ -12,14 +12,23 @@
 
 #include "miniRT.h"
 
+void	fov_camera(int mouse_code, t_scene *scene)
+{
+	if (mouse_code == SCROLL_UP && scene->camera->fov < M_PI - FOV_FACTOR)
+		scene->camera->fov += FOV_FACTOR;
+	else if (mouse_code == SCROLL_DOWN && scene->camera->fov > FOV_FACTOR)
+		scene->camera->fov -= FOV_FACTOR;
+	update_scene(scene, CAMERA_FOV);
+}
+
 void	update_camera(t_scene *scene, unsigned int flags)
 {
-	t_camera		*camera;
+	t_camera		*cam;
 	static t_point	tmp;
 
 	if (!(flags & CAMERA_ALL))
 		return ;
-	camera = scene->camera;
+	cam = scene->camera;
 	if (flags & CAMERA_FOV)
 	{
 		scene->camera->size_x = tan(scene->camera->fov * 0.5);
@@ -28,12 +37,12 @@ void	update_camera(t_scene *scene, unsigned int flags)
 		scene->camera->size_y = scene->camera->size_x * (double)(scene->height) \
 		/ (double)(scene->width);
 	}
-	if (flags == UPDATE_ALL || flags & (CAMERA_ROTATION | CAMERA_FOV))
+	if (flags & (CAMERA_ROTATION | CAMERA_FOV))
 	{
-		camera->shift_x = scalar_multi(camera->pixel_size, camera->right);
-		camera->shift_y = scalar_multi(camera->pixel_size, camera->down);
-		tmp = sub_vectors(camera->front, add_vectors(scalar_multi(camera->size_x, \
-			camera->right), scalar_multi(camera->size_y, camera->down)));
+		cam->shift_x = scalar_multi(cam->pixel_size, cam->right);
+		cam->shift_y = scalar_multi(cam->pixel_size, cam->down);
+		tmp = sub_vectors(cam->front, add_vectors(scalar_multi(cam->size_x, \
+			cam->right), scalar_multi(cam->size_y, cam->down)));
 	}
-	scene->window_corner = add_vectors(camera->coord, tmp);
+	scene->window_corner = add_vectors(cam->coord, tmp);
 }

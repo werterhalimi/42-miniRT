@@ -12,31 +12,24 @@
 
 #include "miniRT.h"
 
-unsigned int	print_sphere(t_scene *scene, t_sphere *sphere \
-		, t_point hit_point, t_point hit_point_to_light)
+unsigned int	print_sphere(t_scene *scene, void *object, \
+					t_point hit_point, t_point hit_point_to_light)
 {
-	t_color	base;
-	double	angle2;
-	t_point	rebound;
-	t_point	normal;
+	t_sphere	*sphere;
+	t_color		base;
+	t_point		rebound;
+	t_point		normal;
 
+	sphere = (t_sphere *)object;
 	normal = unit_vector(sub_vectors(hit_point, sphere->coord));
 	rebound = reflection(sub_vectors(hit_point, scene->light->coord), normal);
-	angle2 = vector_angle(normal, unit_vector(sub_vectors(scene->light->coord, hit_point)));
-	base= sphere->color;
-
-
-//t_point h = unit_vector(add_vectors(scalar_multi(-1.0, ray), hit_point_to_light));
-	//double specular = pow(dot_product(normal, h), 25);
-
-	if (angle2 >= M_PI_2)
-		return create_trgb(0,
-				(scene->amb_light->color.r + base.r) / 255 * scene->amb_light->ratio,
-				(scene->amb_light->color.g + base.g) / 255 * scene->amb_light->ratio,
-				(scene->amb_light->color.b + base.b) / 255 * scene->amb_light->ratio
-				);
-
-	return phong_color(scene, base, dot_product(normal, hit_point_to_light));
+	base = sphere->color;
+//	t_point h = unit_vector(add_vectors(scalar_multi(-1.0, ray), hit_point_to_light));
+//	double specular = pow(dot_product(normal, h), 25);
+	if (dot_product(normal, unit_vector(sub_vectors(scene->light->coord, \
+		hit_point))) <= 0.0)
+		return (phong_ambient(scene->amb_light, base));
+	return (phong_color(scene, base, dot_product(normal, hit_point_to_light)));
 /*	return create_trgb(0,
 			(scene->amb_light->color.r + base.r) / 255 * scene->amb_light->ratio + (scene->light->color.r * base.r * dot_product(normal, hit_point_to_light) / 255) *scene->light->ratio, //+  specular * (scene->light->color.r - base.r),
 			(scene->amb_light->color.g + base.g) / 255 * scene->amb_light->ratio + (scene->light->color.g * base.g * dot_product(normal, hit_point_to_light) / 255) *scene->light->ratio, //+  specular * (scene->light->color.g - base.g),
@@ -44,26 +37,23 @@ unsigned int	print_sphere(t_scene *scene, t_sphere *sphere \
 			);*/
 }
 
-double	intersect_sphere(t_point ray, void *object, t_point *origin)
+t_color	get_color_sphere(t_scene *scene, void *object)
 {
 	t_sphere	*sphere;
-	t_point		oc;
-	double		value;
-	double		t1;
-	double		t2;
+
+	(void)scene;
+	sphere = (t_sphere *)object;
+	return (sphere->color);
+}
+
+t_point	normal_sphere(t_point ray, t_point hit_point, void *object)
+{
+	t_sphere	*sphere;
+	t_point		normal;
 
 	sphere = (t_sphere *)object;
-	oc = sphere->relative_coord;
-	value = sphere->value;
-	if (origin)
-	{
-		oc = sub_vectors(*origin, sphere->coord);
-		value = norm_square(oc) - sphere->radius_2;
-	}
-	t1 = quad_solv(1.0, 2.0 * dot_product(ray, oc), value, &t2);
-	if (!isnan(t1) && t1 < t2 && t1 >= 0.0)
-		return (t1);
-	if (!isnan(t2) && t2 >= 0.0)
-		return (t2);
-	return (INFINITY);
+	normal = unit_vector(sub_vectors(hit_point, sphere->coord));
+	if (dot_product(normal, ray) <= 0.0)
+		return (normal);
+	return (scalar_multi(-1.0, normal));
 }

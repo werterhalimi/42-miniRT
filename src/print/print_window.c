@@ -12,85 +12,53 @@
 
 #include "miniRT.h"
 
-double	find_intersect(t_scene *scene, t_point ray, int *index)
+static int	is_shadow(t_scene *scene, t_phong phong)
 {
-	double			first_intersect;
-	double			tmp;
-	int				i;
-
-	i = -1;
-	*index = 0;
-	first_intersect = INFINITY;
-	while ((scene->objects)[++i])
-	{
-		tmp = ((scene->objects)[i])->intersect(ray, \
-			((scene->objects)[i])->object, NULL);
-		if (!isinf(tmp) && tmp < first_intersect)
-		{
-			first_intersect = tmp;
-			*index = i + 1;
-		}
-	}
-	return (first_intersect);
-}
-
-int	find_intersect_light(t_scene *scene, t_point ray, t_point origin, t_objects *sender)
-{
-	double			first_intersect;
-	double			tmp;
-	int				i;
-	t_objects		*obj;
+	double	tmp;
+	int		i;
 
 	i = 0;
-	obj = sender;
-	first_intersect = INFINITY;
-	while ((scene->objects)[++i])
+	if (dot_product(phong.normal, phong.light_ray) <= 0.0)
+		return (YES);
+	phong.light_ray_dist_2 = norm_square(phong.light_ray);
+	phong.light_ray = unit_vector(phong.light_ray);
+	while (scene->objects[++i])
 	{
-		tmp = ((scene->objects)[i])->intersect(ray, \
-			((scene->objects)[i])->object, &origin);
-		if (!isinf(tmp) && tmp < first_intersect && scene->objects[i] != sender)
-		{
-			first_intersect = tmp;
-			obj = scene->objects[i];
-		}
+		tmp = scene->objects[i]->intersect(phong.light_ray, \
+			scene->objects[i]->object, &phong.hit_point);
+		tmp *= tmp;
+		if (!isinf(tmp) && tmp < phong.light_ray_dist_2 \
+			&& scene->objects[i] != phong.object)
+			return (YES);
 	}
-	return (obj != sender);
+	return (NO);
 }
-
-
 
 static unsigned int	find_color_pixel(t_scene *scene, t_point ray)
 {
-	unsigned int	color;
-	double			first_intersect;
-	t_objects       *obj;
-	int				i;
+	t_phong		phong;
+//	double		intersect;
+//	t_point		hit_point_to_light;
+//	t_point		hit_point;
+//	t_color		color;
+//	t_object	*obj;
 
-	first_intersect = find_intersect(scene, ray, &i);
-	if (!i--)
+	phong.camera_ray = unit_vector(sub_vectors(ray, scene->camera->coord));
+//	ray = unit_vector(sub_vectors(ray, scene->camera->coord));
+	phong.object = find_intersect(scene, phong.camera_ray, \
+		&phong.camera_ray_dist, NULL);
+	if (!phong.object)
 		return (0);
-	obj = (scene->objects)[i];
-	t_point origin = scene->camera->coord;
-	t_point hit_point = add_vectors(origin, scalar_multi(first_intersect, ray));
-	t_point hit_point_to_light = unit_vector(sub_vectors(scene->light->coord, hit_point));
-	color = obj->get_color(scene, obj->object);
-	if (find_intersect_light(scene, hit_point_to_light, hit_point, obj))
-	{
-		return create_trgb(0,
-				(scene->amb_light->color.r + color_get_r(color)) / 255 * scene->amb_light->ratio,
-				(scene->amb_light->color.g + color_get_g(color)) / 255 * scene->amb_light->ratio,
-				(scene->amb_light->color.b + color_get_b(color)) / 255 * scene->amb_light->ratio);
-
-	}
-	if (obj && obj->type == SPHERE)
-		return 	print_sphere(scene, (t_sphere *) obj->object, hit_point, hit_point_to_light);
-	if (obj && obj->type == PLANE)
-		return 	print_plane(scene, (t_plane *) obj->object, hit_point, hit_point_to_light);
-	if(obj && obj->type == CYLINDER)
-		return 	print_cylinder(scene, (t_cylinder *) obj->object, hit_point, hit_point_to_light);
-	if(obj && obj->type == CONE)
-		return 	print_cone(scene, (t_cone *) obj->object, hit_point, hit_point_to_light);
-	return (color);
+	phong.hit_point = add_vectors(scene->camera->coord, \
+		scalar_multi(phong.camera_ray_dist, phong.camera_ray));
+	phong.normal = phong.object->get_normal(phong.camera_ray, \
+		phong.hit_point, phong.object->object);
+	phong.light_ray = sub_vectors(scene->light->coord, phong.hit_point);
+	phong.color = phong.object->get_color(scene, phong.object->object);
+	if (is_shadow(scene, phong))
+		return (phong_ambient(scene->amb_light, phong.color));
+	return (phong.object->print(scene, phong.object->object, phong.hit_point, \
+		unit_vector(phong.light_ray)));
 }
 
 void	print_window(t_scene *scene, int offset)
@@ -110,7 +78,7 @@ void	print_window(t_scene *scene, int offset)
 		while (++y < scene->height)
 		{
 			if (!(x % offset) && !(y % offset))
-				color = find_color_pixel(scene, unit_vector(ray));
+				color = find_color_pixel(scene, ray);
 			else if (x % offset && !(y % offset))
 				color = get_pixel_color(scene, x - x % offset, y);
 			put_pixel(scene, x, y, color);

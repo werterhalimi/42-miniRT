@@ -12,12 +12,16 @@
 
 #include "miniRT.h"
 
-int	is_sphere(t_point point, t_sphere sphere)
+void	radius_sphere(int mouse_code, t_scene *scene)
 {
-	if (norm_square(sub_vectors(point, sphere.coord)) \
-		== sphere.radius * sphere.radius)
-		return (YES);
-	return (NO);
+	t_sphere	*sphere;
+
+	sphere = (t_sphere *)(scene->objects[scene->index - 1]->object);
+	if (mouse_code == SCROLL_UP)
+		sphere->radius *= (1 + RADIUS_FACTOR);
+	else if (sphere->radius > 0.0)
+		sphere->radius *= (1 - RADIUS_FACTOR);
+	update_scene(scene, SPHERE_RADIUS);
 }
 
 void	update_sphere(t_scene *scene, void *object, unsigned int flags)
@@ -32,13 +36,4 @@ void	update_sphere(t_scene *scene, void *object, unsigned int flags)
 	if (flags & SPHERE_RADIUS)
 		sp->radius_2 = sp->radius * sp->radius;
 	sp->value = norm_square(sp->relative_coord) - sp->radius_2;
-}
-
-unsigned int	get_color_sphere(t_scene *scene, void *object)
-{
-	t_sphere	*sphere;
-
-	(void)scene;
-	sphere = (t_sphere *)object;
-	return (color_trgb(sphere->color));
 }

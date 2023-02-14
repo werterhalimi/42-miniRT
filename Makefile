@@ -10,17 +10,20 @@
 #                                                                              #
 # **************************************************************************** #
 
-SRCS_FILES		:=	utils/error.c		utils/quit.c		utils/info.c \
-					maths/point.c		maths/vector.c		maths/quad_solv.c \
-					maths/matrix.c		maths/quake.c		maths/str_to_double.c \
+SRCS_FILES		:=	utils/error.c			utils/quit.c			utils/info.c \
+					maths/point.c			maths/vector.c			maths/quad_solv.c \
+					maths/matrix.c			maths/quake.c			maths/str_to_double.c \
 					maths/trigo.c \
-					objects/camera.c	objects/light.c		objects/amb_light.c \
-					objects/plane.c		objects/sphere.c	objects/cylinder.c \
+					objects/camera.c		objects/light.c			objects/amb_light.c \
+					objects/plane.c			objects/sphere.c		objects/cylinder.c \
 					objects/cone.c \
-					print/color_trgb.c	print/put_pixel.c	print/update_scene.c \
-					print/get_color.c	print/print_plane.c	print/print_cylinder.c \
-					print/print_light.c	print/print_sphere.c	print/print_window.c \
-					print/phong.c		print/print_cone.c \
+					intersect/intersect_light.c			intersect/intersect_plane.c \
+					intersect/intersect_sphere.c		intersect/intersect_cylinder.c \
+					intersect/intersect_cone.c			intersect/find_intersect.c \
+					print/color_trgb.c		print/put_pixel.c		print/update_scene.c \
+					print/get_color.c		print/print_plane.c		print/print_cylinder.c \
+					print/print_light.c		print/print_sphere.c	print/print_window.c \
+					print/phong.c			print/print_cone.c \
 					rotations/rotation.c				rotations/rotation_camera.c \
 					rotations/rotation_plane.c			rotations/rotation_cylinder.c \
 					rotations/rotation_cone.c \
@@ -28,13 +31,13 @@ SRCS_FILES		:=	utils/error.c		utils/quit.c		utils/info.c \
 					translations/translation_light.c	translations/translation_sphere.c \
 					translations/translation_plane.c	translations/translation_cylinder.c \
 					translations/translation_cone.c \
-					hooks/is_key.c		hooks/mouse_hook.c	hooks/key_hook.c \
+					hooks/is_key.c			hooks/mouse_hook.c		hooks/key_hook.c \
 					hooks/release.c \
-					init/next_item.c	init/parse_color.c	init/parse_coord.c \
-					init/parse_vector.c	init/parse_light.c	init/parse_amb_light.c \
-					init/parse_camera.c	init/parse_ratio.c	init/parse_length.c \
-					init/parse_plane.c	init/parse_sphere.c	init/parse_cylinder.c \
-					init/parse_cone.c	init/read_file.c	init/init.c \
+					start/next_item.c		start/parse_color.c		start/parse_coord.c \
+					start/parse_vector.c	start/parse_ratio.c		start/parse_length.c \
+					start/parse_camera.c	start/parse_light.c		start/parse_amb_light.c \
+					start/parse_plane.c		start/parse_sphere.c	start/parse_cylinder.c \
+					start/parse_cone.c		start/read_file.c		start/init.c \
 					main.c
 
 SRCS_DIR		:=	./src/
@@ -43,8 +46,8 @@ SRCS			:=	$(addprefix $(SRCS_DIR),$(SRCS_FILES))
 OBJS_FILES		:=	$(SRCS_FILES:.c=.o)
 OBJS_DIR		:=	./bin/
 OBJS_SUB_DIR	:= 	$(OBJS_DIR)objects	$(OBJS_DIR)maths	$(OBJS_DIR)rotations \
-					$(OBJS_DIR)init		$(OBJS_DIR)utils	$(OBJS_DIR)translations \
-					$(OBJS_DIR)print	$(OBJS_DIR)hooks
+					$(OBJS_DIR)start	$(OBJS_DIR)utils	$(OBJS_DIR)translations \
+					$(OBJS_DIR)print	$(OBJS_DIR)hooks	$(OBJS_DIR)intersect
 OBJS			:=	$(addprefix $(OBJS_DIR),$(OBJS_FILES))
 
 LIBFT_DIR		:=	./libft/

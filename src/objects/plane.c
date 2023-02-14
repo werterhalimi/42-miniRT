@@ -12,13 +12,6 @@
 
 #include "miniRT.h"
 
-int	is_plane(t_point point, t_plane plane)
-{
-	if (dot_product(sub_vectors(point, plane.coord), plane.normal))
-		return (NO);
-	return (YES);
-}
-
 void	update_plane(t_scene *scene, void *object, unsigned int flags)
 {
 	t_plane	*plane;
@@ -28,13 +21,4 @@ void	update_plane(t_scene *scene, void *object, unsigned int flags)
 	plane = (t_plane *)object;
 	plane->value = dot_product(sub_vectors(plane->coord, \
 		scene->camera->coord), plane->normal);
-}
-
-unsigned int	get_color_plane(t_scene *scene, void *object)
-{
-	t_plane	*plane;
-
-	(void)scene;
-	plane = (t_plane *)object;
-	return (color_trgb(plane->color));
 }

@@ -12,21 +12,10 @@
 
 #include "miniRT.h"
 
-double	vector_angle(t_point a, t_point b)
-{
-	double dot;
-
-	dot = dot_product(a, b);
-	return acos(dot);
-}
-
 t_point	reflection(t_point ray, t_point axis)
 {
-	double dot;
-
-	dot = dot_product(ray, axis);
-	return (unit_vector(sub_vectors(ray, scalar_multi(2.0 * dot, axis))));
-
+	return (unit_vector(sub_vectors(ray, \
+		scalar_multi(2.0 * dot_product(ray, axis), axis))));
 }
 
 t_point	cross_product(t_point v1, t_point v2)

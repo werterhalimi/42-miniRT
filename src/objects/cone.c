@@ -12,6 +12,30 @@
 
 #include "miniRT.h"
 
+void	radius_cone(int mouse_code, t_scene *scene)
+{
+	t_cone	*cone;
+
+	cone = (t_cone *)(scene->objects[scene->index - 1]->object);
+	if (mouse_code == SCROLL_UP)
+		cone->radius *= (1 + RADIUS_FACTOR);
+	else if (cone->radius > 0.0)
+		cone->radius *= (1 - RADIUS_FACTOR);
+	update_scene(scene, CONE_RADIUS);
+}
+
+void	height_cone(int key_code, t_scene *scene)
+{
+	t_cone	*cone;
+
+	cone = (t_cone *)(scene->objects[scene->index - 1]->object);
+	if (key_code == NUMPAD_PLUS)
+		cone->height *= (1 + HEIGHT_FACTOR);
+	else if (cone->radius > 0.0)
+		cone->height *= (1 - HEIGHT_FACTOR);
+	update_scene(scene, CONE_HEIGHT);
+}
+
 static void	update_base(t_cone *co, t_point eye, unsigned int flags)
 {
 	if (flags & CONE_ALL)
@@ -48,13 +72,4 @@ void	update_cone(t_scene *scene, void *object, unsigned int flags)
 		|| flags & ((CONE_ALL & ~CONE_HEIGHT) | CAMERA_TRANSLATION))
 		co->value_quad = norm_square(co->relative_coord) \
 			- co->ratio * co->value * co->value;
-}
-
-unsigned int	get_color_cone(t_scene *scene, void *object)
-{
-	t_cone	*cone;
-
-	(void)scene;
-	cone = (t_cone *)object;
-	return (color_trgb(cone->color));
 }

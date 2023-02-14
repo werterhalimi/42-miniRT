@@ -1,32 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   print_light.c                                      :+:      :+:    :+:   */
+/*   intersect_light.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ncotte <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/12 14:36:18 by ncotte            #+#    #+#             */
-/*   Updated: 2023/02/12 21:40:03 by shalimi          ###   ########.fr       */
+/*   Created: 2023/02/14 13:46:57 by ncotte            #+#    #+#             */
+/*   Updated: 2023/02/14 13:46:58 by ncotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
-unsigned int	print_light(t_scene *scene, void *object, \
-					t_point hit_point, t_point hit_point_to_light)
-{
-	(void) scene;
-	(void) object;
-	(void) hit_point;
-	(void) hit_point_to_light;
-	return (0);
-}
-
-t_color	get_color_light(t_scene *scene, void *object)
+double	intersect_light(t_point ray, void *object, t_point *origin)
 {
 	t_light	*light;
+	t_point	oc;
+	double	t;
 
-	(void)scene;
 	light = (t_light *)object;
-	return (light->color);
+	oc = light->relative_coord;
+	if (origin)
+		oc = sub_vectors(light->coord, *origin);
+	if (ray.x)
+		t = oc.x / ray.x;
+	else if (ray.y)
+		t = oc.y / ray.y;
+	else
+		t = oc.z / ray.z;
+	oc = sub_vectors(scalar_multi(t, ray), oc);
+	if (!(oc.x || oc.y || oc.z) && t >= 0.0)
+		return (t);
+	return (INFINITY);
 }

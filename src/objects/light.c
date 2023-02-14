@@ -12,6 +12,16 @@
 
 #include "miniRT.h"
 
+void	ratio_main_light(int key_code, t_scene *scene)
+{
+	if (key_code == NUMPAD_PLUS \
+		&& scene->light->ratio <= 1.0 - LIGHT_RATIO_FACTOR)
+		scene->light->ratio += LIGHT_RATIO_FACTOR;
+	else if (key_code == NUMPAD_MINUS \
+		&& scene->light->ratio >= LIGHT_RATIO_FACTOR)
+		scene->light->ratio -= LIGHT_RATIO_FACTOR;
+}
+
 void	update_light(t_scene *scene, void *object, unsigned int flags)
 {
 	t_light	*light;
@@ -20,13 +30,4 @@ void	update_light(t_scene *scene, void *object, unsigned int flags)
 		return ;
 	light = (t_light *)object;
 	light->relative_coord = sub_vectors(light->coord, scene->camera->coord);
-}
-
-unsigned int	get_color_light(t_scene *scene, void *object)
-{
-	t_light	*light;
-
-	(void)scene;
-	light = (t_light *)object;
-	return (color_trgb(light->color));
 }

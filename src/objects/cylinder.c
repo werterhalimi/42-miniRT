@@ -12,24 +12,28 @@
 
 #include "miniRT.h"
 
-int	is_cylinder(t_point point, t_cylinder cylinder)
+void	radius_cylinder(int mouse_code, t_scene *scene)
 {
-	t_point	vector_p;
-	t_point	proj_p;
-	double	height_p;
-	double	radius_p;
+	t_cylinder	*cylinder;
 
-	vector_p = sub_vectors(point, cylinder.coord);
-	proj_p = scalar_multi(dot_product(vector_p, \
-		cylinder.direction), cylinder.direction);
-	height_p = norm_square(proj_p);
-	radius_p = norm_square(sub_vectors(vector_p, proj_p));
-	if ((height_p == cylinder.semi_height_2 \
-		&& radius_p < cylinder.radius_2) \
-		|| (height_p < cylinder.semi_height_2 \
-		&& radius_p == cylinder.radius_2))
-		return (YES);
-	return (NO);
+	cylinder = (t_cylinder *)(scene->objects[scene->index - 1]->object);
+	if (mouse_code == SCROLL_UP)
+		cylinder->radius *= (1 + RADIUS_FACTOR);
+	else if (cylinder->radius > 0.0)
+		cylinder->radius *= (1 - RADIUS_FACTOR);
+	update_scene(scene, CYLINDER_RADIUS);
+}
+
+void	height_cylinder(int key_code, t_scene *scene)
+{
+	t_cylinder	*cylinder;
+
+	cylinder = (t_cylinder *)(scene->objects[scene->index - 1]->object);
+	if (key_code == NUMPAD_PLUS)
+		cylinder->semi_height *= (1 + HEIGHT_FACTOR);
+	else if (cylinder->radius > 0.0)
+		cylinder->semi_height *= (1 - HEIGHT_FACTOR);
+	update_scene(scene, CYLINDER_HEIGHT);
 }
 
 static void	update_top_down(t_cylinder *cy, t_point eye, unsigned int flags)
@@ -72,13 +76,4 @@ void	update_cylinder(t_scene *scene, void *object, unsigned int flags)
 		|| flags & ((CYLINDER_ALL & ~CYLINDER_HEIGHT) | CAMERA_TRANSLATION))
 		cy->value_quad = norm_square(cy->relative_coord) \
 			- cy->value * cy->value - cy->radius_2;
-}
-
-unsigned int	get_color_cylinder(t_scene *scene, void *object)
-{
-	t_cylinder	*cylinder;
-
-	(void)scene;
-	cylinder = (t_cylinder *)object;
-	return (color_trgb(cylinder->color));
 }

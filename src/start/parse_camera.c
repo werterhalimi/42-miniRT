@@ -26,7 +26,7 @@ static int	parse_fov(double *fov, char *item)
 	return (SUCCESS);
 }
 
-int	parse_camera(t_scene *scene, t_list *current, t_objects *object)
+int	parse_camera(t_scene *scene, t_list *current, t_object *object)
 {
 	char		*item;
 	t_camera	*camera;

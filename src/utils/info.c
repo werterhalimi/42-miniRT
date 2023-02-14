@@ -51,6 +51,8 @@ void	write_point(t_point point, char *name)
 
 void	write_info(t_scene *scene)
 {
+	int i;
+
 	printf("SCENE :\n");
 	printf("Mode : ");
 	if (scene->mode)
@@ -62,4 +64,16 @@ void	write_info(t_scene *scene)
 	write_point(scene->camera->coord, "Coordinates");
 	write_point(scene->camera->front, "Orientation");
 	printf("FOV = %lf\n", scene->camera->fov);
+	printf("Ambient light ratio = %lf\n", scene->amb_light->ratio);
+	write_point(scene->camera->right, "Right");
+	write_point(scene->camera->down, "Down");
+	write_point(scene->camera->shift_x, "Shift X");
+	write_point(scene->camera->shift_y, "Shift Y");
+	printf("Pixel size = %lf\n", scene->camera->pixel_size);
+	printf("Size X = %lf\n", scene->camera->size_x);
+	printf("Size Y = %lf\n", scene->camera->size_y);
+	write_point(scene->window_corner, "Scene window corner");
+	i = 0;
+	while (scene->objects[i])
+		printf("Object of type : %d\n", scene->objects[i++]->type);
 }

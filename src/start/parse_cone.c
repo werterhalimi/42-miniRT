@@ -36,7 +36,7 @@ static int	sub_parse_cone(t_cone *cone, t_list *current)
 	return (SUCCESS);
 }
 
-int	parse_cone(t_scene *scene, t_list *current, t_objects *object)
+int	parse_cone(t_scene *scene, t_list *current, t_object *object)
 {
 	t_cone	*cone;
 
@@ -49,12 +49,16 @@ int	parse_cone(t_scene *scene, t_list *current, t_objects *object)
 		return (ERROR);
 	cone->down = orthogonal_base(cone->direction, &cone->right);
 	object->object = cone;
+	object->print = &print_cone;
 	object->get_color = &get_color_cone;
+	object->get_normal = &normal_cone;
 	object->intersect = &intersect_cone;
 	object->update = &update_cone;
 	object->translation_relative = &translation_relative_cone;
 	object->rotation_relative = &rotation_relative_cone;
 	object->translation_absolute = &translation_absolute_cone;
 	object->rotation_absolute = &rotation_absolute_cone;
+	object->numpad_plus_minus = &height_cone;
+	object->scroll = &radius_cone;
 	return (SUCCESS);
 }

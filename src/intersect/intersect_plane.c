@@ -1,32 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   print_light.c                                      :+:      :+:    :+:   */
+/*   intersect_plane.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ncotte <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/12 14:36:18 by ncotte            #+#    #+#             */
-/*   Updated: 2023/02/12 21:40:03 by shalimi          ###   ########.fr       */
+/*   Created: 2023/02/14 13:47:03 by ncotte            #+#    #+#             */
+/*   Updated: 2023/02/14 13:47:05 by ncotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
-unsigned int	print_light(t_scene *scene, void *object, \
-					t_point hit_point, t_point hit_point_to_light)
+double	intersect_plane(t_point ray, void *object, t_point *origin)
 {
-	(void) scene;
-	(void) object;
-	(void) hit_point;
-	(void) hit_point_to_light;
-	return (0);
-}
+	t_plane	*plane;
+	double	value;
+	double	div;
+	double	t;
 
-t_color	get_color_light(t_scene *scene, void *object)
-{
-	t_light	*light;
-
-	(void)scene;
-	light = (t_light *)object;
-	return (light->color);
+	plane = (t_plane *)object;
+	div = dot_product(ray, plane->normal);
+	if (!div)
+		return (INFINITY);
+	value = plane->value;
+	if (origin)
+		value = dot_product(sub_vectors(plane->coord, *origin), plane->normal);
+	t = value / div;
+	if (t < 0.0)
+		return (INFINITY);
+	return (t);
 }

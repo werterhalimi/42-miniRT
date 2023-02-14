@@ -11,3 +11,13 @@
 /* ************************************************************************** */
 
 #include "miniRT.h"
+
+void	ratio_amb_light(int key_code, t_scene *scene)
+{
+	if (key_code == NUMPAD_PLUS \
+		&& scene->amb_light->ratio <= 1.0 - LIGHT_RATIO_FACTOR)
+		scene->amb_light->ratio += LIGHT_RATIO_FACTOR;
+	else if (key_code == NUMPAD_MINUS \
+		&& scene->amb_light->ratio >= LIGHT_RATIO_FACTOR)
+		scene->amb_light->ratio -= LIGHT_RATIO_FACTOR;
+}

@@ -13,7 +13,7 @@
 #include "miniRT.h"
 
 static void	init_arrays(char **obj_names, \
-	int (*fct_array[])(t_scene *, t_list *, t_objects *))
+	int (*fct_array[])(t_scene *, t_list *, t_object *))
 {
 	obj_names[0] = "A ";
 	fct_array[0] = &parse_amb_light;
@@ -32,7 +32,7 @@ static void	init_arrays(char **obj_names, \
 }
 
 static int	parse_selector(t_scene *scene, t_list *current, char *obj_names[], \
-	int (*fct_array[])(t_scene *, t_list *, t_objects *))
+	int (*fct_array[])(t_scene *, t_list *, t_object *))
 {
 	int			i;
 	int			j;
@@ -48,12 +48,12 @@ static int	parse_selector(t_scene *scene, t_list *current, char *obj_names[], \
 			j = 0;
 			if (i > 2)
 				j = 1;
-			while ((scene->objects)[j])
+			while (scene->objects[j])
 				j++;
-			(scene->objects)[j] = ft_calloc(1, sizeof (t_objects));
-			if (!(scene->objects)[j])
+			scene->objects[j] = ft_calloc(1, sizeof (t_object));
+			if (!scene->objects[j])
 				return (print_error(ERROR, "Object allocation failed"));
-			return (fct_array[i](scene, current, (scene->objects)[j]));
+			return (fct_array[i](scene, current, scene->objects[j]));
 		}
 	}
 	return (print_error(ERROR, "Unknown object"));
@@ -61,11 +61,11 @@ static int	parse_selector(t_scene *scene, t_list *current, char *obj_names[], \
 
 static int	objects_parsing(t_scene *scene, t_list **list)
 {
-	int		(*fct_array[NB_OBJECTS])(t_scene *, t_list *, t_objects *);
+	int		(*fct_array[NB_OBJECTS])(t_scene *, t_list *, t_object *);
 	char	*obj_names[NB_OBJECTS];
 
 	scene->objects = ft_calloc(scene->nb_objects + 1, \
-		sizeof (*(scene->objects)));
+		sizeof (*scene->objects));
 	if (!(scene->objects))
 		return (print_error(ERROR, "Objects allocation failed"));
 	init_arrays(obj_names, fct_array);
@@ -76,11 +76,11 @@ static int	objects_parsing(t_scene *scene, t_list **list)
 		*list = (*list)->next;
 	}
 	ft_lstclear(list, ft_free);
-	if (!(scene->amb_light))
+	if (!scene->amb_light)
 		return (print_error(ERROR, "An ambient light is missing"));
-	if (!(scene->camera))
+	if (!scene->camera)
 		return (print_error(ERROR, "A camera is missing"));
-	if (!(scene->light))
+	if (!scene->light)
 		return (print_error(ERROR, "A main light is missing"));
 	return (SUCCESS);
 }
@@ -88,19 +88,19 @@ static int	objects_parsing(t_scene *scene, t_list **list)
 static int	init_mlx(t_scene *scene)
 {
 	scene->mlx = mlx_init();
-	if (!(scene->mlx))
+	if (!scene->mlx)
 		return (print_error(ERROR, "MLX initialization has failed"));
 	scene->window = mlx_new_window(scene->mlx, \
 		scene->width, scene->height, "miniRT");
-	if (!(scene->window))
+	if (!scene->window)
 		return (print_error(ERROR, "Windows initialization has failed"));
 	scene->image = mlx_new_image(scene->mlx, \
 		scene->width, scene->height);
-	if (!(scene->image))
+	if (!scene->image)
 		return (print_error(ERROR, "Image initialization has failed"));
 	scene->address = mlx_get_data_addr(scene->image, &scene->bpp, \
 		&scene->line_len, &scene->endian);
-	if (!(scene->address))
+	if (!scene->address)
 		return (print_error(ERROR, "Image address not found"));
 	print_window(scene, 1);
 	return (SUCCESS);

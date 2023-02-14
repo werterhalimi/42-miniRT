@@ -236,18 +236,34 @@ typedef struct s_cone
 	double	value_quad;
 }	t_cone;
 
-typedef struct s_objects
+typedef struct s_object
 {
-	void			*object;
-	unsigned int	(*get_color)(struct s_scene *, void *);
+	void	*object;
+	unsigned int	(*print)(struct s_scene *, void *, t_point, t_point);
+	t_color			(*get_color)(struct s_scene *, void *);
+	t_point			(*get_normal)(t_point, t_point, void *);
 	double			(*intersect)(t_point, void *, t_point *);
 	void			(*update)(struct s_scene *, void *, unsigned int);
 	void			(*translation_relative)(int, struct s_scene *);
 	void			(*rotation_relative)(int, struct s_scene *);
 	void			(*translation_absolute)(struct s_scene *, t_point);
 	void			(*rotation_absolute)(struct s_scene *, t_matrix);
+	void			(*numpad_plus_minus)(int, struct s_scene *);
+	void			(*scroll)(int, struct s_scene *);
 	int				type;
-}	t_objects;
+}	t_object;
+
+typedef struct s_phong
+{
+	t_point		normal;
+	t_point		camera_ray;
+	t_point		hit_point;
+	t_point		light_ray;
+	t_color		color;
+	t_object	*object;
+	double		camera_ray_dist;
+	double		light_ray_dist_2;
+}	t_phong;
 
 typedef struct s_scene
 {
@@ -255,7 +271,7 @@ typedef struct s_scene
 	t_amb_light	*amb_light;
 	t_camera	*camera;
 	t_light		*light;
-	t_objects	**objects;
+	t_object	**objects;
 	void		*mlx;
 	void		*window;
 	void		*image;
@@ -336,34 +352,49 @@ t_matrix		matrix_rotation(t_point vector, double s);
 
 /* objects */
 
+void			ratio_amb_light(int key_code, t_scene *scene);
+
+void			fov_camera(int mouse_code, t_scene *scene);
+
 void			update_camera(t_scene *scene, unsigned int flags);
+
+void			ratio_main_light(int key_code, t_scene *scene);
 
 void			update_light(t_scene *scene, void *object, unsigned int flags);
 
-unsigned int	get_color_light(t_scene *scene, void *object);
-
-int				is_sphere(t_point point, t_sphere sphere);
-
 void			update_sphere(t_scene *scene, void *object, unsigned int flags);
 
-unsigned int	get_color_sphere(t_scene *scene, void *object);
-
-int				is_plane(t_point point, t_plane plane);
+void			radius_sphere(int mouse_code, t_scene *scene);
 
 void			update_plane(t_scene *scene, void *object, unsigned int flags);
-
-unsigned int	get_color_plane(t_scene *scene, void *object);
-
-int				is_cylinder(t_point point, t_cylinder cylinder);
 
 void			update_cylinder(t_scene *scene, \
 					void *object, unsigned int flags);
 
-unsigned int	get_color_cylinder(t_scene *scene, void *object);
+void			radius_cylinder(int mouse_code, t_scene *scene);
+
+void			height_cylinder(int key_code, t_scene *scene);
 
 void			update_cone(t_scene *scene, void *object, unsigned int flags);
 
-unsigned int	get_color_cone(t_scene *scene, void *object);
+void			radius_cone(int mouse_code, t_scene *scene);
+
+void			height_cone(int key_code, t_scene *scene);
+
+/* intersect */
+
+double			intersect_light(t_point ray, void *object, t_point *origin);
+
+double			intersect_sphere(t_point ray, void *object, t_point *origin);
+
+double			intersect_plane(t_point ray, void *object, t_point *origin);
+
+double			intersect_cylinder(t_point ray, void *object, t_point *origin);
+
+double			intersect_cone(t_point ray, void *object, t_point *origin);
+
+t_object		*find_intersect(t_scene *scene, t_point ray, \
+					double *intersect, int *index);
 
 /* print */
 
@@ -382,28 +413,46 @@ unsigned char	color_get_g(unsigned int trgb);
 
 unsigned char	color_get_b(unsigned int trgb);
 
-double			intersect_light(t_point ray, void *object, t_point *origin);
+unsigned int	print_light(t_scene *scene, void *object, \
+					t_point hit_point, t_point hit_point_to_light);
 
-unsigned int	print_sphere(t_scene *scene, t_sphere *sphere, t_point hit_point, t_point hit_point_to_light);
-double			intersect_sphere(t_point ray, void *object, t_point *origin);
+t_color			get_color_light(t_scene *scene, void *object);
 
-unsigned int	print_plane(t_scene *scene, t_plane *plane, t_point hit_point, t_point hit_point_to_light);
-double			intersect_plane(t_point ray, void *object, t_point *origin);
+unsigned int	print_sphere(t_scene *scene, void *object, \
+					t_point hit_point, t_point hit_point_to_light);
 
+t_color			get_color_sphere(t_scene *scene, void *object);
 
-unsigned int	print_cylinder(t_scene *scene, t_cylinder *cy, t_point hit_point, t_point hit_point_to_light);
-double			intersect_cylinder(t_point ray, void *object, t_point *origin);
+t_point			normal_sphere(t_point ray, t_point hit_point, void *object);
 
-unsigned int	print_cone(t_scene *scene, t_cone *cone, t_point hit_point, t_point hit_point_to_light);
-double			intersect_cone(t_point ray, void *object, t_point *origin);
+unsigned int	print_plane(t_scene *scene, void *object, \
+					t_point hit_point, t_point hit_point_to_light);
+
+t_color			get_color_plane(t_scene *scene, void *object);
+
+t_point			normal_plane(t_point ray, t_point hit_point, void *object);
+
+unsigned int	print_cylinder(t_scene *scene, void *object, \
+					t_point hit_point, t_point hit_point_to_light);
+
+t_color			get_color_cylinder(t_scene *scene, void *object);
+
+t_point			normal_cylinder(t_point ray, t_point hit_point, void *object);
+
+unsigned int	print_cone(t_scene *scene, void *object, \
+					t_point hit_point, t_point hit_point_to_light);
+
+t_color			get_color_cone(t_scene *scene, void *object);
+
+t_point			normal_cone(t_point ray, t_point hit_point, void *object);
 
 void			update_scene(t_scene *scene, unsigned int flags);
 
 void			put_pixel(t_scene *scene, int x, int y, unsigned int color);
 
-double			find_intersect(t_scene *scene, t_point ray, int *index);
-
 void			print_window(t_scene *scene, int offset);
+
+unsigned int	phong_ambient(t_amb_light *amb_light, t_color base);
 
 unsigned int	phong_color(t_scene *scene, t_color base, double dot);
 
@@ -482,22 +531,22 @@ int				parse_coord(t_point *coord, char *item);
 int				parse_vector(t_point *vector, char *item, char unit);
 
 int				parse_amb_light(t_scene *scene, t_list *current, \
-					t_objects *object);
+					t_object *object);
 
 int				parse_camera(t_scene *scene, t_list *current, \
-					t_objects *object);
+					t_object *object);
 
-int				parse_light(t_scene *scene, t_list *current, t_objects *object);
+int				parse_light(t_scene *scene, t_list *current, t_object *object);
 
 int				parse_sphere(t_scene *scene, t_list *current, \
-					t_objects *object);
+					t_object *object);
 
-int				parse_plane(t_scene *scene, t_list *current, t_objects *object);
+int				parse_plane(t_scene *scene, t_list *current, t_object *object);
 
 int				parse_cylinder(t_scene *scene, t_list *current, \
-					t_objects *object);
+					t_object *object);
 
-int				parse_cone(t_scene *scene, t_list *current, t_objects *object);
+int				parse_cone(t_scene *scene, t_list *current, t_object *object);
 
 int				read_file(int argc, char **argv, t_list **objects);
 

@@ -30,7 +30,7 @@ static int	sub_parse_plane(t_plane *plane, t_list *current)
 	return (SUCCESS);
 }
 
-int	parse_plane(t_scene *scene, t_list *current, t_objects *object)
+int	parse_plane(t_scene *scene, t_list *current, t_object *object)
 {
 	t_plane	*plane;
 
@@ -43,7 +43,9 @@ int	parse_plane(t_scene *scene, t_list *current, t_objects *object)
 		return (ERROR);
 	plane->down = orthogonal_base(plane->normal, &plane->right);
 	object->object = plane;
+	object->print = &print_plane;
 	object->get_color = &get_color_plane;
+	object->get_normal = &normal_plane;
 	object->intersect = &intersect_plane;
 	object->update = &update_plane;
 	object->translation_relative = &translation_relative_plane;

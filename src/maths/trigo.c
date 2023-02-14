@@ -47,3 +47,8 @@ double	n_sin_rot(void)
 		result = sin_rot() * -1.0;
 	return (result);
 }
+
+double	vector_angle(t_point a, t_point b)
+{
+	return (acos(dot_product(a, b)));
+}

@@ -30,7 +30,7 @@ static int	sub_parse_light(t_light *light, t_list *current)
 	return (SUCCESS);
 }
 
-int	parse_light(t_scene *scene, t_list *current, t_objects *object)
+int	parse_light(t_scene *scene, t_list *current, t_object *object)
 {
 	t_light	*light;
 
@@ -45,10 +45,12 @@ int	parse_light(t_scene *scene, t_list *current, t_objects *object)
 		return (ERROR);
 	scene->light = light;
 	object->object = light;
+	object->print = &print_light;
 	object->get_color = &get_color_light;
 	object->intersect = &intersect_light;
 	object->update = &update_light;
 	object->translation_absolute = &translation_absolute_light;
+	object->numpad_plus_minus = &ratio_main_light;
 	object->type = MAIN_LIGHT;
 	return (SUCCESS);
 }

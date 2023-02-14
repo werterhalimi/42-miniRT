@@ -12,7 +12,7 @@
   C                   0,0,0              1.0,0,0       70
 # Main light        |                  |             | Ratio in        |                 |
 #                   |                  |             | [0.0; 1.0]      |                 |
-  L                   12,0,0                         0.7                                 255,255,255
+  L                   0,0,10                         0.7                                 255,255,255
 
 # Optional objects  |                  |             |                 |                 |
 # Cylinder          |                  |             | Diameter as     | Height as       |

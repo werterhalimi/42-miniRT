@@ -12,7 +12,7 @@
 
 #include "miniRT.h"
 
-int	parse_amb_light(t_scene *scene, t_list *current, t_objects *object)
+int	parse_amb_light(t_scene *scene, t_list *current, t_object *object)
 {
 	char		*item;
 	t_amb_light	*amb_light;
