@@ -6,7 +6,7 @@
 /*   By: ncotte <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 17:04:57 by ncotte            #+#    #+#             */
-/*   Updated: 2023/02/13 23:22:57 by shalimi          ###   ########.fr       */
+/*   Updated: 2023/02/14 23:26:40 by shalimi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ unsigned int	print_cone(t_scene *scene, void *object, \
 	normal = add_vectors(get_projection_unit(sub_vectors(hit_point, \
 		cone->coord), cone->direction), cone->coord);
 	normal = unit_vector(sub_vectors(hit_point, normal));
-	if (distance_square(hit_point, cone->center_base) == cone->radius_2)
+	if (vector_angle(cone->direction, sub_vectors(hit_point, cone->center_base)) == M_PI_2)
 			normal = scalar_multi(-1.0, cone->direction);
 	rebound = reflection(sub_vectors(hit_point, scene->light->coord), normal);
 	base = cone->color;
