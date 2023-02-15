@@ -6,7 +6,7 @@
 /*   By: ncotte <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/29 14:43:27 by ncotte            #+#    #+#             */
-/*   Updated: 2023/02/15 12:47:50 by shalimi          ###   ########.fr       */
+/*   Updated: 2023/02/15 13:22:04 by shalimi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ static int	parse_selector(t_scene *scene, t_list *current, char *obj_names[], \
 		if (error)
 			return (error);
 		ft_lstadd_back(&(scene->spot_lights), *spot);
+		return (0);
 	}
 	return (print_error(ERROR, "Unknown object"));
 }

@@ -6,7 +6,7 @@
 /*   By: ncotte <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/29 17:38:15 by ncotte            #+#    #+#             */
-/*   Updated: 2023/02/15 12:39:58 by shalimi          ###   ########.fr       */
+/*   Updated: 2023/02/15 13:21:41 by shalimi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ int	read_file(int argc, char **argv, t_list **objects)
 	{
 		if (empty_line(line))
 			ft_free(line);
-		else if (!ft_strncmp(line, "spot", 4) && ++size && add_object(line, objects))
+		else if (ft_strncmp(line, "spot", 4) && ++size && add_object(line, objects))
 			return (quit_read(ERROR_NEG, fd, 0));
 		line = get_next_line(fd);
 	}
