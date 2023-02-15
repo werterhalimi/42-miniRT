@@ -6,7 +6,7 @@
 #    By: ncotte <marvin@42lausanne.ch>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/12 11:39:15 by ncotte            #+#    #+#              #
-#    Updated: 2023/02/13 23:13:28 by shalimi          ###   ########.fr        #
+#    Updated: 2023/02/15 12:40:44 by shalimi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,8 +37,8 @@ SRCS_FILES		:=	utils/error.c			utils/quit.c			utils/info.c \
 					start/parse_vector.c	start/parse_ratio.c		start/parse_length.c \
 					start/parse_camera.c	start/parse_light.c		start/parse_amb_light.c \
 					start/parse_plane.c		start/parse_sphere.c	start/parse_cylinder.c \
-					start/parse_cone.c		start/read_file.c		start/init.c \
-					main.c
+					start/parse_cone.c		start/parse_spot_light.c \
+					start/read_file.c		start/init.c 			main.c
 
 SRCS_DIR		:=	./src/
 SRCS			:=	$(addprefix $(SRCS_DIR),$(SRCS_FILES))

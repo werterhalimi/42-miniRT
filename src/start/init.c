@@ -6,7 +6,7 @@
 /*   By: ncotte <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/29 14:43:27 by ncotte            #+#    #+#             */
-/*   Updated: 2023/02/14 23:32:23 by shalimi          ###   ########.fr       */
+/*   Updated: 2023/02/15 12:47:50 by shalimi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ static int	parse_selector(t_scene *scene, t_list *current, char *obj_names[], \
 {
 	int			i;
 	int			j;
+	int			error;
+	t_list		**spot;
 
 	i = -1;
 	while (++i < NB_OBJECTS)
@@ -55,6 +57,14 @@ static int	parse_selector(t_scene *scene, t_list *current, char *obj_names[], \
 				return (print_error(ERROR, "Object allocation failed"));
 			return (fct_array[i](scene, current, scene->objects[j]));
 		}
+	}
+	spot = 0;
+	if (!ft_strncmp(current->content, "spot", 4))
+	{
+		error = parse_spot_light(current + 4, spot);
+		if (error)
+			return (error);
+		ft_lstadd_back(&(scene->spot_lights), *spot);
 	}
 	return (print_error(ERROR, "Unknown object"));
 }
@@ -112,6 +122,7 @@ int	init(int argc, char **argv, t_scene **scene)
 
 	objects = NULL;
 	*scene = ft_calloc(1, sizeof (**scene));
+	(*scene)->spot_lights = 0;
 	if (!(*scene))
 		return (print_error(ERROR, "Scene allocation failed"));
 	(*scene)->nb_objects = read_file(argc, argv, &objects);

@@ -6,7 +6,7 @@
 /*   By: ncotte <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/29 11:02:34 by ncotte            #+#    #+#             */
-/*   Updated: 2023/02/13 23:18:53 by shalimi          ###   ########.fr       */
+/*   Updated: 2023/02/15 12:46:41 by shalimi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@
 
 /* Number of objects */
 
-# define NB_OBJECTS				7
+# define NB_OBJECTS				8
 
 /* Translation, rotation & other factors */
 
@@ -114,7 +114,8 @@ enum {
 	SPHERE,
 	PLANE,
 	CYLINDER,
-	CONE
+	CONE,
+	SPOT
 };
 
 /* Structures */
@@ -169,6 +170,15 @@ typedef struct s_light
 	t_color	color;
 	double	ratio;
 }	t_light;
+
+typedef struct s_spot_light
+{
+	t_point	direction;
+	t_point	coord;
+	t_point	relative_coord;
+	t_color	color;
+	double	ratio;
+}	t_spot_light;
 
 typedef struct s_sphere
 {
@@ -271,6 +281,7 @@ typedef struct s_scene
 	t_amb_light	*amb_light;
 	t_camera	*camera;
 	t_light		*light;
+	t_list		*spot_lights;
 	t_object	**objects;
 	void		*mlx;
 	void		*window;
@@ -517,6 +528,8 @@ int				mouse_release(int mouse_code, int x, int y, t_scene *scene);
 /* init */
 
 char			*next_item(char *line);
+
+int				parse_spot_light(t_list *current, t_list **spot);
 
 int				parse_color(t_color *color, char *item);
 
