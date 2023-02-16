@@ -6,7 +6,7 @@
 /*   By: ncotte <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 17:04:57 by ncotte            #+#    #+#             */
-/*   Updated: 2023/02/16 03:47:38 by shalimi          ###   ########.fr       */
+/*   Updated: 2023/02/16 17:18:41 by shalimi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,15 @@ t_point	normal_cone(t_point ray, t_point hit_point, void *object)
 {
 	t_cone	*cone;
 	t_point	normal;
+	t_point	pro;;
 
 	cone = (t_cone *)object;
+	pro = add_vectors(get_projection_unit(sub_vectors(hit_point, \
+		cone->coord), cone->direction), cone->coord);
 	normal = unit_vector(sub_vectors(hit_point, \
-		add_vectors(get_projection_unit(sub_vectors(hit_point, \
-		cone->coord), cone->direction), cone->coord)));
-	if (distance_square(hit_point, cone->center_base) == cone->radius_2)
-		normal = scalar_multi(-1.0, cone->direction);
+		pro));
+	if (distance_square(cone->coord, hit_point) >= cone->height_2)
+		normal =  cone->direction;
 	if (dot_product(normal, ray) <= 0.0)
 		return (normal);
 	return (scalar_multi(-1.0, normal));
