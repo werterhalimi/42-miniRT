@@ -199,6 +199,7 @@ typedef struct s_sphere
 	t_point	coord;
 	t_point	relative_coord;
 	t_color	color;
+	t_color	*color_bis;
 	double	radius;
 	double	radius_2;
 	double	value;
@@ -211,6 +212,7 @@ typedef struct s_plane
 	t_point	right;
 	t_point	down;
 	t_color	color;
+	t_color	*color_bis;
 	double	value;
 }	t_plane;
 
@@ -227,6 +229,7 @@ typedef struct s_cylinder
 	t_point	right;
 	t_point	down;
 	t_color	color;
+	t_color	*color_bis;
 	double	radius;
 	double	radius_2;
 	double	semi_height;
@@ -249,6 +252,7 @@ typedef struct s_cone
 	t_point	right;
 	t_point	down;
 	t_color	color;
+	t_color	*color_bis;
 	double	radius;
 	double	radius_2;
 	double	height;
@@ -264,7 +268,7 @@ typedef struct s_object
 {
 	void	*object;
 	void	(*print)(struct s_phong *);
-	t_color	(*get_color)(struct s_scene *, void *);
+	t_color	(*get_color)(struct s_scene *, void *, t_point, t_point);
 	t_point	(*get_normal)(t_point, t_point, void *);
 	double	(*intersect)(t_point, void *, t_point *);
 	void	(*update)(struct s_scene *, void *, unsigned int);
@@ -456,33 +460,39 @@ unsigned char	color_get_b(unsigned int trgb);
 
 void			print_light(t_phong *phong);
 
-t_color			get_color_light(t_scene *scene, void *object);
+t_color			get_color_light(t_scene *scene, void *object, \
+					t_point hit_point, t_point normal);
 
 void			print_spot_light(t_phong *phong);
 
-t_color			get_color_spot_light(t_scene *scene, void *object);
+t_color			get_color_spot_light(t_scene *scene, void *object, \
+					t_point hit_point, t_point normal);
 
 void			print_sphere(t_phong *phong);
 
-t_color			get_color_sphere(t_scene *scene, void *object);
+t_color			get_color_sphere(t_scene *scene, void *object, \
+					t_point hit_point, t_point normal);
 
 t_point			normal_sphere(t_point ray, t_point hit_point, void *object);
 
 void			print_plane(t_phong *phong);
 
-t_color			get_color_plane(t_scene *scene, void *object);
+t_color			get_color_plane(t_scene *scene, void *object, \
+					t_point hit_point, t_point normal);
 
 t_point			normal_plane(t_point ray, t_point hit_point, void *object);
 
 void			print_cylinder(t_phong *phong);
 
-t_color			get_color_cylinder(t_scene *scene, void *object);
+t_color			get_color_cylinder(t_scene *scene, void *object, \
+					t_point hit_point, t_point normal);
 
 t_point			normal_cylinder(t_point ray, t_point hit_point, void *object);
 
 void			print_cone(t_phong *phong);
 
-t_color			get_color_cone(t_scene *scene, void *object);
+t_color			get_color_cone(t_scene *scene, void *object, \
+					t_point hit_point, t_point normal);
 
 t_point			normal_cone(t_point ray, t_point hit_point, void *object);
 

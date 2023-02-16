@@ -12,6 +12,16 @@
 
 #include "miniRT.h"
 
+static int	bonus_parse_cone(t_cone *cone, char *item)
+{
+	cone->color_bis = ft_calloc(1, sizeof (*cone->color_bis));
+	if (!cone->color_bis || parse_color(cone->color_bis, item))
+		return (ERROR);
+	if (next_item(item))
+		return (print_error(ERROR, "Too many items for cone"));
+	return (SUCCESS);
+}
+
 static int	sub_parse_cone(t_cone *cone, t_list *current)
 {
 	char	*item;
@@ -31,8 +41,9 @@ static int	sub_parse_cone(t_cone *cone, t_list *current)
 	item = next_item(item);
 	if (parse_color(&(cone->color), item))
 		return (ERROR);
-	if (next_item(item))
-		return (print_error(ERROR, "Too many items for cone"));
+	item = next_item(item);
+	if (item)
+		return (bonus_parse_cone(cone, item));
 	return (SUCCESS);
 }
 

@@ -16,11 +16,14 @@ void	print_spot_light(t_phong *phong)
 	(void) phong;
 }
 
-t_color	get_color_spot_light(t_scene *scene, void *object)
+t_color	get_color_spot_light(t_scene *scene, void *object, \
+	t_point hit_point, t_point normal)
 {
 	t_spot_light	*spot_light;
 
 	(void) scene;
+	(void) hit_point;
+	(void) normal;
 	spot_light = (t_spot_light *)object;
 	return (spot_light->color);
 }

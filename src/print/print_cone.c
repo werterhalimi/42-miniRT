@@ -20,12 +20,17 @@ void	print_cone(t_phong *phong)
 	(phong_diffuse(phong, dot_product(phong->normal, phong->light_ray)));
 }
 
-t_color	get_color_cone(t_scene *scene, void *object)
+t_color	get_color_cone(t_scene *scene, void *object, \
+			t_point hit_point, t_point normal)
 {
 	t_cone	*cone;
 
 	(void) scene;
+	(void) hit_point;
+	(void) normal;
 	cone = (t_cone *)object;
+	if (!cone->color_bis)
+		return (cone->color);
 	return (cone->color);
 }
 
