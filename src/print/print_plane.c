@@ -6,7 +6,7 @@
 /*   By: ncotte <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 14:36:36 by ncotte            #+#    #+#             */
-/*   Updated: 2023/02/16 02:20:35 by shalimi          ###   ########.fr       */
+/*   Updated: 2023/02/16 03:47:54 by shalimi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,6 @@
 
 void	print_plane(t_phong *phong)
 {
-	t_plane	*plane;
-
-	plane = (t_plane *)phong->object;
 	if (dot_product(phong->normal, unit_vector(sub_vectors(phong->coord, \
 		phong->hit_point))) <= 0.0)
 		return ;

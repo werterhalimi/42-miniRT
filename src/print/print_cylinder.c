@@ -6,7 +6,7 @@
 /*   By: ncotte <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 14:36:28 by ncotte            #+#    #+#             */
-/*   Updated: 2023/02/16 02:20:03 by shalimi          ###   ########.fr       */
+/*   Updated: 2023/02/16 03:47:44 by shalimi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,6 @@
 
 void	print_cylinder(t_phong *phong)
 {
-	t_cylinder	*cy;
-
-	cy = (t_cylinder *)phong->object;
 	if (dot_product(phong->normal, unit_vector(sub_vectors(phong->coord, \
 		phong->hit_point))) <= 0.0)
 		return ;

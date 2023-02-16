@@ -6,7 +6,7 @@
 /*   By: ncotte <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 14:36:43 by ncotte            #+#    #+#             */
-/*   Updated: 2023/02/16 02:19:08 by shalimi          ###   ########.fr       */
+/*   Updated: 2023/02/16 03:47:30 by shalimi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,6 @@
 //	double specular = pow(dot_product(phong.normal, h), 25);
 void	print_sphere(t_phong* phong)
 {
-	t_sphere	*sphere;
-
-	sphere = (t_sphere *)phong->object;
 	if (dot_product(phong->normal, unit_vector(sub_vectors(phong->coord, \
 		phong->hit_point))) <= 0.0)
 		return ;

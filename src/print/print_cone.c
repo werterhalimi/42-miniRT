@@ -6,7 +6,7 @@
 /*   By: ncotte <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 17:04:57 by ncotte            #+#    #+#             */
-/*   Updated: 2023/02/16 02:19:33 by shalimi          ###   ########.fr       */
+/*   Updated: 2023/02/16 03:47:38 by shalimi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,6 @@
 
 void	print_cone(t_phong *phong)
 {
-	t_cone	*cone;
-
-	cone = (t_cone *)phong->object;
 	if (dot_product(phong->normal, unit_vector(sub_vectors(phong->coord, \
 		phong->hit_point))) <= 0.0)
 		return ;
