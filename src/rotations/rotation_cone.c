@@ -16,7 +16,7 @@ void	rotation_relative_cone(int key_code, t_scene *scene)
 {
 	t_cone	*co;
 
-	co = (t_cone *)(scene->objects[scene->index - 1]->object);
+	co = (t_cone *)scene->objects[scene->index - 1]->object;
 	if (key_code == NUMPAD_2)
 		co->down = matrix_vector_multi(matrix_rotation(co->right, \
 			sin_rot()), co->down);
@@ -39,7 +39,7 @@ void	rotation_absolute_cone(t_scene *scene, t_matrix matrix)
 {
 	t_cone	*cone;
 
-	cone = (t_cone *)(scene->objects[scene->index - 1]->object);
+	cone = (t_cone *)scene->objects[scene->index - 1]->object;
 	cone->direction = matrix_vector_multi(matrix, cone->direction);
 	cone->right = matrix_vector_multi(matrix, cone->right);
 	cone->down = cross_product(cone->direction, cone->right);

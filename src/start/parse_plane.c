@@ -34,7 +34,7 @@ int	parse_plane(t_scene *scene, t_list *current, t_object *object)
 {
 	t_plane	*plane;
 
-	(void)scene;
+	(void) scene;
 	object->type = PLANE;
 	plane = ft_calloc(1, sizeof (t_plane));
 	if (!plane)

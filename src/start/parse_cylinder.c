@@ -40,7 +40,7 @@ int	parse_cylinder(t_scene *scene, t_list *current, t_object *object)
 {
 	t_cylinder	*cylinder;
 
-	(void)scene;
+	(void) scene;
 	object->type = CYLINDER;
 	cylinder = ft_calloc(1, sizeof (t_cylinder));
 	if (!cylinder)

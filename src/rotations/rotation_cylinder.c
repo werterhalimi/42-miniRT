@@ -16,7 +16,7 @@ void	rotation_relative_cylinder(int key_code, t_scene *scene)
 {
 	t_cylinder	*cy;
 
-	cy = (t_cylinder *)(scene->objects[scene->index - 1]->object);
+	cy = (t_cylinder *)scene->objects[scene->index - 1]->object;
 	if (key_code == NUMPAD_2)
 		cy->down = matrix_vector_multi(matrix_rotation(cy->right, \
 			sin_rot()), cy->down);
@@ -39,7 +39,7 @@ void	rotation_absolute_cylinder(t_scene *scene, t_matrix matrix)
 {
 	t_cylinder	*cylinder;
 
-	cylinder = (t_cylinder *)(scene->objects[scene->index - 1]->object);
+	cylinder = (t_cylinder *)scene->objects[scene->index - 1]->object;
 	cylinder->direction = matrix_vector_multi(matrix, cylinder->direction);
 	cylinder->right = matrix_vector_multi(matrix, cylinder->right);
 	cylinder->down = cross_product(cylinder->direction, cylinder->right);

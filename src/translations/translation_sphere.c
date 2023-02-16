@@ -16,7 +16,7 @@ void	translation_absolute_sphere(t_scene *scene, t_point vector)
 {
 	t_sphere	*sphere;
 
-	sphere = (t_sphere *)(scene->objects[scene->index - 1]->object);
+	sphere = (t_sphere *)scene->objects[scene->index - 1]->object;
 	sphere->coord = add_vectors(sphere->coord, vector);
 	update_scene(scene, SPHERE_TRANSLATION);
 }

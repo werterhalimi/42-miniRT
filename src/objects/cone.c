@@ -16,7 +16,7 @@ void	radius_cone(int mouse_code, t_scene *scene)
 {
 	t_cone	*cone;
 
-	cone = (t_cone *)(scene->objects[scene->index - 1]->object);
+	cone = (t_cone *)scene->objects[scene->index - 1]->object;
 	if (mouse_code == SCROLL_UP)
 		cone->radius *= (1 + RADIUS_FACTOR);
 	else if (cone->radius > 0.0)
@@ -28,7 +28,7 @@ void	height_cone(int key_code, t_scene *scene)
 {
 	t_cone	*cone;
 
-	cone = (t_cone *)(scene->objects[scene->index - 1]->object);
+	cone = (t_cone *)scene->objects[scene->index - 1]->object;
 	if (key_code == NUMPAD_PLUS)
 		cone->height *= (1 + HEIGHT_FACTOR);
 	else if (cone->radius > 0.0)

@@ -34,7 +34,7 @@ int	parse_sphere(t_scene *scene, t_list *current, t_object *object)
 {
 	t_sphere	*sphere;
 
-	(void)scene;
+	(void) scene;
 	object->type = SPHERE;
 	sphere = ft_calloc(1, sizeof (t_sphere));
 	if (!sphere)

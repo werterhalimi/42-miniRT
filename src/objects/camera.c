@@ -14,7 +14,7 @@
 
 void	fov_camera(int mouse_code, t_scene *scene)
 {
-	if (mouse_code == SCROLL_UP && scene->camera->fov < M_PI - FOV_FACTOR)
+	if (mouse_code == SCROLL_UP && scene->camera->fov < M_PI_2 - FOV_FACTOR)
 		scene->camera->fov += FOV_FACTOR;
 	else if (mouse_code == SCROLL_DOWN && scene->camera->fov > FOV_FACTOR)
 		scene->camera->fov -= FOV_FACTOR;
@@ -31,7 +31,7 @@ void	update_camera(t_scene *scene, unsigned int flags)
 	cam = scene->camera;
 	if (flags & CAMERA_FOV)
 	{
-		scene->camera->size_x = tan(scene->camera->fov * 0.5);
+		scene->camera->size_x = tan(scene->camera->fov);
 		scene->camera->pixel_size = 2.0 * scene->camera->size_x \
 		/ (double)(scene->width);
 		scene->camera->size_y = scene->camera->size_x * (double)(scene->height) \

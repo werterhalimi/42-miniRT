@@ -24,6 +24,7 @@ static char	**init_type_name(void)
 	type_name[PLANE] = "plane";
 	type_name[CYLINDER] = "cylinder";
 	type_name[CONE] = "cone";
+	type_name[SPOT_LIGHT] = "spot light";
 	return (type_name);
 }
 
@@ -51,7 +52,7 @@ void	write_point(t_point point, char *name)
 
 void	write_info(t_scene *scene)
 {
-	int i;
+	int	i;
 
 	printf("SCENE :\n");
 	printf("Mode : ");

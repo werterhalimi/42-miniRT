@@ -12,26 +12,12 @@
 
 #include "miniRT.h"
 
-static int	parse_fov(double *fov, char *item)
-{
-	if (!item)
-		return (print_error(ERROR, "A CAMERA_FOV is missing"));
-	if (str_to_double(item, fov, YES))
-		return (print_error(ERROR, \
-			"Invalid CAMERA_FOV format. Required: one double"));
-	if (*fov < 0.0 || 180.0 < *fov)
-		return (print_error(ERROR, \
-			"The CAMERA_FOV must be included in [0.0; 180.0]"));
-	*fov = *fov * M_PI / 180.0;
-	return (SUCCESS);
-}
-
 int	parse_camera(t_scene *scene, t_list *current, t_object *object)
 {
 	char		*item;
 	t_camera	*camera;
 
-	(void)object;
+	(void) object;
 	camera = scene->camera;
 	if (camera)
 		return (print_error(ERROR, \
@@ -46,7 +32,7 @@ int	parse_camera(t_scene *scene, t_list *current, t_object *object)
 	if (parse_vector(&(camera->front), item, YES))
 		return (ERROR);
 	item = next_item(item);
-	if (parse_fov(&(camera->fov), item))
+	if (parse_angle(&(camera->fov), item))
 		return (ERROR);
 	if (next_item(item))
 		return (print_error(ERROR, "Too many items for camera"));

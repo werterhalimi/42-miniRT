@@ -17,7 +17,7 @@ void	translation_relative_plane(int key_code, t_scene *scene)
 	t_point	vector;
 	t_plane	*plane;
 
-	plane = (t_plane *)(scene->objects[scene->index - 1]->object);
+	plane = (t_plane *)scene->objects[scene->index - 1]->object;
 	if (key_code == KEY_W)
 		vector = scalar_multi(TRANSLATION_FACTOR, plane->normal);
 	else if (key_code == KEY_S)
@@ -32,7 +32,7 @@ void	translation_absolute_plane(t_scene *scene, t_point vector)
 {
 	t_plane	*plane;
 
-	plane = (t_plane *)(scene->objects[scene->index - 1]->object);
+	plane = (t_plane *)scene->objects[scene->index - 1]->object;
 	plane->coord = add_vectors(plane->coord, vector);
 	update_scene(scene, PLANE_TRANSLATION);
 }

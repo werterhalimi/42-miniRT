@@ -40,7 +40,7 @@ int	parse_cone(t_scene *scene, t_list *current, t_object *object)
 {
 	t_cone	*cone;
 
-	(void)scene;
+	(void) scene;
 	object->type = CONE;
 	cone = ft_calloc(1, sizeof (t_cone));
 	if (!cone)

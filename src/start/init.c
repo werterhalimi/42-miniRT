@@ -29,6 +29,8 @@ static void	init_arrays(char **obj_names, \
 	fct_array[5] = &parse_cylinder;
 	obj_names[6] = "co ";
 	fct_array[6] = &parse_cone;
+	obj_names[7] = "sl ";
+	fct_array[7] = &parse_spot_light;
 }
 
 static int	parse_selector(t_scene *scene, t_list *current, char *obj_names[], \
@@ -36,8 +38,6 @@ static int	parse_selector(t_scene *scene, t_list *current, char *obj_names[], \
 {
 	int			i;
 	int			j;
-	int			error;
-	t_list		*spot;
 
 	i = -1;
 	while (++i < NB_OBJECTS)
@@ -57,16 +57,6 @@ static int	parse_selector(t_scene *scene, t_list *current, char *obj_names[], \
 				return (print_error(ERROR, "Object allocation failed"));
 			return (fct_array[i](scene, current, scene->objects[j]));
 		}
-	}
-	spot = 0;
-	if (!ft_strncmp((char *)current->content, "sl", 2))
-	{
-		error = parse_spot_light(current, &spot);
-		if (error)
-			return (error);
-		ft_lstadd_back(&(scene->spot_lights), spot);
-		scene->nb_spot++;
-		return (0);
 	}
 	return (print_error(ERROR, "Unknown object"));
 }
@@ -126,8 +116,6 @@ int	init(int argc, char **argv, t_scene **scene)
 	*scene = ft_calloc(1, sizeof (**scene));
 	if (!(*scene))
 		return (print_error(ERROR, "Scene allocation failed"));
-	(*scene)->spot_lights = 0;
-	(*scene)->nb_spot = 0;
 	(*scene)->nb_objects = read_file(argc, argv, &objects);
 	if ((*scene)->nb_objects < 0)
 		return (ERROR);

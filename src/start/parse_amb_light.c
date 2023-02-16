@@ -17,7 +17,7 @@ int	parse_amb_light(t_scene *scene, t_list *current, t_object *object)
 	char		*item;
 	t_amb_light	*amb_light;
 
-	(void)object;
+	(void) object;
 	amb_light = scene->amb_light;
 	if (amb_light)
 		return (print_error(ERROR, \

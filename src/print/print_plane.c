@@ -17,7 +17,6 @@ void	print_plane(t_phong *phong)
 	if (dot_product(phong->normal, unit_vector(sub_vectors(phong->coord, \
 		phong->hit_point))) <= 0.0)
 		return ;
-//		return (NO);//return (phong_ambient(scene->amb_light, base));
 	(phong_diffuse(phong, dot_product(phong->normal, phong->light_ray)));
 }
 
@@ -25,7 +24,7 @@ t_color	get_color_plane(t_scene *scene, void *object)
 {
 	t_plane	*plane;
 
-	(void)scene;
+	(void) scene;
 	plane = (t_plane *)object;
 	return (plane->color);
 }

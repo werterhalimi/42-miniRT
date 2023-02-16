@@ -46,7 +46,6 @@ static void	scroll_hook(int mouse_code, t_scene *scene)
 
 int	mouse_hook(int mouse_code, int x, int y, t_scene *scene)
 {
-//	printf("MOUSE = %d\n", mouse_code);
 	if (mouse_code == SCROLL_UP || mouse_code == SCROLL_DOWN)
 		scroll_hook(mouse_code, scene);
 	else if (mouse_code == RIGHT_CLICK)

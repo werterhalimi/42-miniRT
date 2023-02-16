@@ -16,7 +16,7 @@ void	radius_sphere(int mouse_code, t_scene *scene)
 {
 	t_sphere	*sphere;
 
-	sphere = (t_sphere *)(scene->objects[scene->index - 1]->object);
+	sphere = (t_sphere *)scene->objects[scene->index - 1]->object;
 	if (mouse_code == SCROLL_UP)
 		sphere->radius *= (1 + RADIUS_FACTOR);
 	else if (sphere->radius > 0.0)

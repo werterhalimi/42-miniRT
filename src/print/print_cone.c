@@ -24,7 +24,7 @@ t_color	get_color_cone(t_scene *scene, void *object)
 {
 	t_cone	*cone;
 
-	(void)scene;
+	(void) scene;
 	cone = (t_cone *)object;
 	return (cone->color);
 }

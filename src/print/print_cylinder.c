@@ -24,7 +24,7 @@ t_color	get_color_cylinder(t_scene *scene, void *object)
 {
 	t_cylinder	*cylinder;
 
-	(void)scene;
+	(void) scene;
 	cylinder = (t_cylinder *)object;
 	return (cylinder->color);
 }

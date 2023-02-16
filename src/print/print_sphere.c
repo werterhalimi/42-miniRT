@@ -14,7 +14,7 @@
 
 //	t_point h = unit_vector(add_vectors(scalar_multi(-1.0, ray), hit_point_to_light));
 //	double specular = pow(dot_product(phong.normal, h), 25);
-void	print_sphere(t_phong* phong)
+void	print_sphere(t_phong *phong)
 {
 	if (dot_product(phong->normal, unit_vector(sub_vectors(phong->coord, \
 		phong->hit_point))) <= 0.0)
@@ -26,7 +26,7 @@ t_color	get_color_sphere(t_scene *scene, void *object)
 {
 	t_sphere	*sphere;
 
-	(void)scene;
+	(void) scene;
 	sphere = (t_sphere *)object;
 	return (sphere->color);
 }

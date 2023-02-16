@@ -80,7 +80,7 @@ int	read_file(int argc, char **argv, t_list **objects)
 	{
 		if (empty_line(line))
 			ft_free(line);
-		else if (ft_strncmp(line, "spot", 4) && ++size && add_object(line, objects))
+		else if (++size && add_object(line, objects))
 			return (quit_read(ERROR_NEG, fd, 0));
 		line = get_next_line(fd);
 	}

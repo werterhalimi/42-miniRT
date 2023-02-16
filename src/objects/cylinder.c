@@ -16,7 +16,7 @@ void	radius_cylinder(int mouse_code, t_scene *scene)
 {
 	t_cylinder	*cylinder;
 
-	cylinder = (t_cylinder *)(scene->objects[scene->index - 1]->object);
+	cylinder = (t_cylinder *)scene->objects[scene->index - 1]->object;
 	if (mouse_code == SCROLL_UP)
 		cylinder->radius *= (1 + RADIUS_FACTOR);
 	else if (cylinder->radius > 0.0)
@@ -28,7 +28,7 @@ void	height_cylinder(int key_code, t_scene *scene)
 {
 	t_cylinder	*cylinder;
 
-	cylinder = (t_cylinder *)(scene->objects[scene->index - 1]->object);
+	cylinder = (t_cylinder *)scene->objects[scene->index - 1]->object;
 	if (key_code == NUMPAD_PLUS)
 		cylinder->semi_height *= (1 + HEIGHT_FACTOR);
 	else if (cylinder->radius > 0.0)

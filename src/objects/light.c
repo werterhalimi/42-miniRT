@@ -12,7 +12,6 @@
 
 #include "miniRT.h"
 
-
 void	ratio_main_light(int key_code, t_scene *scene)
 {
 	if (key_code == NUMPAD_PLUS \
@@ -32,5 +31,3 @@ void	update_light(t_scene *scene, void *object, unsigned int flags)
 	light = (t_light *)object;
 	light->relative_coord = sub_vectors(light->coord, scene->camera->coord);
 }
-
-

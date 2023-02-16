@@ -16,29 +16,31 @@ SRCS_FILES		:=	utils/error.c			utils/quit.c			utils/info.c \
 					maths/trigo.c \
 					objects/camera.c		objects/light.c			objects/amb_light.c \
 					objects/plane.c			objects/sphere.c		objects/cylinder.c \
-					objects/cone.c \
+					objects/cone.c			objects/spot_light.c	objects/update_scene.c \
 					intersect/intersect_light.c			intersect/intersect_plane.c \
 					intersect/intersect_sphere.c		intersect/intersect_cylinder.c \
-					intersect/intersect_cone.c			intersect/find_intersect.c \
-					print/color_trgb.c		print/put_pixel.c		print/update_scene.c \
+					intersect/intersect_cone.c			intersect/intersect_spot_light.c \
+					intersect/find_intersect.c \
+					print/color_trgb.c		print/put_pixel.c		print/phong.c \
 					print/get_color.c		print/print_plane.c		print/print_cylinder.c \
-					print/print_light.c		print/print_sphere.c	print/print_window.c \
-					print/phong.c			print/print_cone.c \
+					print/print_light.c		print/print_sphere.c	print/print_spot_light.c \
+					print/print_cone.c		print/print_window.c \
 					rotations/rotation.c				rotations/rotation_camera.c \
 					rotations/rotation_plane.c			rotations/rotation_cylinder.c \
-					rotations/rotation_cone.c \
+					rotations/rotation_cone.c			rotations/rotation_spot_light.c \
 					translations/translation.c			translations/translation_camera.c \
 					translations/translation_light.c	translations/translation_sphere.c \
 					translations/translation_plane.c	translations/translation_cylinder.c \
-					translations/translation_cone.c \
+					translations/translation_cone.c		translations/translation_spot_light.c \
 					hooks/is_key.c			hooks/mouse_hook.c		hooks/key_hook.c \
 					hooks/release.c \
 					start/next_item.c		start/parse_color.c		start/parse_coord.c \
 					start/parse_vector.c	start/parse_ratio.c		start/parse_length.c \
-					start/parse_camera.c	start/parse_light.c		start/parse_amb_light.c \
-					start/parse_plane.c		start/parse_sphere.c	start/parse_cylinder.c \
-					start/parse_cone.c		start/parse_spot_light.c \
-					start/read_file.c		start/init.c 			main.c
+					start/parse_angle.c		start/parse_camera.c	start/parse_amb_light.c \
+					start/parse_light.c		start/parse_plane.c		start/parse_spot_light.c \
+					start/parse_sphere.c	start/parse_cone.c		start/parse_cylinder.c \
+					start/read_file.c		start/init.c \
+					main.c
 
 SRCS_DIR		:=	./src/
 SRCS			:=	$(addprefix $(SRCS_DIR),$(SRCS_FILES))

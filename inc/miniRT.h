@@ -92,6 +92,11 @@
 # define CONE_HEIGHT			0x00800000
 # define CONE_ALL				0x00F00000
 
+# define SPOT_LIGHT_TRANSLATION	0x01000000
+# define SPOT_LIGHT_ROTATION	0x02000000
+# define SPOT_LIGHT_ANGLE		0x04000000
+# define SPOT_LIGHT_ALL			0x07000000
+
 # define UPDATE_ALL				0xFFFFFFFF
 
 /* Number of objects */
@@ -101,12 +106,16 @@
 /* Translation, rotation & other factors */
 
 # define TRANSLATION_FACTOR		0.05
-# define ROTATION_FACTOR		0.05
+# define ROTATION_FACTOR		0.01
 # define FOV_FACTOR				0.05
 # define RADIUS_FACTOR			0.05
 # define HEIGHT_FACTOR			0.05
-# define LIGHT_RATIO_FACTOR		0.05
+# define LIGHT_RATIO_FACTOR		0.01
 # define PIXEL_RESOLUTION		15
+
+/* Maths const */
+
+# define PI_360					0.008726646259971647884618453842443064
 
 /* Objects */
 enum {
@@ -115,11 +124,12 @@ enum {
 	PLANE,
 	CYLINDER,
 	CONE,
-	SPOT
+	SPOT_LIGHT
 };
 
 /* Structures */
 
+struct	s_phong;
 struct	s_scene;
 
 typedef struct s_point
@@ -175,10 +185,13 @@ typedef struct s_spot_light
 {
 	t_point	coord;
 	t_point	relative_coord;
+	t_point	direction;
+	t_point	right;
+	t_point	down;
 	t_color	color;
 	double	ratio;
 	double	angle;
-	t_point	direction;
+	double	cos_angle;
 }	t_spot_light;
 
 typedef struct s_sphere
@@ -247,24 +260,21 @@ typedef struct s_cone
 	double	value_quad;
 }	t_cone;
 
-
-struct s_phong;
-
 typedef struct s_object
 {
-	void			*object;
-	void				(*print)(struct s_phong *phong);
-	t_color			(*get_color)(struct s_scene *, void *);
-	t_point			(*get_normal)(t_point, t_point, void *);
-	double			(*intersect)(t_point, void *, t_point *);
-	void			(*update)(struct s_scene *, void *, unsigned int);
-	void			(*translation_relative)(int, struct s_scene *);
-	void			(*rotation_relative)(int, struct s_scene *);
-	void			(*translation_absolute)(struct s_scene *, t_point);
-	void			(*rotation_absolute)(struct s_scene *, t_matrix);
-	void			(*numpad_plus_minus)(int, struct s_scene *);
-	void			(*scroll)(int, struct s_scene *);
-	int				type;
+	void	*object;
+	void	(*print)(struct s_phong *);
+	t_color	(*get_color)(struct s_scene *, void *);
+	t_point	(*get_normal)(t_point, t_point, void *);
+	double	(*intersect)(t_point, void *, t_point *);
+	void	(*update)(struct s_scene *, void *, unsigned int);
+	void	(*translation_relative)(int, struct s_scene *);
+	void	(*rotation_relative)(int, struct s_scene *);
+	void	(*translation_absolute)(struct s_scene *, t_point);
+	void	(*rotation_absolute)(struct s_scene *, t_matrix);
+	void	(*numpad_plus_minus)(int, struct s_scene *);
+	void	(*scroll)(int, struct s_scene *);
+	int		type;
 }	t_object;
 
 typedef struct s_phong
@@ -303,7 +313,7 @@ typedef struct s_scene
 	int			height;
 	int			index;
 	int			nb_objects;
-	int			nb_spot;
+//	int			nb_spot;
 	int			mode;
 }	t_scene;
 
@@ -373,15 +383,23 @@ t_matrix		matrix_rotation(t_point vector, double s);
 
 /* objects */
 
+void			update_scene(t_scene *scene, unsigned int flags);
+
 void			ratio_amb_light(int key_code, t_scene *scene);
 
 void			fov_camera(int mouse_code, t_scene *scene);
 
 void			update_camera(t_scene *scene, unsigned int flags);
 
+void			update_light(t_scene *scene, void *object, unsigned int flags);
+
 void			ratio_main_light(int key_code, t_scene *scene);
 
-void			update_light(t_scene *scene, void *object, unsigned int flags);
+void			update_spot_light(t_scene *scene, void *object, unsigned int flags);
+
+void			ratio_spot_light(int key_code, t_scene *scene);
+
+void			angle_spot_light(int mouse_code, t_scene *scene);
 
 void			update_sphere(t_scene *scene, void *object, unsigned int flags);
 
@@ -405,6 +423,8 @@ void			height_cone(int key_code, t_scene *scene);
 /* intersect */
 
 double			intersect_light(t_point ray, void *object, t_point *origin);
+
+double			intersect_spot_light(t_point ray, void *object, t_point *origin);
 
 double			intersect_sphere(t_point ray, void *object, t_point *origin);
 
@@ -434,35 +454,37 @@ unsigned char	color_get_g(unsigned int trgb);
 
 unsigned char	color_get_b(unsigned int trgb);
 
-
+void			print_light(t_phong *phong);
 
 t_color			get_color_light(t_scene *scene, void *object);
 
+void			print_spot_light(t_phong *phong);
 
-void	print_light(t_phong *phong);
-void	print_plane(t_phong *phong);
-void	print_sphere(t_phong *phong);
-void	print_cylinder(t_phong *phong);
-void	print_cone(t_phong *phong);
+t_color			get_color_spot_light(t_scene *scene, void *object);
 
+void			print_sphere(t_phong *phong);
 
 t_color			get_color_sphere(t_scene *scene, void *object);
 
 t_point			normal_sphere(t_point ray, t_point hit_point, void *object);
 
+void			print_plane(t_phong *phong);
+
 t_color			get_color_plane(t_scene *scene, void *object);
 
 t_point			normal_plane(t_point ray, t_point hit_point, void *object);
+
+void			print_cylinder(t_phong *phong);
 
 t_color			get_color_cylinder(t_scene *scene, void *object);
 
 t_point			normal_cylinder(t_point ray, t_point hit_point, void *object);
 
+void			print_cone(t_phong *phong);
+
 t_color			get_color_cone(t_scene *scene, void *object);
 
 t_point			normal_cone(t_point ray, t_point hit_point, void *object);
-
-void			update_scene(t_scene *scene, unsigned int flags);
 
 void			put_pixel(t_scene *scene, int x, int y, unsigned int color);
 
@@ -479,6 +501,10 @@ void			rotation(int key_code, t_scene *scene);
 void			rotation_relative_camera(int key_code, t_scene *scene);
 
 void			rotation_absolute_camera(t_scene *scene, t_matrix matrix);
+
+void			rotation_relative_spot_light(int key_code, t_scene *scene);
+
+void			rotation_absolute_spot_light(t_scene *scene, t_matrix matrix);
 
 void			rotation_relative_plane(int key_code, t_scene *scene);
 
@@ -501,6 +527,10 @@ void			translation_relative_camera(int key_code, t_scene *scene);
 void			translation_absolute_camera(t_scene *scene, t_point vector);
 
 void			translation_absolute_light(t_scene *scene, t_point vector);
+
+void			translation_relative_spot_light(int key_code, t_scene *scene);
+
+void			translation_absolute_spot_light(t_scene *scene, t_point vector);
 
 void			translation_absolute_sphere(t_scene *scene, t_point vector);
 
@@ -530,17 +560,17 @@ int				key_release(int key_code, t_scene *scene);
 
 int				mouse_release(int mouse_code, int x, int y, t_scene *scene);
 
-/* init */
+/* start */
 
 char			*next_item(char *line);
-
-int				parse_spot_light(t_list *current, t_list **spot);
 
 int				parse_color(t_color *color, char *item);
 
 int				parse_ratio(double *ratio, char *item);
 
 int				parse_length(double *length, char *item, char *name, char half);
+
+int				parse_angle(double *angle, char *item);
 
 char			*next_coord(char *item, char last);
 
@@ -555,6 +585,9 @@ int				parse_camera(t_scene *scene, t_list *current, \
 					t_object *object);
 
 int				parse_light(t_scene *scene, t_list *current, t_object *object);
+
+int				parse_spot_light(t_scene *scene, t_list *current, \
+					t_object *object);
 
 int				parse_sphere(t_scene *scene, t_list *current, \
 					t_object *object);

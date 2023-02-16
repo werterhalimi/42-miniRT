@@ -17,7 +17,7 @@ void	translation_relative_cone(int key_code, t_scene *scene)
 	t_point	vector;
 	t_cone	*cone;
 
-	cone = (t_cone *)(scene->objects[scene->index - 1]->object);
+	cone = (t_cone *)scene->objects[scene->index - 1]->object;
 	if (key_code == KEY_W)
 		vector = scalar_multi(TRANSLATION_FACTOR, cone->direction);
 	else if (key_code == KEY_S)
@@ -25,14 +25,14 @@ void	translation_relative_cone(int key_code, t_scene *scene)
 	else
 		return ;
 	cone->coord = add_vectors(cone->coord, vector);
-	update_scene(scene, CYLINDER_TRANSLATION);
+	update_scene(scene, CONE_TRANSLATION);
 }
 
 void	translation_absolute_cone(t_scene *scene, t_point vector)
 {
 	t_cone	*cone;
 
-	cone = (t_cone *)(scene->objects[scene->index - 1]->object);
+	cone = (t_cone *)scene->objects[scene->index - 1]->object;
 	cone->coord = add_vectors(cone->coord, vector);
-	update_scene(scene, CYLINDER_TRANSLATION);
+	update_scene(scene, CONE_TRANSLATION);
 }

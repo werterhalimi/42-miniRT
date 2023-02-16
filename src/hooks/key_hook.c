@@ -41,7 +41,6 @@ static void	update_numpad(int key_code, t_scene *scene)
 
 int	key_hook(int key_code, t_scene *scene)
 {
-//	printf("KEY = %d\n", key_code);
 	if (key_code == KEY_ESC)
 		quit(scene);
 	else if (key_code == KEY_SPACE)
