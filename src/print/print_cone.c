@@ -6,32 +6,21 @@
 /*   By: ncotte <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 17:04:57 by ncotte            #+#    #+#             */
-/*   Updated: 2023/02/14 23:26:40 by shalimi          ###   ########.fr       */
+/*   Updated: 2023/02/16 02:19:33 by shalimi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
-unsigned int	print_cone(t_scene *scene, void *object, \
-					t_point hit_point, t_point hit_point_to_light)
+void	print_cone(t_phong *phong)
 {
 	t_cone	*cone;
-	t_color	base;
-	t_point	rebound;
-	t_point	normal;
 
-	cone = (t_cone *)object;
-	normal = add_vectors(get_projection_unit(sub_vectors(hit_point, \
-		cone->coord), cone->direction), cone->coord);
-	normal = unit_vector(sub_vectors(hit_point, normal));
-	if (vector_angle(cone->direction, sub_vectors(hit_point, cone->center_base)) == M_PI_2)
-			normal = scalar_multi(-1.0, cone->direction);
-	rebound = reflection(sub_vectors(hit_point, scene->light->coord), normal);
-	base = cone->color;
-	if (dot_product(normal, unit_vector(sub_vectors(scene->light->coord, \
-		hit_point))) <= 0.0)
-		return (phong_ambient(scene->amb_light, base));
-	return (phong_color(scene, base, dot_product(normal, hit_point_to_light)));
+	cone = (t_cone *)phong->object;
+	if (dot_product(phong->normal, unit_vector(sub_vectors(phong->coord, \
+		phong->hit_point))) <= 0.0)
+		return ;
+	(phong_diffuse(phong, dot_product(phong->normal, phong->light_ray)));
 }
 
 t_color	get_color_cone(t_scene *scene, void *object)

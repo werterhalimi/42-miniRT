@@ -6,28 +6,22 @@
 /*   By: ncotte <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 14:36:36 by ncotte            #+#    #+#             */
-/*   Updated: 2023/02/13 22:39:45 by shalimi          ###   ########.fr       */
+/*   Updated: 2023/02/16 02:20:35 by shalimi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
-unsigned int	print_plane(t_scene *scene, void *object, \
-					t_point hit_point, t_point hit_point_to_light)
+void	print_plane(t_phong *phong)
 {
 	t_plane	*plane;
-	t_color	base;
-	t_point	rebound;
-	t_point	normal;
 
-	plane = (t_plane *)object;
-	normal = plane->normal;
-	rebound = reflection(sub_vectors(hit_point, scene->light->coord), normal);
-	base = plane->color;
-	if (dot_product(normal, unit_vector(sub_vectors(scene->light->coord, \
-		hit_point))) <= 0.0)
-		return (phong_ambient(scene->amb_light, base));
-	return (phong_color(scene, base, dot_product(normal, hit_point_to_light)));
+	plane = (t_plane *)phong->object;
+	if (dot_product(phong->normal, unit_vector(sub_vectors(phong->coord, \
+		phong->hit_point))) <= 0.0)
+		return ;
+//		return (NO);//return (phong_ambient(scene->amb_light, base));
+	(phong_diffuse(phong, dot_product(phong->normal, phong->light_ray)));
 }
 
 t_color	get_color_plane(t_scene *scene, void *object)

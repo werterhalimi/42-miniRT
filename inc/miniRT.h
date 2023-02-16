@@ -6,7 +6,7 @@
 /*   By: ncotte <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/29 11:02:34 by ncotte            #+#    #+#             */
-/*   Updated: 2023/02/15 12:46:41 by shalimi          ###   ########.fr       */
+/*   Updated: 2023/02/16 03:34:33 by shalimi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,11 +173,12 @@ typedef struct s_light
 
 typedef struct s_spot_light
 {
-	t_point	direction;
 	t_point	coord;
 	t_point	relative_coord;
 	t_color	color;
 	double	ratio;
+	double	angle;
+	t_point	direction;
 }	t_spot_light;
 
 typedef struct s_sphere
@@ -246,10 +247,13 @@ typedef struct s_cone
 	double	value_quad;
 }	t_cone;
 
+
+struct s_phong;
+
 typedef struct s_object
 {
-	void	*object;
-	unsigned int	(*print)(struct s_scene *, void *, t_point, t_point);
+	void			*object;
+	void				(*print)(struct s_phong *phong);
 	t_color			(*get_color)(struct s_scene *, void *);
 	t_point			(*get_normal)(t_point, t_point, void *);
 	double			(*intersect)(t_point, void *, t_point *);
@@ -265,12 +269,17 @@ typedef struct s_object
 
 typedef struct s_phong
 {
+	t_point		coord;
 	t_point		normal;
 	t_point		camera_ray;
 	t_point		hit_point;
 	t_point		light_ray;
 	t_color		color;
+	t_color		light_color;
 	t_object	*object;
+	t_light		*light;
+	double		rgb[3];
+	double		light_ratio;
 	double		camera_ray_dist;
 	double		light_ray_dist_2;
 }	t_phong;
@@ -294,6 +303,7 @@ typedef struct s_scene
 	int			height;
 	int			index;
 	int			nb_objects;
+	int			nb_spot;
 	int			mode;
 }	t_scene;
 
@@ -424,34 +434,29 @@ unsigned char	color_get_g(unsigned int trgb);
 
 unsigned char	color_get_b(unsigned int trgb);
 
-unsigned int	print_light(t_scene *scene, void *object, \
-					t_point hit_point, t_point hit_point_to_light);
+
 
 t_color			get_color_light(t_scene *scene, void *object);
 
-unsigned int	print_sphere(t_scene *scene, void *object, \
-					t_point hit_point, t_point hit_point_to_light);
+
+void	print_light(t_phong *phong);
+void	print_plane(t_phong *phong);
+void	print_sphere(t_phong *phong);
+void	print_cylinder(t_phong *phong);
+void	print_cone(t_phong *phong);
+
 
 t_color			get_color_sphere(t_scene *scene, void *object);
 
 t_point			normal_sphere(t_point ray, t_point hit_point, void *object);
 
-unsigned int	print_plane(t_scene *scene, void *object, \
-					t_point hit_point, t_point hit_point_to_light);
-
 t_color			get_color_plane(t_scene *scene, void *object);
 
 t_point			normal_plane(t_point ray, t_point hit_point, void *object);
 
-unsigned int	print_cylinder(t_scene *scene, void *object, \
-					t_point hit_point, t_point hit_point_to_light);
-
 t_color			get_color_cylinder(t_scene *scene, void *object);
 
 t_point			normal_cylinder(t_point ray, t_point hit_point, void *object);
-
-unsigned int	print_cone(t_scene *scene, void *object, \
-					t_point hit_point, t_point hit_point_to_light);
 
 t_color			get_color_cone(t_scene *scene, void *object);
 
@@ -463,9 +468,9 @@ void			put_pixel(t_scene *scene, int x, int y, unsigned int color);
 
 void			print_window(t_scene *scene, int offset);
 
-unsigned int	phong_ambient(t_amb_light *amb_light, t_color base);
+void			phong_ambient(t_amb_light *amb_light, t_color base, double *rgb);
 
-unsigned int	phong_color(t_scene *scene, t_color base, double dot);
+void			phong_diffuse(t_phong *phong, double dot);
 
 /* rotations */
 

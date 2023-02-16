@@ -6,11 +6,12 @@
 /*   By: ncotte <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/29 19:27:01 by ncotte            #+#    #+#             */
-/*   Updated: 2023/01/29 19:27:05 by ncotte           ###   ########.fr       */
+/*   Updated: 2023/02/16 01:34:21 by shalimi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
+
 
 void	ratio_main_light(int key_code, t_scene *scene)
 {
@@ -31,3 +32,5 @@ void	update_light(t_scene *scene, void *object, unsigned int flags)
 	light = (t_light *)object;
 	light->relative_coord = sub_vectors(light->coord, scene->camera->coord);
 }
+
+

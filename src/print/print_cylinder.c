@@ -6,34 +6,21 @@
 /*   By: ncotte <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 14:36:28 by ncotte            #+#    #+#             */
-/*   Updated: 2023/02/13 22:57:28 by shalimi          ###   ########.fr       */
+/*   Updated: 2023/02/16 02:20:03 by shalimi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
-unsigned int	print_cylinder(t_scene *scene, void *object, \
-					t_point hit_point, t_point hit_point_to_light)
+void	print_cylinder(t_phong *phong)
 {
 	t_cylinder	*cy;
-	t_color		base;
-	t_point		rebound;
-	t_point		normal;
 
-	cy = (t_cylinder *)object;
-	normal = add_vectors(get_projection_unit(sub_vectors(hit_point, \
-		cy->coord), cy->direction), cy->coord);
-	normal = unit_vector(sub_vectors(hit_point, normal));
-	if (distance_square(hit_point, cy->center_top) <= cy->radius_2)
-			normal = cy->direction;
-	if (distance_square(hit_point, cy->center_down) <= cy->radius_2)
-			normal = scalar_multi(-1.0, cy->direction);
-	rebound = reflection(sub_vectors(hit_point, scene->light->coord), normal);
-	base = cy->color;
-	if (dot_product(normal, unit_vector(sub_vectors(scene->light->coord, \
-		hit_point))) <= 0.0)
-		return (phong_ambient(scene->amb_light, base));
-	return (phong_color(scene, base, dot_product(normal, hit_point_to_light)));
+	cy = (t_cylinder *)phong->object;
+	if (dot_product(phong->normal, unit_vector(sub_vectors(phong->coord, \
+		phong->hit_point))) <= 0.0)
+		return ;
+	(phong_diffuse(phong, dot_product(phong->normal, phong->light_ray)));
 }
 
 t_color	get_color_cylinder(t_scene *scene, void *object)
