@@ -6,7 +6,7 @@
 /*   By: ncotte <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 16:32:15 by ncotte            #+#    #+#             */
-/*   Updated: 2023/02/13 16:32:18 by ncotte           ###   ########.fr       */
+/*   Updated: 2023/02/17 21:04:54 by shalimi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,6 @@ int	parse_cone(t_scene *scene, t_list *current, t_object *object)
 		return (ERROR);
 	cone->down = orthogonal_base(cone->direction, &cone->right);
 	object->object = cone;
-	object->print = &print_cone;
 	object->get_color = &get_color_cone;
 	object->get_normal = &normal_cone;
 	object->intersect = &intersect_cone;

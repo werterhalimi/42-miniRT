@@ -6,7 +6,7 @@
 /*   By: ncotte <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 13:14:45 by ncotte            #+#    #+#             */
-/*   Updated: 2023/02/12 21:48:59 by shalimi          ###   ########.fr       */
+/*   Updated: 2023/02/17 21:04:54 by shalimi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ int	parse_plane(t_scene *scene, t_list *current, t_object *object)
 		return (ERROR);
 	plane->down = orthogonal_base(plane->normal, &plane->right);
 	object->object = plane;
-	object->print = &print_plane;
 	object->get_color = &get_color_plane;
 	object->get_normal = &normal_plane;
 	object->intersect = &intersect_plane;

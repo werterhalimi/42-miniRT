@@ -6,7 +6,7 @@
 /*   By: ncotte <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/29 11:02:34 by ncotte            #+#    #+#             */
-/*   Updated: 2023/02/17 18:47:21 by shalimi          ###   ########.fr       */
+/*   Updated: 2023/02/17 21:04:00 by shalimi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -271,7 +271,6 @@ typedef struct s_cone
 typedef struct s_object
 {
 	void			*object;
-	void			(*print)(struct s_phong *);
 	struct s_color	(*get_color)(struct s_scene *, void *, t_point, t_point);
 	struct s_point	(*get_normal)(t_point, t_point, void *);
 	double			(*intersect)(t_point, void *, t_point *);
@@ -463,38 +462,32 @@ unsigned char	color_get_g(unsigned int trgb);
 
 unsigned char	color_get_b(unsigned int trgb);
 
-void			print_light(t_phong *phong);
 
 t_color			get_color_light(t_scene *scene, void *object, \
 					t_point hit_point, t_point normal);
 
-void			print_spot_light(t_phong *phong);
 
 t_color			get_color_spot_light(t_scene *scene, void *object, \
 					t_point hit_point, t_point normal);
 
-void			print_sphere(t_phong *phong);
 
 t_color			get_color_sphere(t_scene *scene, void *object, \
 					t_point hit_point, t_point normal);
 
 t_point			normal_sphere(t_point ray, t_point hit_point, void *object);
 
-void			print_plane(t_phong *phong);
 
 t_color			get_color_plane(t_scene *scene, void *object, \
 					t_point hit_point, t_point normal);
 
 t_point			normal_plane(t_point ray, t_point hit_point, void *object);
 
-void			print_cylinder(t_phong *phong);
 
 t_color			get_color_cylinder(t_scene *scene, void *object, \
 					t_point hit_point, t_point normal);
 
 t_point			normal_cylinder(t_point ray, t_point hit_point, void *object);
 
-void			print_cone(t_phong *phong);
 
 t_color			get_color_cone(t_scene *scene, void *object, \
 					t_point hit_point, t_point normal);

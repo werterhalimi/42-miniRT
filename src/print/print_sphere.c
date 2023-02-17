@@ -6,26 +6,13 @@
 /*   By: ncotte <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 14:36:43 by ncotte            #+#    #+#             */
-/*   Updated: 2023/02/17 17:08:01 by shalimi          ###   ########.fr       */
+/*   Updated: 2023/02/17 21:04:02 by shalimi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
-//	t_point h = unit_vector(add_vectors(scalar_multi(-1.0, ray), hit_point_to_light));
-//	double specular = pow(dot_product(phong.normal, h), 25);
-void	print_sphere(t_phong *phong)
-{
-	t_point	h;
 
-	if (dot_product(phong->normal, unit_vector(sub_vectors(phong->coord, \
-		phong->hit_point))) <= 0.0)
-		return ;
-	h = add_vectors(scalar_multi(-1.0, phong->camera_ray), phong->light_ray);
-	h = unit_vector(h);
-	phong_diffuse(phong, dot_product(phong->normal, phong->light_ray));
-	phong_specular(phong, pow(dot_product(phong->normal, h), 25));
-}
 
 t_color	get_color_sphere(t_scene *scene, void *object, \
 			t_point hit_point, t_point normal)

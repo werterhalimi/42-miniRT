@@ -6,7 +6,7 @@
 /*   By: ncotte <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 13:15:10 by ncotte            #+#    #+#             */
-/*   Updated: 2023/02/12 21:37:31 by shalimi          ###   ########.fr       */
+/*   Updated: 2023/02/17 21:04:54 by shalimi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,6 @@ int	parse_cylinder(t_scene *scene, t_list *current, t_object *object)
 		return (ERROR);
 	cylinder->down = orthogonal_base(cylinder->direction, &cylinder->right);
 	object->object = cylinder;
-	object->print = &print_cylinder;
 	object->get_color = &get_color_cylinder;
 	object->get_normal = &normal_cylinder;
 	object->intersect = &intersect_cylinder;

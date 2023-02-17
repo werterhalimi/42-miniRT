@@ -6,7 +6,7 @@
 /*   By: shalimi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/15 12:00:44 by shalimi           #+#    #+#             */
-/*   Updated: 2023/02/16 03:38:45 by shalimi          ###   ########.fr       */
+/*   Updated: 2023/02/17 21:05:28 by shalimi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ int	parse_spot_light(t_scene *scene, t_list *current, t_object *object)
 		return (ERROR);
 	ft_lstadd_front(&scene->spot_lights, light);
 	object->object = spot_light;
-	object->print = &print_spot_light;
 	object->get_color = &get_color_spot_light;
 	object->intersect = &intersect_spot_light;
 	object->update = &update_spot_light;

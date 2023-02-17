@@ -6,7 +6,7 @@
 /*   By: ncotte <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 14:39:19 by ncotte            #+#    #+#             */
-/*   Updated: 2023/02/17 18:47:19 by shalimi          ###   ########.fr       */
+/*   Updated: 2023/02/17 21:08:03 by shalimi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static t_phong	set_phong(t_phong phong, t_point coord, double ratio, t_color col
 	phong.coord = coord;
 	phong.light_ratio = ratio;
 	phong.light_color = color;
-	light_ray = sub_vectors(phong.coord, phong.hit_point);
+	light_ray = unit_vector(sub_vectors(phong.coord, phong.hit_point));
 	phong.light_ray_dist_2 = norm_square(light_ray);
 	phong.light_ray = unit_vector(light_ray);
 	return (phong);
@@ -98,12 +98,13 @@ static unsigned int	find_color_pixel(t_scene *scene, t_point ray)
 		print_object(&phong);
 	//	phong.object->print(&phong);// phong.object->object, phong.hit_point, 
 		//	unit_vector(phong.light_ray)));
-	if (phong.rgb[0] > 255)
+/*	if (phong.rgb[0] > 255)
 		phong.rgb[0] = 255;
 	if (phong.rgb[1] > 255)
 		phong.rgb[1] = 255;
 	if (phong.rgb[2] > 255)
 		phong.rgb[2] = 255;
+	*/
 	return (create_trgb(0, phong.rgb[0], phong.rgb[1], phong.rgb[2]));
 }
 
