@@ -32,4 +32,7 @@
   sl                  20.0,10.0,10.0     -1.0,0.0,0.0     1.0               60                255,0,255
 # Cylinder          |                  |                | Diameter as     | Height as       |
 #                   |                  |                | positive double | positive double |
-  cy                  10.0,10.0,10.0     0.0,0.0,1.0      4.0               6.0               255,255,255
+#  cy                  10.0,10.0,10.0     0.0,0.0,1.0      4.0               6.0               255,255,255
+# Sphere            |                  |             | Diameter as     |                 |
+#                   |                  |             | positive double |                 |
+  sp                  10.0,10.0,10.0                        4.0                                   255,255,255

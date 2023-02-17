@@ -25,7 +25,7 @@ static double	cylinder_end_camera(t_cylinder *cy, t_point ray, double div)
 	if (norm_square(sub_vectors(scalar_multi(t2, ray), \
 		cy->relative_center_down)) > cy->radius_2)
 		t2 = INFINITY;
-	if (isfinite(t1) && t1 >= 0.0 && t1 < t2)
+	if (isfinite(t1) && t1 >= 0.0 && (t1 < t2 || t2 <= 0.0))
 		return (t1);
 	if (isfinite(t2) && t2 >= 0.0)
 		return (t2);
@@ -47,7 +47,7 @@ static double	cylinder_side_camera(t_cylinder *cy, t_point ray, double div)
 		value = dot_product(ray, cy->vector_semi_height);
 		limit = t1 * value + cy->value_semi_height;
 		if (t1 >= 0.0 && - cy->semi_height_2 < limit \
-			&& limit < cy->semi_height_2 && t1 < t2)
+			&& limit < cy->semi_height_2 && (t1 < t2 || t2 <= 0.0))
 			return (t1);
 		limit = t2 * value + cy->value_semi_height;
 		if (t2 >= 0.0 && - cy->semi_height_2 < limit \
@@ -73,7 +73,7 @@ static double	cylinder_end(t_cylinder *cy, t_point ray, \
 		t1 = INFINITY;
 	if (norm_square(sub_vectors(scalar_multi(t2, ray), ocd)) > cy->radius_2)
 		t2 = INFINITY;
-	if (isfinite(t1) && t1 >= 0.0 && t1 < t2)
+	if (isfinite(t1) && t1 >= 0.0 && (t1 < t2 || t2 <= 0.0))
 		return (t1);
 	if (isfinite(t2) && t2 >= 0.0)
 		return (t2);
@@ -99,7 +99,7 @@ static double	cylinder_side(t_cylinder *cy, t_point ray, \
 		value = dot_product(ray, cy->vector_semi_height);
 		limit = t1 * value + value_sh;
 		if (t1 >= 0.0 && - cy->semi_height_2 < limit \
-			&& limit < cy->semi_height_2 && t1 < t2)
+			&& limit < cy->semi_height_2 && (t1 < t2 || t2 <= 0.0))
 			return (t1);
 		limit = t2 * value + value_sh;
 		if (t2 >= 0.0 && - cy->semi_height_2 < limit \
@@ -129,7 +129,7 @@ double	intersect_cylinder(t_point ray, void *object, t_point *origin)
 			sub_vectors(*origin, cylinder->coord));
 	else if (-1.0 != div && div != 1.0)
 		t2 = cylinder_side_camera(cylinder, ray, div);
-	if (isfinite(t1) && t1 >= 0.0 && t1 < t2)
+	if (isfinite(t1) && t1 >= 0.0 && (t1 < t2 || t2 <= 0.0))
 		return (t1);
 	if (isfinite(t2) && t2 >= 0.0)
 		return (t2);
