@@ -199,7 +199,7 @@ typedef struct s_sphere
 {
 	t_point	coord;
 	t_point	relative_coord;
-	t_point front;
+	t_point	front;
 	t_point	right;
 	t_point	down;
 	t_color	color;
@@ -270,19 +270,19 @@ typedef struct s_cone
 
 typedef struct s_object
 {
-	void	*object;
-	void	(*print)(struct s_phong *);
-	t_color	(*get_color)(struct s_scene *o, void *p, t_point b, t_point n);
-	t_point	(*get_normal)(t_point a, t_point b, void * c );
-	double	(*intersect)(t_point, void *, t_point *);
-	void	(*update)(struct s_scene *, void *, unsigned int);
-	void	(*translation_relative)(int, struct s_scene *);
-	void	(*rotation_relative)(int, struct s_scene *);
-	void	(*translation_absolute)(struct s_scene *, t_point);
-	void	(*rotation_absolute)(struct s_scene *, t_matrix);
-	void	(*numpad_plus_minus)(int, struct s_scene *);
-	void	(*scroll)(int, struct s_scene *);
-	int		type;
+	void			*object;
+	void			(*print)(struct s_phong *);
+	struct s_color	(*get_color)(struct s_scene *, void *, t_point, t_point);
+	struct s_point	(*get_normal)(t_point, t_point, void *);
+	double			(*intersect)(t_point, void *, t_point *);
+	void			(*update)(struct s_scene *, void *, unsigned int);
+	void			(*translation_relative)(int, struct s_scene *);
+	void			(*rotation_relative)(int, struct s_scene *);
+	void			(*translation_absolute)(struct s_scene *, t_point);
+	void			(*rotation_absolute)(struct s_scene *, t_matrix);
+	void			(*numpad_plus_minus)(int, struct s_scene *);
+	void			(*scroll)(int, struct s_scene *);
+	int				type;
 }	t_object;
 
 typedef struct s_phong
@@ -321,7 +321,6 @@ typedef struct s_scene
 	int			height;
 	int			index;
 	int			nb_objects;
-//	int			nb_spot;
 	int			mode;
 }	t_scene;
 
@@ -403,7 +402,8 @@ void			update_light(t_scene *scene, void *object, unsigned int flags);
 
 void			ratio_main_light(int key_code, t_scene *scene);
 
-void			update_spot_light(t_scene *scene, void *object, unsigned int flags);
+void			update_spot_light(t_scene *scene, \
+					void *object, unsigned int flags);
 
 void			ratio_spot_light(int key_code, t_scene *scene);
 
@@ -432,7 +432,8 @@ void			height_cone(int key_code, t_scene *scene);
 
 double			intersect_light(t_point ray, void *object, t_point *origin);
 
-double			intersect_spot_light(t_point ray, void *object, t_point *origin);
+double			intersect_spot_light(t_point ray, \
+					void *object, t_point *origin);
 
 double			intersect_sphere(t_point ray, void *object, t_point *origin);
 
@@ -504,9 +505,11 @@ void			put_pixel(t_scene *scene, int x, int y, unsigned int color);
 
 void			print_window(t_scene *scene, int offset);
 
-void			phong_ambient(t_amb_light *amb_light, t_color base, double *rgb);
+void			phong_ambient(t_amb_light *amb_light, \
+					t_color base, double *rgb);
 
 void			phong_diffuse(t_phong *phong, double dot);
+
 void			phong_specular(t_phong *phong, double specular);
 
 /* rotations */

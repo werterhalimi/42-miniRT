@@ -64,10 +64,10 @@ static double	cone_side(t_cone *co, t_point ray, double div, t_point origin)
 	double	value_sh;
 
 	t1 = dot_product(origin, co->direction);
-	limit = norm_square(origin) - co->ratio * t1 *t1;
+	limit = norm_square(origin) - co->ratio * t1 * t1;
 	value_sh = dot_product(origin, co->vector_height);
 	t1 = quad_solv(1 - div * div * co->ratio, 2.0 * (dot_product(ray, \
-		origin) - co->ratio *  div * t1), limit, &t2);
+		origin) - co->ratio * div * t1), limit, &t2);
 	if (!isnan(t1))
 	{
 		value = dot_product(ray, co->vector_height);
