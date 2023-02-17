@@ -6,7 +6,7 @@
 /*   By: ncotte <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 13:14:45 by ncotte            #+#    #+#             */
-/*   Updated: 2023/02/17 21:04:54 by shalimi          ###   ########.fr       */
+/*   Updated: 2023/02/17 21:46:32 by shalimi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static int	bonus_parse_plane(t_plane *plane, char *item)
 	return (SUCCESS);
 }
 
-static int	sub_parse_plane(t_plane *plane, t_list *current)
+static int	sub_parse_plane(t_plane *plane, t_list *current, t_object *obj)
 {
 	char	*item;
 
@@ -34,6 +34,9 @@ static int	sub_parse_plane(t_plane *plane, t_list *current)
 		return (ERROR);
 	item = next_item(item);
 	if (parse_color(&(plane->color), item))
+		return (ERROR);
+	item = next_item(item);
+	if (parse_specular(&(obj->specular), item))
 		return (ERROR);
 	item = next_item(item);
 	if (item)
@@ -50,7 +53,7 @@ int	parse_plane(t_scene *scene, t_list *current, t_object *object)
 	plane = ft_calloc(1, sizeof (t_plane));
 	if (!plane)
 		return (print_error(ERROR, "Plane allocation failed"));
-	if (sub_parse_plane(plane, current))
+	if (sub_parse_plane(plane, current, object))
 		return (ERROR);
 	plane->down = orthogonal_base(plane->normal, &plane->right);
 	object->object = plane;

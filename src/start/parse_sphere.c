@@ -6,7 +6,7 @@
 /*   By: ncotte <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 13:15:00 by ncotte            #+#    #+#             */
-/*   Updated: 2023/02/17 21:05:39 by shalimi          ###   ########.fr       */
+/*   Updated: 2023/02/17 21:45:36 by shalimi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static int	bonus_parse_sphere(t_sphere *sphere, char *item)
 	return (SUCCESS);
 }
 
-static int	sub_parse_sphere(t_sphere *sphere, t_list *current)
+static int	sub_parse_sphere(t_sphere *sphere, t_list *current, t_object *obj)
 {
 	char	*item;
 
@@ -34,6 +34,9 @@ static int	sub_parse_sphere(t_sphere *sphere, t_list *current)
 		return (ERROR);
 	item = next_item(item);
 	if (parse_color(&(sphere->color), item))
+		return (ERROR);
+	item = next_item(item);
+	if (parse_specular(&(obj->specular), item))
 		return (ERROR);
 	item = next_item(item);
 	if (item)
@@ -50,7 +53,7 @@ int	parse_sphere(t_scene *scene, t_list *current, t_object *object)
 	sphere = ft_calloc(1, sizeof (t_sphere));
 	if (!sphere)
 		return (print_error(ERROR, "Sphere allocation failed"));
-	if (sub_parse_sphere(sphere, current))
+	if (sub_parse_sphere(sphere, current, object))
 		return (ERROR);
 	sphere->front = new_point(0.0, 0.0, 1.0);
 	sphere->down = orthogonal_base(sphere->front, &sphere->right);

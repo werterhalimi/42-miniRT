@@ -6,7 +6,7 @@
 #    By: ncotte <marvin@42lausanne.ch>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/12 11:39:15 by ncotte            #+#    #+#              #
-#    Updated: 2023/02/15 12:40:44 by shalimi          ###   ########.fr        #
+#    Updated: 2023/02/17 21:32:06 by shalimi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,7 +39,7 @@ SRCS_FILES		:=	utils/error.c			utils/quit.c			utils/info.c \
 					start/parse_angle.c		start/parse_camera.c	start/parse_amb_light.c \
 					start/parse_light.c		start/parse_plane.c		start/parse_spot_light.c \
 					start/parse_sphere.c	start/parse_cone.c		start/parse_cylinder.c \
-					start/read_file.c		start/init.c \
+					start/read_file.c		start/init.c 			start/parse_specular.c\
 					main.c
 
 SRCS_DIR		:=	./src/

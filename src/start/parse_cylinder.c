@@ -6,7 +6,7 @@
 /*   By: ncotte <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 13:15:10 by ncotte            #+#    #+#             */
-/*   Updated: 2023/02/17 21:04:54 by shalimi          ###   ########.fr       */
+/*   Updated: 2023/02/17 21:46:18 by shalimi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static int	bonus_parse_cylinder(t_cylinder *cylinder, char *item)
 	return (SUCCESS);
 }
 
-static int	sub_parse_cylinder(t_cylinder *cylinder, t_list *current)
+static int	sub_parse_cylinder(t_cylinder *cylinder, t_list *current, t_object *obj)
 {
 	char	*item;
 
@@ -42,6 +42,9 @@ static int	sub_parse_cylinder(t_cylinder *cylinder, t_list *current)
 	if (parse_color(&(cylinder->color), item))
 		return (ERROR);
 	item = next_item(item);
+	if (parse_specular(&(obj->specular), item))
+		return (ERROR);
+	item = next_item(item);
 	if (item)
 		return (bonus_parse_cylinder(cylinder, item));
 	return (SUCCESS);
@@ -56,7 +59,7 @@ int	parse_cylinder(t_scene *scene, t_list *current, t_object *object)
 	cylinder = ft_calloc(1, sizeof (t_cylinder));
 	if (!cylinder)
 		return (print_error(ERROR, "Cylinder allocation failed"));
-	if (sub_parse_cylinder(cylinder, current))
+	if (sub_parse_cylinder(cylinder, current, object))
 		return (ERROR);
 	cylinder->down = orthogonal_base(cylinder->direction, &cylinder->right);
 	object->object = cylinder;

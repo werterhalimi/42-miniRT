@@ -6,7 +6,7 @@
 /*   By: ncotte <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 14:39:19 by ncotte            #+#    #+#             */
-/*   Updated: 2023/02/17 21:08:03 by shalimi          ###   ########.fr       */
+/*   Updated: 2023/02/17 21:18:18 by shalimi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static void	print_object(t_phong *phong)
 	h = add_vectors(scalar_multi(-1.0, phong->camera_ray), phong->light_ray);
 	h = unit_vector(h);
 	phong_diffuse(phong, dot_product(phong->normal, phong->light_ray));
-	phong_specular(phong, pow(dot_product(phong->normal, h), 25));
+	phong_specular(phong, pow(dot_product(phong->normal, h), phong->object->specular));
 
 }
 static unsigned int	find_color_pixel(t_scene *scene, t_point ray)

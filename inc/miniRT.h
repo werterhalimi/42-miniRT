@@ -6,7 +6,7 @@
 /*   By: ncotte <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/29 11:02:34 by ncotte            #+#    #+#             */
-/*   Updated: 2023/02/17 21:04:00 by shalimi          ###   ########.fr       */
+/*   Updated: 2023/02/17 21:31:42 by shalimi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -282,6 +282,7 @@ typedef struct s_object
 	void			(*numpad_plus_minus)(int, struct s_scene *);
 	void			(*scroll)(int, struct s_scene *);
 	int				type;
+	int				specular;
 }	t_object;
 
 typedef struct s_phong
@@ -582,6 +583,8 @@ int				parse_ratio(double *ratio, char *item);
 int				parse_length(double *length, char *item, char *name, char half);
 
 int				parse_angle(double *angle, char *item);
+
+int				parse_specular(int *specular, char *item);
 
 char			*next_coord(char *item, char last);
 
