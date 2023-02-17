@@ -12,6 +12,16 @@
 
 #include "miniRT.h"
 
+static int	bonus_parse_cylinder(t_cylinder *cylinder, char *item)
+{
+	cylinder->color_bis = ft_calloc(1, sizeof (*cylinder->color_bis));
+	if (!cylinder->color_bis || parse_color(cylinder->color_bis, item))
+		return (ERROR);
+	if (next_item(item))
+		return (print_error(ERROR, "Too many items for cylinder"));
+	return (SUCCESS);
+}
+
 static int	sub_parse_cylinder(t_cylinder *cylinder, t_list *current)
 {
 	char	*item;
@@ -31,8 +41,9 @@ static int	sub_parse_cylinder(t_cylinder *cylinder, t_list *current)
 	item = next_item(item);
 	if (parse_color(&(cylinder->color), item))
 		return (ERROR);
-	if (next_item(item))
-		return (print_error(ERROR, "Too many items for cylinder"));
+	item = next_item(item);
+	if (item)
+		return (bonus_parse_cylinder(cylinder, item));
 	return (SUCCESS);
 }
 

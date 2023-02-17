@@ -56,12 +56,13 @@ static unsigned int	find_color_pixel(t_scene *scene, t_point ray)
 		&phong.camera_ray_dist, NULL);
 	if (!phong.object)
 		return (0);
-	phong.color = phong.object->get_color(scene, phong.object->object);
 	phong_ambient(scene->amb_light, phong.color, phong.rgb);
 	phong.hit_point = add_vectors(scene->camera->coord, \
 		scalar_multi(phong.camera_ray_dist, phong.camera_ray));
 	phong.normal = phong.object->get_normal(phong.camera_ray, \
 		phong.hit_point, phong.object->object);
+	phong.color = phong.object->get_color(scene, phong.object->object, \
+		phong.hit_point, phong.normal);
 	lst = scene->spot_lights;
 	while (lst)
 	{

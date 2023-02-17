@@ -17,11 +17,14 @@ void	print_light(t_phong *phong)
 	(void) phong;
 }
 
-t_color	get_color_light(t_scene *scene, void *object)
+t_color	get_color_light(t_scene *scene, void *object, \
+	t_point hit_point, t_point normal)
 {
 	t_light	*light;
 
 	(void) scene;
+	(void) hit_point;
+	(void) normal;
 	light = (t_light *)object;
 	return (light->color);
 }

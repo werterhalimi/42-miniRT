@@ -22,12 +22,17 @@ void	print_sphere(t_phong *phong)
 	phong_diffuse(phong, dot_product(phong->normal, phong->light_ray));
 }
 
-t_color	get_color_sphere(t_scene *scene, void *object)
+t_color	get_color_sphere(t_scene *scene, void *object, \
+			t_point hit_point, t_point normal)
 {
 	t_sphere	*sphere;
 
 	(void) scene;
+	(void) hit_point;
+	(void) normal;
 	sphere = (t_sphere *)object;
+	if (!sphere->color_bis)
+		return (sphere->color);
 	return (sphere->color);
 }
 

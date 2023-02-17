@@ -20,13 +20,33 @@ void	print_cylinder(t_phong *phong)
 	(phong_diffuse(phong, dot_product(phong->normal, phong->light_ray)));
 }
 
-t_color	get_color_cylinder(t_scene *scene, void *object)
+t_color	get_color_cylinder(t_scene *scene, void *object, \
+			t_point hit_point, t_point normal)
 {
 	t_cylinder	*cylinder;
+	t_point		vector;
+	long		x;
+	long		y;
+	long		z;
 
 	(void) scene;
+	(void) normal;
 	cylinder = (t_cylinder *)object;
-	return (cylinder->color);
+	if (!cylinder->color_bis)
+		return (cylinder->color);
+	vector = sub_vectors(hit_point, cylinder->coord);
+	x = (long)floor(dot_product(vector, cylinder->right));
+	y = (long)floor(dot_product(vector, cylinder->down));
+	z = (long)floor(dot_product(vector, cylinder->direction));
+/*	if (dot_product(normal, cylinder->direction))
+	{
+		if (!(z % 2) ^ !())
+			return (*cylinder->color_bis);
+		return (cylinder->color);
+	}
+	if ()
+		return (*cylinder->color_bis);
+*/	return (cylinder->color);
 }
 
 t_point	normal_cylinder(t_point ray, t_point hit_point, void *object)
