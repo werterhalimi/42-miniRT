@@ -6,7 +6,7 @@
 /*   By: shalimi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 22:18:57 by shalimi           #+#    #+#             */
-/*   Updated: 2023/02/17 17:07:23 by shalimi          ###   ########.fr       */
+/*   Updated: 2023/02/17 18:44:02 by shalimi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,8 @@ void	phong_specular(t_phong *phong, double specular)
 	double	*rgb;
 
 	rgb = phong->rgb;
-	rgb[0] += fmax(0, specular * (phong->light_color.r - rgb[0]));
-	rgb[1] += fmax(0, specular * (phong->light_color.g - rgb[1]));
-	rgb[2] += fmax(0, specular * (phong->light_color.b - rgb[2]));
+	rgb[0] += fmax(0, phong->light_ratio * specular * (phong->light_color.r - rgb[0]));
+	rgb[1] += fmax(0, phong->light_ratio * specular * (phong->light_color.g - rgb[1]));
+	rgb[2] += fmax(0, phong->light_ratio * specular * (phong->light_color.b - rgb[2]));
 	// r+= specular * (scene->light0>color.r - base.r)
 }

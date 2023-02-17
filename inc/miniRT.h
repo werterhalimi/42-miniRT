@@ -6,7 +6,7 @@
 /*   By: ncotte <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/29 11:02:34 by ncotte            #+#    #+#             */
-/*   Updated: 2023/02/17 16:54:00 by shalimi          ###   ########.fr       */
+/*   Updated: 2023/02/17 18:47:21 by shalimi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,11 +121,11 @@
 /* Objects */
 enum {
 	MAIN_LIGHT,
+	SPOT_LIGHT,
 	SPHERE,
 	PLANE,
 	CYLINDER,
-	CONE,
-	SPOT_LIGHT
+	CONE
 };
 
 /* Structures */

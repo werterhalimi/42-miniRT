@@ -6,7 +6,7 @@
 /*   By: ncotte <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 14:39:19 by ncotte            #+#    #+#             */
-/*   Updated: 2023/02/17 17:09:20 by shalimi          ###   ########.fr       */
+/*   Updated: 2023/02/17 18:47:19 by shalimi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,22 @@ static t_phong	set_phong(t_phong phong, t_point coord, double ratio, t_color col
 	return (phong);
 }
 
+static void	print_object(t_phong *phong)
+{
+	t_point	h;
+
+	if (phong->object->type <= SPOT_LIGHT)
+		return ;
+
+	if (dot_product(phong->normal, unit_vector(sub_vectors(phong->coord, \
+		phong->hit_point))) <= 0.0)
+		return ;
+	h = add_vectors(scalar_multi(-1.0, phong->camera_ray), phong->light_ray);
+	h = unit_vector(h);
+	phong_diffuse(phong, dot_product(phong->normal, phong->light_ray));
+	phong_specular(phong, pow(dot_product(phong->normal, h), 25));
+
+}
 static unsigned int	find_color_pixel(t_scene *scene, t_point ray)
 {
 	t_phong			phong;
@@ -70,7 +86,8 @@ static unsigned int	find_color_pixel(t_scene *scene, t_point ray)
 		phong = set_phong(phong, sp->coord, sp->ratio, sp->color);
 		if (!is_shadow(scene, phong) \
 			&& dot_product(phong.light_ray, sp->direction) <= sp->cos_angle)
-			phong.object->print(&phong);
+			print_object(&phong);
+		//	phong.object->print(&phong);
 		// phong.object->object, phong.hit_point, 
 	//	unit_vector(phong.light_ray)));
 		lst = lst->next;
@@ -78,7 +95,8 @@ static unsigned int	find_color_pixel(t_scene *scene, t_point ray)
 	phong = set_phong(phong, scene->light->coord, \
 		scene->light->ratio, scene->light->color);
 	if (!is_shadow(scene, phong))
-		phong.object->print(&phong);// phong.object->object, phong.hit_point, 
+		print_object(&phong);
+	//	phong.object->print(&phong);// phong.object->object, phong.hit_point, 
 		//	unit_vector(phong.light_ray)));
 	if (phong.rgb[0] > 255)
 		phong.rgb[0] = 255;
