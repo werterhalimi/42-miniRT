@@ -46,11 +46,11 @@ static double	cylinder_side_camera(t_cylinder *cy, t_point ray, double div)
 	{
 		value = dot_product(ray, cy->vector_semi_height);
 		limit = t1 * value + cy->value_semi_height;
-		if (t1 >= 0.0 && -cy->semi_height_2 < limit \
+		if (t1 >= 0.0 && - cy->semi_height_2 < limit \
 			&& limit < cy->semi_height_2 && t1 < t2)
 			return (t1);
 		limit = t2 * value + cy->value_semi_height;
-		if (t2 >= 0.0 && -cy->semi_height_2 < limit \
+		if (t2 >= 0.0 && - cy->semi_height_2 < limit \
 			&& limit < cy->semi_height_2)
 			return (t2);
 	}
@@ -98,11 +98,11 @@ static double	cylinder_side(t_cylinder *cy, t_point ray, \
 	{
 		value = dot_product(ray, cy->vector_semi_height);
 		limit = t1 * value + value_sh;
-		if (t1 >= 0.0 && -cy->semi_height_2 < limit \
+		if (t1 >= 0.0 && - cy->semi_height_2 < limit \
 			&& limit < cy->semi_height_2 && t1 < t2)
 			return (t1);
 		limit = t2 * value + value_sh;
-		if (t2 >= 0.0 && -cy->semi_height_2 < limit \
+		if (t2 >= 0.0 && - cy->semi_height_2 < limit \
 			&& limit < cy->semi_height_2)
 			return (t2);
 	}
