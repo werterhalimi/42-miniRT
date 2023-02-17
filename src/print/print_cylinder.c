@@ -54,16 +54,21 @@ t_point	normal_cylinder(t_point ray, t_point hit_point, void *object)
 {
 	t_cylinder	*cylinder;
 	t_point		normal;
+	t_point		projection;
 
 	cylinder = (t_cylinder *)object;
+	projection = get_projection_unit(sub_vectors(hit_point, \
+		cylinder->coord), cylinder->direction);
+	if (norm_square(projection) >= cylinder->semi_height_2 - FLT_EPSILON)
+	{
+		if ((dot_product(projection, cylinder->direction) <= 0.0) \
+			!= (dot_product(projection, ray) >= 0.0))
+			return (scalar_multi(-1.0, cylinder->direction));
+		return (cylinder->direction);
+	}
 	normal = unit_vector(sub_vectors(hit_point, \
-		add_vectors(get_projection_unit(sub_vectors(hit_point, \
-		cylinder->coord), cylinder->direction), cylinder->coord)));
-	if (distance_square(hit_point, cylinder->center_top) <= cylinder->radius_2)
-		normal = cylinder->direction;
-	if (distance_square(hit_point, cylinder->center_down) <= cylinder->radius_2)
-		normal = scalar_multi(-1.0, cylinder->direction);
-	if (dot_product(normal, ray) <= 0.0)
-		return (normal);
-	return (scalar_multi(-1.0, normal));
+		add_vectors(projection, cylinder->coord)));
+	if (dot_product(normal, ray) > 0.0)
+		normal = scalar_multi(-1.0, normal);
+	return (normal);
 }

@@ -26,10 +26,14 @@ static double	cone_side_camera(t_cone *cone, t_point ray, double div)
 	{
 		value = dot_product(ray, cone->vector_height);
 		limit = t1 * value + cone->value_height;
-		if (t1 >= 0.0 && 0.0 < limit && limit < cone->height_2 && t1 < t2)
-			return (t1);
+		if (limit <= 0.0 || cone->height_2 <= limit)
+			t1 = INFINITY;
 		limit = t2 * value + cone->value_height;
-		if (t2 >= 0.0 && 0.0 < limit && limit < cone->height_2)
+		if (limit <= 0.0 || cone->height_2 <= limit)
+			t2 = INFINITY;
+		if (isfinite(t1) && t1 >= 0.0 && (t1 < t2 || t2 <= 0.0))
+			return (t1);
+		if ((isfinite(t2) && t2 >= 0.0))
 			return (t2);
 	}
 	return (INFINITY);
@@ -72,10 +76,14 @@ static double	cone_side(t_cone *co, t_point ray, double div, t_point origin)
 	{
 		value = dot_product(ray, co->vector_height);
 		limit = t1 * value + value_sh;
-		if (t1 >= 0.0 && 0.0 < limit && limit < co->height_2 && t1 < t2)
-			return (t1);
+		if (limit <= 0.0 || co->height_2 <= limit)
+			t1 = INFINITY;
 		limit = t2 * value + value_sh;
-		if (t2 >= 0.0 && 0.0 < limit && limit < co->height_2)
+		if (limit <= 0.0 || co->height_2 <= limit)
+			t2 = INFINITY;
+		if (isfinite(t1) && t1 >= 0.0 && (t1 < t2 || t2 <= 0.0))
+			return (t1);
+		if ((isfinite(t2) && t2 >= 0.0))
 			return (t2);
 	}
 	return (INFINITY);
@@ -99,7 +107,7 @@ double	intersect_cone(t_point ray, void *object, t_point *origin)
 			sub_vectors(*origin, cone->coord));
 	else
 		t2 = cone_side_camera(cone, ray, div);
-	if (isfinite(t1) && t1 >= 0.0 && t1 < t2)
+	if (isfinite(t1) && t1 >= 0.0 && (t1 < t2 || t2 <= 0.0))
 		return (t1);
 	if (isfinite(t2) && t2 >= 0.0)
 		return (t2);
