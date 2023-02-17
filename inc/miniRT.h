@@ -23,6 +23,7 @@
 # include <limits.h>
 # include <errno.h>
 # include <fcntl.h>
+# include <float.h>
 # include <math.h>
 
 /* Color codes */
@@ -198,6 +199,9 @@ typedef struct s_sphere
 {
 	t_point	coord;
 	t_point	relative_coord;
+	t_point front;
+	t_point	right;
+	t_point	down;
 	t_color	color;
 	t_color	*color_bis;
 	double	radius;

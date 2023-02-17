@@ -52,6 +52,8 @@ int	parse_sphere(t_scene *scene, t_list *current, t_object *object)
 		return (print_error(ERROR, "Sphere allocation failed"));
 	if (sub_parse_sphere(sphere, current))
 		return (ERROR);
+	sphere->front = new_point(0.0, 0.0, 1.0);
+	sphere->down = orthogonal_base(sphere->front, &sphere->right);
 	object->object = sphere;
 	object->print = &print_sphere;
 	object->get_color = &get_color_sphere;

@@ -25,9 +25,8 @@ t_color	get_color_cylinder(t_scene *scene, void *object, \
 {
 	t_cylinder	*cylinder;
 	t_point		vector;
-	long		x;
-	long		y;
-	long		z;
+	double		h;
+	long		a;
 
 	(void) scene;
 	(void) normal;
@@ -35,18 +34,20 @@ t_color	get_color_cylinder(t_scene *scene, void *object, \
 	if (!cylinder->color_bis)
 		return (cylinder->color);
 	vector = sub_vectors(hit_point, cylinder->coord);
-	x = (long)floor(dot_product(vector, cylinder->right));
-	y = (long)floor(dot_product(vector, cylinder->down));
-	z = (long)floor(dot_product(vector, cylinder->direction));
-/*	if (dot_product(normal, cylinder->direction))
+	a = (long)floor(atan(dot_product(vector, cylinder->right) \
+		/ dot_product(vector, cylinder->down)) * 8 * M_1_PI);
+	h = dot_product(vector, cylinder->direction);
+	if (-(cylinder->semi_height - FLT_EPSILON) < h \
+		&& h < cylinder->semi_height - FLT_EPSILON)
 	{
-		if (!(z % 2) ^ !())
+		if (!((long)floor(h) % 2) ^ !(a % 2))
 			return (*cylinder->color_bis);
 		return (cylinder->color);
 	}
-	if ()
+	if (!((long)floor(sqrt(norm_square(sub_vectors(vector, \
+		scalar_multi(h, cylinder->direction))))) % 2) ^ !(a % 2))
 		return (*cylinder->color_bis);
-*/	return (cylinder->color);
+	return (cylinder->color);
 }
 
 t_point	normal_cylinder(t_point ray, t_point hit_point, void *object)

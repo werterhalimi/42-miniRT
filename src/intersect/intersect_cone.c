@@ -35,8 +35,7 @@ static double	cone_side_camera(t_cone *cone, t_point ray, double div)
 	return (INFINITY);
 }
 
-static double	cone_end(t_cone *co, t_point ray, \
-					double div, t_point *origin)
+static double	cone_end(t_cone *co, t_point ray, double div, t_point *origin)
 {
 	double	t1;
 	t_point	ocb;
@@ -56,8 +55,7 @@ static double	cone_end(t_cone *co, t_point ray, \
 	return (INFINITY);
 }
 
-static double	cone_side(t_cone *co, t_point ray, \
-					double div, t_point origin)
+static double	cone_side(t_cone *co, t_point ray, double div, t_point origin)
 {
 	double	t1;
 	double	t2;

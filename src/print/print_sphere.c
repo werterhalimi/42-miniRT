@@ -26,13 +26,22 @@ t_color	get_color_sphere(t_scene *scene, void *object, \
 			t_point hit_point, t_point normal)
 {
 	t_sphere	*sphere;
+	t_point		vector;
+	long		a;
+	long		b;
 
 	(void) scene;
-	(void) hit_point;
 	(void) normal;
 	sphere = (t_sphere *)object;
 	if (!sphere->color_bis)
 		return (sphere->color);
+	vector = sub_vectors(hit_point, sphere->coord);
+	a = (long)floor(atan(dot_product(vector, sphere->right) \
+		/ dot_product(vector, sphere->down)) * 8 * M_1_PI);
+	b = (long)floor(asin(dot_product(vector, sphere->front) \
+		/ sphere->radius) * 8 * M_1_PI);
+	if (!(a % 2) ^ !(b % 2))
+		return (*sphere->color_bis);
 	return (sphere->color);
 }
 
