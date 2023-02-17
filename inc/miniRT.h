@@ -6,7 +6,7 @@
 /*   By: ncotte <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/29 11:02:34 by ncotte            #+#    #+#             */
-/*   Updated: 2023/02/16 03:34:33 by shalimi          ###   ########.fr       */
+/*   Updated: 2023/02/17 16:54:00 by shalimi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -272,8 +272,8 @@ typedef struct s_object
 {
 	void	*object;
 	void	(*print)(struct s_phong *);
-	t_color	(*get_color)(struct s_scene *, void *, t_point, t_point);
-	t_point	(*get_normal)(t_point, t_point, void *);
+	t_color	(*get_color)(struct s_scene *o, void *p, t_point b, t_point n);
+	t_point	(*get_normal)(t_point a, t_point b, void * c );
 	double	(*intersect)(t_point, void *, t_point *);
 	void	(*update)(struct s_scene *, void *, unsigned int);
 	void	(*translation_relative)(int, struct s_scene *);
@@ -507,6 +507,7 @@ void			print_window(t_scene *scene, int offset);
 void			phong_ambient(t_amb_light *amb_light, t_color base, double *rgb);
 
 void			phong_diffuse(t_phong *phong, double dot);
+void			phong_specular(t_phong *phong, double specular);
 
 /* rotations */
 

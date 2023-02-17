@@ -6,7 +6,7 @@
 /*   By: ncotte <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 14:36:43 by ncotte            #+#    #+#             */
-/*   Updated: 2023/02/16 03:47:30 by shalimi          ###   ########.fr       */
+/*   Updated: 2023/02/17 17:08:01 by shalimi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,15 @@
 //	double specular = pow(dot_product(phong.normal, h), 25);
 void	print_sphere(t_phong *phong)
 {
+	t_point	h;
+
 	if (dot_product(phong->normal, unit_vector(sub_vectors(phong->coord, \
 		phong->hit_point))) <= 0.0)
 		return ;
+	h = add_vectors(scalar_multi(-1.0, phong->camera_ray), phong->light_ray);
+	h = unit_vector(h);
 	phong_diffuse(phong, dot_product(phong->normal, phong->light_ray));
+	phong_specular(phong, pow(dot_product(phong->normal, h), 25));
 }
 
 t_color	get_color_sphere(t_scene *scene, void *object, \
