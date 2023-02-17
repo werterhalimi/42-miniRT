@@ -24,13 +24,28 @@ t_color	get_color_cone(t_scene *scene, void *object, \
 			t_point hit_point, t_point normal)
 {
 	t_cone	*cone;
+	t_point	vector;
+	double	h;
+	long	a;
 
 	(void) scene;
-	(void) hit_point;
 	(void) normal;
 	cone = (t_cone *)object;
 	if (!cone->color_bis)
 		return (cone->color);
+	vector = sub_vectors(hit_point, cone->coord);
+	a = (long)floor(atan(dot_product(vector, cone->right) \
+		/ dot_product(vector, cone->down)) * 8 * M_1_PI);
+	h = dot_product(vector, cone->direction);
+	if (h < cone->height - FLT_EPSILON)
+	{
+		if (!((long)floor(h) % 2) ^ !(a % 2))
+			return (*cone->color_bis);
+		return (cone->color);
+	}
+	if (!((long)floor(sqrt(norm_square(sub_vectors(vector, \
+		scalar_multi(h, cone->direction))))) % 2) ^ !(a % 2))
+		return (*cone->color_bis);
 	return (cone->color);
 }
 
