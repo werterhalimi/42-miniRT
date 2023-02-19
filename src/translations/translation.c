@@ -31,17 +31,17 @@ void	translation(int key_code, t_scene *scene)
 {
 	t_point	vector;
 
-	if (scene->mode == ABSOLUTE)
+	if (scene->mode == ABSOLUTE_MODE)
 		vector = vector_translation(key_code);
-	if (!scene->index && scene->mode == RELATIVE)
+	if (!scene->index && scene->mode == RELATIVE_MODE)
 		translation_relative_camera(key_code, scene);
 	else if (!scene->index)
 		translation_absolute_camera(scene, vector);
-	else if (scene->mode == RELATIVE \
-		&& scene->objects[scene->index - 1]->translation_relative)
+	else if (scene->mode == RELATIVE_MODE \
+ && scene->objects[scene->index - 1]->translation_relative)
 		scene->objects[scene->index - 1]->translation_relative(key_code, scene);
-	else if (scene->mode == ABSOLUTE \
-		&& scene->objects[scene->index - 1]->translation_absolute)
+	else if (scene->mode == ABSOLUTE_MODE \
+ && scene->objects[scene->index - 1]->translation_absolute)
 		scene->objects[scene->index - 1]->translation_absolute(scene, vector);
 	print_window(scene, PIXEL_RESOLUTION);
 }

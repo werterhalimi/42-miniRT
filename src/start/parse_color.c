@@ -63,3 +63,11 @@ int	parse_color(t_color *color, char *item)
 		return (print_error(ERROR, "Too many color components"));
 	return (SUCCESS);
 }
+
+int	parse_color_bonus(t_object *object, char *item)
+{
+	object->color_bis = ft_calloc(1, sizeof (*object->color_bis));
+	if (!object->color_bis || parse_color(object->color_bis, item))
+		return (ERROR);
+	return (SUCCESS);
+}

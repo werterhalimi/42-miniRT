@@ -62,6 +62,6 @@ int	parse_spot_light(t_scene *scene, t_list *current, t_object *object)
 	object->rotation_absolute = &rotation_absolute_spot_light;
 	object->numpad_plus_minus = &ratio_spot_light;
 	object->scroll = &angle_spot_light;
-	object->type = SPOT_LIGHT;
+	object->type = TYPE_SPOT_LIGHT;
 	return (SUCCESS);
 }

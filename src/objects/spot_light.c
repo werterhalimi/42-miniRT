@@ -18,10 +18,10 @@ void	ratio_spot_light(int key_code, t_scene *scene)
 
 	spot_light = (t_spot_light *)scene->objects[scene->index - 1]->object;
 	if (key_code == NUMPAD_PLUS \
-		&& spot_light->ratio <= 1.0 - LIGHT_RATIO_FACTOR)
+		&& spot_light->ratio <= 1.0 - LIGHT_RATIO_FACTOR + FLT_EPSILON)
 		spot_light->ratio += LIGHT_RATIO_FACTOR;
 	else if (key_code == NUMPAD_MINUS \
-		&& spot_light->ratio >= LIGHT_RATIO_FACTOR)
+		&& spot_light->ratio >= LIGHT_RATIO_FACTOR - FLT_EPSILON)
 		spot_light->ratio -= LIGHT_RATIO_FACTOR;
 }
 

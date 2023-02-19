@@ -15,10 +15,10 @@
 void	ratio_main_light(int key_code, t_scene *scene)
 {
 	if (key_code == NUMPAD_PLUS \
-		&& scene->light->ratio <= 1.0 - LIGHT_RATIO_FACTOR)
+		&& scene->light->ratio <= 1.0 - LIGHT_RATIO_FACTOR + FLT_EPSILON)
 		scene->light->ratio += LIGHT_RATIO_FACTOR;
 	else if (key_code == NUMPAD_MINUS \
-		&& scene->light->ratio >= LIGHT_RATIO_FACTOR)
+		&& scene->light->ratio >= LIGHT_RATIO_FACTOR - FLT_EPSILON)
 		scene->light->ratio -= LIGHT_RATIO_FACTOR;
 }
 

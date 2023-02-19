@@ -50,6 +50,6 @@ int	parse_light(t_scene *scene, t_list *current, t_object *object)
 	object->update = &update_light;
 	object->translation_absolute = &translation_absolute_light;
 	object->numpad_plus_minus = &ratio_main_light;
-	object->type = MAIN_LIGHT;
+	object->type = TYPE_MAIN_LIGHT;
 	return (SUCCESS);
 }

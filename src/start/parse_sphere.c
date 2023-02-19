@@ -12,16 +12,6 @@
 
 #include "miniRT.h"
 
-static int	bonus_parse_sphere(t_sphere *sphere, char *item)
-{
-	sphere->color_bis = ft_calloc(1, sizeof (*sphere->color_bis));
-	if (!sphere->color_bis || parse_color(sphere->color_bis, item))
-		return (ERROR);
-	if (next_item(item))
-		return (print_error(ERROR, "Too many items for sphere"));
-	return (SUCCESS);
-}
-
 static int	sub_parse_sphere(t_sphere *sphere, t_list *current, t_object *obj)
 {
 	char	*item;
@@ -36,11 +26,8 @@ static int	sub_parse_sphere(t_sphere *sphere, t_list *current, t_object *obj)
 	if (parse_color(&(sphere->color), item))
 		return (ERROR);
 	item = next_item(item);
-	if (parse_specular(&(obj->specular), item))
-		return (ERROR);
-	item = next_item(item);
 	if (item)
-		return (bonus_parse_sphere(sphere, item));
+		return (parse_bonus(obj, item));
 	return (SUCCESS);
 }
 
@@ -49,7 +36,7 @@ int	parse_sphere(t_scene *scene, t_list *current, t_object *object)
 	t_sphere	*sphere;
 
 	(void) scene;
-	object->type = SPHERE;
+	object->type = TYPE_SPHERE;
 	sphere = ft_calloc(1, sizeof (t_sphere));
 	if (!sphere)
 		return (print_error(ERROR, "Sphere allocation failed"));

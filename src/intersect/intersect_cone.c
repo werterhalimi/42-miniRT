@@ -52,7 +52,7 @@ static double	cone_end(t_cone *co, t_point ray, double div, t_point *origin)
 		t1 = dot_product(ocb, co->direction);
 	}
 	t1 /= div;
-	if (norm_square(sub_vectors(scalar_multi(t1, ray), ocb)) > co->radius_2)
+	if (distance_square(scalar_multi(t1, ray), ocb) > co->radius_2)
 		t1 = INFINITY;
 	if (isfinite(t1) && t1 >= 0.0)
 		return (t1);
@@ -67,25 +67,24 @@ static double	cone_side(t_cone *co, t_point ray, double div, t_point origin)
 	double	value;
 	double	value_sh;
 
-	t1 = dot_product(origin, co->direction);
-	limit = norm_square(origin) - co->ratio * t1 * t1;
-	value_sh = dot_product(origin, co->vector_height);
+	value = dot_product(origin, co->direction);
 	t1 = quad_solv(1 - div * div * co->ratio, 2.0 * (dot_product(ray, \
-		origin) - co->ratio * div * t1), limit, &t2);
-	if (!isnan(t1))
-	{
-		value = dot_product(ray, co->vector_height);
-		limit = t1 * value + value_sh;
-		if (limit <= 0.0 || co->height_2 <= limit)
-			t1 = INFINITY;
-		limit = t2 * value + value_sh;
-		if (limit <= 0.0 || co->height_2 <= limit)
-			t2 = INFINITY;
-		if (isfinite(t1) && t1 >= 0.0 && (t1 < t2 || t2 <= 0.0))
-			return (t1);
-		if ((isfinite(t2) && t2 >= 0.0))
-			return (t2);
-	}
+		origin) - co->ratio * div * value), \
+		norm_square(origin) - co->ratio * value * value, &t2);
+	if (isnan(t1))
+		return (INFINITY);
+	value_sh = dot_product(origin, co->vector_height);
+	value = dot_product(ray, co->vector_height);
+	limit = t1 * value + value_sh;
+	if (limit <= 0.0 || co->height_2 <= limit)
+		t1 = INFINITY;
+	limit = t2 * value + value_sh;
+	if (limit <= 0.0 || co->height_2 <= limit)
+		t2 = INFINITY;
+	if (isfinite(t1) && t1 >= 0.0 && (t1 < t2 || t2 <= 0.0))
+		return (t1);
+	if ((isfinite(t2) && t2 >= 0.0))
+		return (t2);
 	return (INFINITY);
 }
 

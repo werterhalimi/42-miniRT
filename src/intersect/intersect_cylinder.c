@@ -19,11 +19,11 @@ static double	cylinder_end_camera(t_cylinder *cy, t_point ray, double div)
 
 	t1 = cy->value_top / div;
 	t2 = cy->value_down / div;
-	if (norm_square(sub_vectors(scalar_multi(t1, ray), \
-		cy->relative_center_top)) > cy->radius_2)
+	if (distance_square(scalar_multi(t1, ray), \
+		cy->relative_center_top) > cy->radius_2)
 		t1 = INFINITY;
-	if (norm_square(sub_vectors(scalar_multi(t2, ray), \
-		cy->relative_center_down)) > cy->radius_2)
+	if (distance_square(scalar_multi(t2, ray), \
+		cy->relative_center_down) > cy->radius_2)
 		t2 = INFINITY;
 	if (isfinite(t1) && t1 >= 0.0 && (t1 < t2 || t2 <= 0.0))
 		return (t1);
@@ -42,18 +42,17 @@ static double	cylinder_side_camera(t_cylinder *cy, t_point ray, double div)
 	t1 = quad_solv(1 - div * div, 2.0 * (dot_product(ray, \
 		cy->relative_coord) - div * cy->value), \
 		cy->value_quad, &t2);
-	if (!isnan(t1))
-	{
-		value = dot_product(ray, cy->vector_semi_height);
-		limit = t1 * value + cy->value_semi_height;
-		if (t1 >= 0.0 && - cy->semi_height_2 < limit \
-			&& limit < cy->semi_height_2 && (t1 < t2 || t2 <= 0.0))
-			return (t1);
-		limit = t2 * value + cy->value_semi_height;
-		if (t2 >= 0.0 && - cy->semi_height_2 < limit \
-			&& limit < cy->semi_height_2)
-			return (t2);
-	}
+	if (isnan(t1))
+		return (INFINITY);
+	value = dot_product(ray, cy->vector_semi_height);
+	limit = t1 * value + cy->value_semi_height;
+	if (t1 >= 0.0 && - cy->semi_height_2 < limit \
+		&& limit < cy->semi_height_2 && (t1 < t2 || t2 <= 0.0))
+		return (t1);
+	limit = t2 * value + cy->value_semi_height;
+	if (t2 >= 0.0 && - cy->semi_height_2 < limit \
+		&& limit < cy->semi_height_2)
+		return (t2);
 	return (INFINITY);
 }
 
@@ -69,9 +68,9 @@ static double	cylinder_end(t_cylinder *cy, t_point ray, \
 	ocd = sub_vectors(cy->center_down, origin);
 	t1 = dot_product(oct, cy->direction) / div;
 	t2 = dot_product(ocd, cy->direction) / div;
-	if (norm_square(sub_vectors(scalar_multi(t1, ray), oct)) > cy->radius_2)
+	if (distance_square(scalar_multi(t1, ray), oct) > cy->radius_2)
 		t1 = INFINITY;
-	if (norm_square(sub_vectors(scalar_multi(t2, ray), ocd)) > cy->radius_2)
+	if (distance_square(scalar_multi(t2, ray), ocd) > cy->radius_2)
 		t2 = INFINITY;
 	if (isfinite(t1) && t1 >= 0.0 && (t1 < t2 || t2 <= 0.0))
 		return (t1);
@@ -94,18 +93,17 @@ static double	cylinder_side(t_cylinder *cy, t_point ray, \
 	value_sh = dot_product(origin, cy->vector_semi_height);
 	t1 = quad_solv(1 - div * div, 2.0 * (dot_product(ray, \
 		origin) - div * t1), limit, &t2);
-	if (!isnan(t1))
-	{
-		value = dot_product(ray, cy->vector_semi_height);
-		limit = t1 * value + value_sh;
-		if (t1 >= 0.0 && - cy->semi_height_2 < limit \
-			&& limit < cy->semi_height_2 && (t1 < t2 || t2 <= 0.0))
-			return (t1);
-		limit = t2 * value + value_sh;
-		if (t2 >= 0.0 && - cy->semi_height_2 < limit \
-			&& limit < cy->semi_height_2)
-			return (t2);
-	}
+	if (isnan(t1))
+		return (INFINITY);
+	value = dot_product(ray, cy->vector_semi_height);
+	limit = t1 * value + value_sh;
+	if (t1 >= 0.0 && - cy->semi_height_2 < limit \
+		&& limit < cy->semi_height_2 && (t1 < t2 || t2 <= 0.0))
+		return (t1);
+	limit = t2 * value + value_sh;
+	if (t2 >= 0.0 && - cy->semi_height_2 < limit \
+		&& limit < cy->semi_height_2)
+		return (t2);
 	return (INFINITY);
 }
 

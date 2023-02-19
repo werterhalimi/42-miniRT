@@ -12,16 +12,6 @@
 
 #include "miniRT.h"
 
-static int	bonus_parse_plane(t_plane *plane, char *item)
-{
-	plane->color_bis = ft_calloc(1, sizeof (*plane->color_bis));
-	if (!plane->color_bis || parse_color(plane->color_bis, item))
-		return (ERROR);
-	if (next_item(item))
-		return (print_error(ERROR, "Too many items for plane"));
-	return (SUCCESS);
-}
-
 static int	sub_parse_plane(t_plane *plane, t_list *current, t_object *obj)
 {
 	char	*item;
@@ -36,11 +26,8 @@ static int	sub_parse_plane(t_plane *plane, t_list *current, t_object *obj)
 	if (parse_color(&(plane->color), item))
 		return (ERROR);
 	item = next_item(item);
-	if (parse_specular(&(obj->specular), item))
-		return (ERROR);
-	item = next_item(item);
 	if (item)
-		return (bonus_parse_plane(plane, item));
+		return (parse_bonus(obj, item));
 	return (SUCCESS);
 }
 
@@ -49,7 +36,7 @@ int	parse_plane(t_scene *scene, t_list *current, t_object *object)
 	t_plane	*plane;
 
 	(void) scene;
-	object->type = PLANE;
+	object->type = TYPE_PLANE;
 	plane = ft_calloc(1, sizeof (t_plane));
 	if (!plane)
 		return (print_error(ERROR, "Plane allocation failed"));

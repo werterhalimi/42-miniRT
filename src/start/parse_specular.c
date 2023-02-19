@@ -12,15 +12,16 @@
 
 #include "miniRT.h"
 
-int	parse_specular(int *specular, char *item)
+int	parse_specular(t_object *object, char *item)
 {
 	char	*buff;
+
 	if (!item)
 		return (print_error(ERROR, "A specular is missing"));
-	*specular = atoi(item);
-	buff = ft_itoa(*specular);
-	if (ft_strncmp(item, buff, ft_strlen(buff)))
+	object->specular = ft_atoi(item);
+	buff = ft_itoa(object->specular);
+	if (ft_strncmp(item, buff, ft_strlen(buff)) || object->specular < 0)
 		return (print_error(ERROR, \
-			"Invalid angle format. Required: one int"));
+			"Invalid specular format. Required: one positive int"));
 	return (SUCCESS);
 }

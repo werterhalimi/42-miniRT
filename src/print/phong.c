@@ -33,9 +33,7 @@ void	phong_diffuse(t_phong *phong, double dot)
 		* phong->light_ratio;
 	rgb[2] += phong->light_color.b * phong->color.b * dot / 255 \
 		* phong->light_ratio;
-	// r+= specular * (scene->light0>color.r - base.r)
 }
-
 
 void	phong_specular(t_phong *phong, double specular)
 {
@@ -44,8 +42,10 @@ void	phong_specular(t_phong *phong, double specular)
 	if (specular == 1)
 		return ;
 	rgb = phong->rgb;
-	rgb[0] += fmax(0, phong->light_ratio * specular * (phong->light_color.r - rgb[0]));
-	rgb[1] += fmax(0, phong->light_ratio * specular * (phong->light_color.g - rgb[1]));
-	rgb[2] += fmax(0, phong->light_ratio * specular * (phong->light_color.b - rgb[2]));
-	// r+= specular * (scene->light0>color.r - base.r)
+	rgb[0] += fmax(0, phong->light_ratio * specular \
+		* (phong->light_color.r - rgb[0]));
+	rgb[1] += fmax(0, phong->light_ratio * specular \
+		* (phong->light_color.g - rgb[1]));
+	rgb[2] += fmax(0, phong->light_ratio * specular \
+		* (phong->light_color.b - rgb[2]));
 }

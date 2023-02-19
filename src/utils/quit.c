@@ -14,7 +14,6 @@
 
 void	quit(t_scene *scene)
 {
-	printf("%sGOODBYE!%s\n", BOLD_YELLOW, RESET_COLOR);
 	if (scene->image)
 		mlx_destroy_image(scene->mlx, scene->image);
 	if (scene->window)

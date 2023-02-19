@@ -12,15 +12,7 @@
 
 #include "miniRT.h"
 
-void	print_cone(t_phong *phong)
-{
-	if (dot_product(phong->normal, unit_vector(sub_vectors(phong->coord, \
-		phong->hit_point))) <= 0.0)
-		return ;
-	(phong_diffuse(phong, dot_product(phong->normal, phong->light_ray)));
-}
-
-t_color	get_color_cone(t_scene *scene, void *object, \
+t_color	get_color_cone(t_scene *scene, t_object *object, \
 			t_point hit_point, t_point normal)
 {
 	t_cone	*cone;
@@ -30,8 +22,8 @@ t_color	get_color_cone(t_scene *scene, void *object, \
 
 	(void) scene;
 	(void) normal;
-	cone = (t_cone *)object;
-	if (!cone->color_bis)
+	cone = (t_cone *)object->object;
+	if (!object->color_bis)
 		return (cone->color);
 	vector = sub_vectors(hit_point, cone->coord);
 	a = (long)floor(atan(dot_product(vector, cone->right) \
@@ -40,12 +32,12 @@ t_color	get_color_cone(t_scene *scene, void *object, \
 	if (h < cone->height - FLT_EPSILON)
 	{
 		if (!((long)floor(h) % 2) ^ !(a % 2))
-			return (*cone->color_bis);
+			return (*object->color_bis);
 		return (cone->color);
 	}
-	if (!((long)floor(sqrt(norm_square(sub_vectors(vector, \
-		scalar_multi(h, cone->direction))))) % 2) ^ !(a % 2))
-		return (*cone->color_bis);
+	if (!((long)floor(sqrt(distance_square(vector, \
+		scalar_multi(h, cone->direction)))) % 2) ^ !(a % 2))
+		return (*object->color_bis);
 	return (cone->color);
 }
 
@@ -55,36 +47,16 @@ t_point	normal_cone(t_point ray, t_point hit_point, void *object)
 	t_point	normal;
 	t_point	chp;
 	t_point	y;
-//	t_point tmp;
 	double	t;
 
 	cone = (t_cone *)object;
 	chp = (sub_vectors(hit_point, cone->coord));
-	t = norm_square(chp) / dot_product(chp,cone->direction);
+	t = norm_square(chp) / dot_product(chp, cone->direction);
 	y = add_vectors(cone->coord, scalar_multi(t, cone->direction));
-	normal = unit_vector(sub_vectors(hit_point, y));
-	if (dot_product(cone->direction, unit_vector(sub_vectors(hit_point, \
-		cone->center_base))) >= -0.01)
+	normal = unit_dist(hit_point, y);
+	if (dot_product(unit_dist(hit_point, cone->center_base), \
+		cone->direction) >= -0.01)
 		normal = cone->direction;
-//	(void) ray;
-//	return (normal);
-
-//	tmp = sub_vectors(hit_point, cone->coord);
-//	t = dot_product(tmp, cone->direction);
-//	normal = cone->direction;
-//	if (t < cone->height - FLT_EPSILON)
-//	{
-//		normal = scalar_multi(t, normal);
-//		tmp = add_vectors(normal, cone->coord);
-//		t = norm_square(sub_vectors(hit_point, \
-//			tmp)) * inv_sqrt(norm_square(normal));
-//		normal = scalar_multi(t, cone->direction);
-//		tmp = sub_vectors(hit_point,add_vectors(normal, tmp));
-//		normal = unit_vector(tmp);
-//
-////		normal = cross_product(tmp, cone->direction);
-////		normal = cross_product(tmp, normal);
-//	}
 	if (dot_product(normal, ray) <= 0.0)
 		return (normal);
 	return (scalar_multi(-1.0, normal));

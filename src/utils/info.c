@@ -19,12 +19,12 @@ static char	**init_type_name(void)
 	type_name = ft_calloc(NB_OBJECTS - 1, sizeof (*type_name));
 	if (!type_name)
 		return (NULL);
-	type_name[MAIN_LIGHT] = "main light";
-	type_name[SPHERE] = "sphere";
-	type_name[PLANE] = "plane";
-	type_name[CYLINDER] = "cylinder";
-	type_name[CONE] = "cone";
-	type_name[SPOT_LIGHT] = "spot light";
+	type_name[TYPE_MAIN_LIGHT] = "main light";
+	type_name[TYPE_SPHERE] = "sphere";
+	type_name[TYPE_PLANE] = "plane";
+	type_name[TYPE_CYLINDER] = "cylinder";
+	type_name[TYPE_CONE] = "cone";
+	type_name[TYPE_SPOT_LIGHT] = "spot light";
 	return (type_name);
 }
 

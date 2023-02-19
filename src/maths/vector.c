@@ -12,10 +12,14 @@
 
 #include "miniRT.h"
 
+t_point	unit_dist(t_point a, t_point b)
+{
+	return (unit_vector(sub_vectors(a, b)));
+}
+
 t_point	reflection(t_point ray, t_point axis)
 {
-	return (unit_vector(sub_vectors(ray, \
-		scalar_multi(2.0 * dot_product(ray, axis), axis))));
+	return (unit_dist(ray, scalar_multi(2.0 * dot_product(ray, axis), axis)));
 }
 
 t_point	cross_product(t_point v1, t_point v2)
@@ -38,9 +42,9 @@ double	norm_square(t_point vector)
 	return (dot_product(vector, vector));
 }
 
-t_point	get_projection_unit(t_point a, t_point b)
+t_point	get_projection_unit(t_point vector, t_point axis)
 {
-	return (scalar_multi(dot_product(a, b), b));
+	return (scalar_multi(dot_product(vector, axis), axis));
 }
 
 t_point	orthogonal_base(t_point vector, t_point *orthogonal)

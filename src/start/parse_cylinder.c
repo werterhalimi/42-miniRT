@@ -12,41 +12,28 @@
 
 #include "miniRT.h"
 
-static int	bonus_parse_cylinder(t_cylinder *cylinder, char *item)
-{
-	cylinder->color_bis = ft_calloc(1, sizeof (*cylinder->color_bis));
-	if (!cylinder->color_bis || parse_color(cylinder->color_bis, item))
-		return (ERROR);
-	if (next_item(item))
-		return (print_error(ERROR, "Too many items for cylinder"));
-	return (SUCCESS);
-}
-
-static int	sub_parse_cylinder(t_cylinder *cylinder, t_list *current, t_object *obj)
+static int	sub_parse_cylinder(t_cylinder *cy, t_list *current, t_object *obj)
 {
 	char	*item;
 
 	item = next_item((char *)(current->content));
-	if (parse_coord(&(cylinder->coord), item))
+	if (parse_coord(&(cy->coord), item))
 		return (ERROR);
 	item = next_item(item);
-	if (parse_vector(&(cylinder->direction), item, YES))
+	if (parse_vector(&(cy->direction), item, YES))
 		return (ERROR);
 	item = next_item(item);
-	if (parse_length(&(cylinder->radius), item, "Diameter", YES))
+	if (parse_length(&(cy->radius), item, "Diameter", YES))
 		return (ERROR);
 	item = next_item(item);
-	if (parse_length(&(cylinder->semi_height), item, "Height", YES))
+	if (parse_length(&(cy->semi_height), item, "Height", YES))
 		return (ERROR);
 	item = next_item(item);
-	if (parse_color(&(cylinder->color), item))
-		return (ERROR);
-	item = next_item(item);
-	if (parse_specular(&(obj->specular), item))
+	if (parse_color(&(cy->color), item))
 		return (ERROR);
 	item = next_item(item);
 	if (item)
-		return (bonus_parse_cylinder(cylinder, item));
+		return (parse_bonus(obj, item));
 	return (SUCCESS);
 }
 
@@ -55,7 +42,7 @@ int	parse_cylinder(t_scene *scene, t_list *current, t_object *object)
 	t_cylinder	*cylinder;
 
 	(void) scene;
-	object->type = CYLINDER;
+	object->type = TYPE_CYLINDER;
 	cylinder = ft_calloc(1, sizeof (t_cylinder));
 	if (!cylinder)
 		return (print_error(ERROR, "Cylinder allocation failed"));

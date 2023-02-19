@@ -43,17 +43,17 @@ void	rotation(int key_code, t_scene *scene)
 {
 	t_matrix	matrix;
 
-	if (scene->mode == ABSOLUTE)
+	if (scene->mode == ABSOLUTE_MODE)
 		matrix = matrix_rotation_absolute(key_code);
-	if (!scene->index && scene->mode == RELATIVE)
+	if (!scene->index && scene->mode == RELATIVE_MODE)
 		rotation_relative_camera(key_code, scene);
 	else if (!scene->index)
 		rotation_absolute_camera(scene, matrix);
-	else if (scene->mode == RELATIVE \
-		&& scene->objects[scene->index - 1]->rotation_relative)
+	else if (scene->mode == RELATIVE_MODE \
+ && scene->objects[scene->index - 1]->rotation_relative)
 		scene->objects[scene->index - 1]->rotation_relative(key_code, scene);
-	else if (scene->mode == ABSOLUTE \
-		&& scene->objects[scene->index - 1]->rotation_absolute)
+	else if (scene->mode == ABSOLUTE_MODE \
+ && scene->objects[scene->index - 1]->rotation_absolute)
 		scene->objects[scene->index - 1]->rotation_absolute(scene, matrix);
 	print_window(scene, PIXEL_RESOLUTION);
 }

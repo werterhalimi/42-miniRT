@@ -12,7 +12,7 @@
 
 #include "miniRT.h"
 
-t_color	get_color_plane(t_scene *scene, void *object, \
+t_color	get_color_plane(t_scene *scene, t_object *object, \
 			t_point hit_point, t_point normal)
 {
 	t_plane	*plane;
@@ -22,14 +22,14 @@ t_color	get_color_plane(t_scene *scene, void *object, \
 
 	(void) scene;
 	(void) normal;
-	plane = (t_plane *)object;
-	if (!plane->color_bis)
+	plane = (t_plane *)object->object;
+	if (!object->color_bis)
 		return (plane->color);
 	vector = sub_vectors(hit_point, plane->coord);
 	x = (long)floor(dot_product(vector, plane->right));
 	y = (long)floor(dot_product(vector, plane->down));
 	if (!(x % 2) ^ !(y % 2))
-		return (*plane->color_bis);
+		return (*object->color_bis);
 	return (plane->color);
 }
 

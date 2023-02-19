@@ -12,16 +12,6 @@
 
 #include "miniRT.h"
 
-static int	bonus_parse_cone(t_cone *cone, char *item)
-{
-	cone->color_bis = ft_calloc(1, sizeof (*cone->color_bis));
-	if (!cone->color_bis || parse_color(cone->color_bis, item))
-		return (ERROR);
-	if (next_item(item))
-		return (print_error(ERROR, "Too many items for cone"));
-	return (SUCCESS);
-}
-
 static int	sub_parse_cone(t_cone *cone, t_list *current, t_object *obj)
 {
 	char	*item;
@@ -42,11 +32,8 @@ static int	sub_parse_cone(t_cone *cone, t_list *current, t_object *obj)
 	if (parse_color(&(cone->color), item))
 		return (ERROR);
 	item = next_item(item);
-	if (parse_specular(&(obj->specular), item))
-		return (ERROR);
-	item = next_item(item);
 	if (item)
-		return (bonus_parse_cone(cone, item));
+		return (parse_bonus(obj, item));
 	return (SUCCESS);
 }
 
@@ -55,7 +42,7 @@ int	parse_cone(t_scene *scene, t_list *current, t_object *object)
 	t_cone	*cone;
 
 	(void) scene;
-	object->type = CONE;
+	object->type = TYPE_CONE;
 	cone = ft_calloc(1, sizeof (t_cone));
 	if (!cone)
 		return (print_error(ERROR, "Cylinder allocation failed"));

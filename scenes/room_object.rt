@@ -1,4 +1,4 @@
-# room_spot.rt
+# room_object.rt
 
 # Object            | Coordinates      | Orientation    | Info 1          | Info 2          | Color         | Bonus
 #                   | x,y,z as doubles | x,y,z in       |                 |                 | R,G,B in      |
@@ -16,17 +16,23 @@
 
 # Optional objects  |                  |                |                 |                 |               |
 # Plane XY          |                  |                |                 |                 |               |
-  pl                  0.0,0.0,0.0        0.0,0.0,1.0                                          255,255,0
+  pl                  0.0,0.0,0.0        0.0,0.0,1.0                                          255,255,0       #specular=2
 # Plane ZX          |                  |                |                 |                 |               |
-  pl                  0.0,0.0,0.0        0.0,1.0,0.0                                          255,0,255
+  pl                  0.0,0.0,0.0        0.0,1.0,0.0                                          255,0,255       #specular=2
 # Plane YZ          |                  |                |                 |                 |               |
-  pl                  0.0,0.0,0.0        1.0,0.0,0.0                                          0,255,255
+  pl                  0.0,0.0,0.0        1.0,0.0,0.0                                          0,255,255       #specular=2
 # Spot light        |                  |                | Ratio in        | Angle in        |               |
 #                   |                  |                | [0.0; 1.0]      | [0.0; 180.0]    |               |
-  sl                  10.0,10.0,20.0     0.0,0.0,-1.0     1.0               20                0,255,255
+#  sl                  10.0,10.0,20.0     0.0,0.0,-1.0     1.0               60                0,255,255
 # Spot light        |                  |                | Ratio in        | Angle in        |               |
 #                   |                  |                | [0.0; 1.0]      | [0.0; 180.0]    |               |
-  sl                  10.0,20.0,10.0     0.0,-1.0,0.0     1.0               20                255,255,0
+  sl                  10.0,20.0,10.0     0.0,-1.0,0.0     1.0               60                255,255,0
 # Spot light        |                  |                | Ratio in        | Angle in        |               |
 #                   |                  |                | [0.0; 1.0]      | [0.0; 180.0]    |               |
-  sl                  20.0,10.0,10.0     -1.0,0.0,0.0     1.0               20                255,0,255
+#  sl                  20.0,10.0,10.0     -1.0,0.0,0.0     1.0               60                255,0,255
+# Cylinder          |                  |                | Diameter as     | Height as       |               |
+#                   |                  |                | positive double | positive double |               |
+#  cy                 10.0,10.0,10.0     0.0,0.0,1.0      4.0               6.0               255,255,255     specular=2
+# Sphere            |                  |                | Diameter as     |                 |               |
+#                   |                  |                | positive double |                 |               |
+  sp                  10.0,10.0,10.0                      4.0                                 255,255,255     specular=0

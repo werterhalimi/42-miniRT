@@ -59,12 +59,10 @@
 
 /* Move modes */
 
-# define RELATIVE				0
-# define ABSOLUTE				1
+# define RELATIVE_MODE				0
+# define ABSOLUTE_MODE				1
 
 /* Updates flags */
-
-# define UPDATE_NONE			0x00000000
 
 # define CAMERA_TRANSLATION		0x00000001
 # define CAMERA_ROTATION		0x00000002
@@ -103,6 +101,7 @@
 /* Number of objects */
 
 # define NB_OBJECTS				8
+# define NB_BONUS				2
 
 /* Translation, rotation & other factors */
 
@@ -120,17 +119,16 @@
 
 /* Objects */
 enum {
-	MAIN_LIGHT,
-	SPOT_LIGHT,
-	SPHERE,
-	PLANE,
-	CYLINDER,
-	CONE
+	TYPE_MAIN_LIGHT,
+	TYPE_SPOT_LIGHT,
+	TYPE_SPHERE,
+	TYPE_PLANE,
+	TYPE_CYLINDER,
+	TYPE_CONE
 };
 
 /* Structures */
 
-struct	s_phong;
 struct	s_scene;
 
 typedef struct s_point
@@ -203,7 +201,6 @@ typedef struct s_sphere
 	t_point	right;
 	t_point	down;
 	t_color	color;
-	t_color	*color_bis;
 	double	radius;
 	double	radius_2;
 	double	value;
@@ -216,7 +213,6 @@ typedef struct s_plane
 	t_point	right;
 	t_point	down;
 	t_color	color;
-	t_color	*color_bis;
 	double	value;
 }	t_plane;
 
@@ -233,7 +229,6 @@ typedef struct s_cylinder
 	t_point	right;
 	t_point	down;
 	t_color	color;
-	t_color	*color_bis;
 	double	radius;
 	double	radius_2;
 	double	semi_height;
@@ -256,7 +251,6 @@ typedef struct s_cone
 	t_point	right;
 	t_point	down;
 	t_color	color;
-	t_color	*color_bis;
 	double	radius;
 	double	radius_2;
 	double	height;
@@ -271,7 +265,8 @@ typedef struct s_cone
 typedef struct s_object
 {
 	void			*object;
-	struct s_color	(*get_color)(struct s_scene *, void *, t_point, t_point);
+	struct s_color	(*get_color)(struct s_scene *, struct s_object *, \
+						t_point, t_point);
 	struct s_point	(*get_normal)(t_point, t_point, void *);
 	double			(*intersect)(t_point, void *, t_point *);
 	void			(*update)(struct s_scene *, void *, unsigned int);
@@ -281,13 +276,14 @@ typedef struct s_object
 	void			(*rotation_absolute)(struct s_scene *, t_matrix);
 	void			(*numpad_plus_minus)(int, struct s_scene *);
 	void			(*scroll)(int, struct s_scene *);
+	t_color			*color_bis;
 	int				type;
 	int				specular;
 }	t_object;
 
 typedef struct s_phong
 {
-	t_point		coord;
+	t_point		light_coord;
 	t_point		normal;
 	t_point		camera_ray;
 	t_point		hit_point;
@@ -300,6 +296,7 @@ typedef struct s_phong
 	double		light_ratio;
 	double		camera_ray_dist;
 	double		light_ray_dist_2;
+	double		dot_light_normal;
 }	t_phong;
 
 typedef struct s_scene
@@ -368,6 +365,8 @@ t_point			scalar_multi(double lambda, t_point vector);
 
 double			vector_angle(t_point a, t_point b);
 
+t_point			unit_dist(t_point a, t_point b);
+
 t_point			reflection(t_point ray, t_point axis);
 
 t_point			cross_product(t_point v1, t_point v2);
@@ -378,7 +377,7 @@ double			norm_square(t_point vector);
 
 t_point			unit_vector(t_point vector);
 
-t_point			get_projection_unit(t_point a, t_point b);
+t_point			get_projection_unit(t_point vector, t_point axis);
 
 t_point			orthogonal_base(t_point vector, t_point *orthogonal);
 
@@ -463,34 +462,28 @@ unsigned char	color_get_g(unsigned int trgb);
 
 unsigned char	color_get_b(unsigned int trgb);
 
-
-t_color			get_color_light(t_scene *scene, void *object, \
+t_color			get_color_light(t_scene *scene, t_object *object, \
 					t_point hit_point, t_point normal);
 
-
-t_color			get_color_spot_light(t_scene *scene, void *object, \
+t_color			get_color_spot_light(t_scene *scene, t_object *object, \
 					t_point hit_point, t_point normal);
 
-
-t_color			get_color_sphere(t_scene *scene, void *object, \
+t_color			get_color_sphere(t_scene *scene, t_object *object, \
 					t_point hit_point, t_point normal);
 
 t_point			normal_sphere(t_point ray, t_point hit_point, void *object);
 
-
-t_color			get_color_plane(t_scene *scene, void *object, \
+t_color			get_color_plane(t_scene *scene, t_object *object, \
 					t_point hit_point, t_point normal);
 
 t_point			normal_plane(t_point ray, t_point hit_point, void *object);
 
-
-t_color			get_color_cylinder(t_scene *scene, void *object, \
+t_color			get_color_cylinder(t_scene *scene, t_object *object, \
 					t_point hit_point, t_point normal);
 
 t_point			normal_cylinder(t_point ray, t_point hit_point, void *object);
 
-
-t_color			get_color_cone(t_scene *scene, void *object, \
+t_color			get_color_cone(t_scene *scene, t_object *object, \
 					t_point hit_point, t_point normal);
 
 t_point			normal_cone(t_point ray, t_point hit_point, void *object);
@@ -576,7 +569,11 @@ int				mouse_release(int mouse_code, int x, int y, t_scene *scene);
 
 char			*next_item(char *line);
 
+int				parse_bonus(t_object *object, char *item);
+
 int				parse_color(t_color *color, char *item);
+
+int				parse_color_bonus(t_object *object, char *item);
 
 int				parse_ratio(double *ratio, char *item);
 
@@ -584,7 +581,7 @@ int				parse_length(double *length, char *item, char *name, char half);
 
 int				parse_angle(double *angle, char *item);
 
-int				parse_specular(int *specular, char *item);
+int				parse_specular(t_object *object, char *item);
 
 char			*next_coord(char *item, char last);
 

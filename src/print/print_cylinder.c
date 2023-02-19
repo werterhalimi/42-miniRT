@@ -12,7 +12,7 @@
 
 #include "miniRT.h"
 
-t_color	get_color_cylinder(t_scene *scene, void *object, \
+t_color	get_color_cylinder(t_scene *scene, t_object *object, \
 			t_point hit_point, t_point normal)
 {
 	t_cylinder	*cylinder;
@@ -22,8 +22,8 @@ t_color	get_color_cylinder(t_scene *scene, void *object, \
 
 	(void) scene;
 	(void) normal;
-	cylinder = (t_cylinder *)object;
-	if (!cylinder->color_bis)
+	cylinder = (t_cylinder *)object->object;
+	if (!object->color_bis)
 		return (cylinder->color);
 	vector = sub_vectors(hit_point, cylinder->coord);
 	a = (long)floor(atan(dot_product(vector, cylinder->right) \
@@ -33,12 +33,12 @@ t_color	get_color_cylinder(t_scene *scene, void *object, \
 		&& h < cylinder->semi_height - FLT_EPSILON)
 	{
 		if (!((long)floor(h) % 2) ^ !(a % 2))
-			return (*cylinder->color_bis);
+			return (*object->color_bis);
 		return (cylinder->color);
 	}
-	if (!((long)floor(sqrt(norm_square(sub_vectors(vector, \
-		scalar_multi(h, cylinder->direction))))) % 2) ^ !(a % 2))
-		return (*cylinder->color_bis);
+	if (!((long)floor(sqrt(distance_square(vector, \
+		scalar_multi(h, cylinder->direction)))) % 2) ^ !(a % 2))
+		return (*object->color_bis);
 	return (cylinder->color);
 }
 
@@ -58,8 +58,8 @@ t_point	normal_cylinder(t_point ray, t_point hit_point, void *object)
 			return (scalar_multi(-1.0, cylinder->direction));
 		return (cylinder->direction);
 	}
-	normal = unit_vector(sub_vectors(hit_point, \
-		add_vectors(projection, cylinder->coord)));
+	normal = unit_dist(hit_point, \
+		add_vectors(projection, cylinder->coord));
 	if (dot_product(normal, ray) > 0.0)
 		normal = scalar_multi(-1.0, normal);
 	return (normal);

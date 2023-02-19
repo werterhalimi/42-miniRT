@@ -18,7 +18,7 @@ static int	is_shadow(t_scene *scene, t_phong phong)
 	int		i;
 
 	i = 0;
-	if (dot_product(phong.normal, phong.light_ray) <= 0.0)
+	if (phong.dot_light_normal <= 0.0)
 		return (YES);
 	while (scene->objects[++i])
 	{
@@ -32,16 +32,18 @@ static int	is_shadow(t_scene *scene, t_phong phong)
 	return (NO);
 }
 
-static t_phong	set_phong(t_phong phong, t_point coord, double ratio, t_color color)
+static t_phong	set_phong(t_phong phong, t_point coord, \
+					double ratio, t_color color)
 {
 	t_point	light_ray;
 
-	phong.coord = coord;
+	phong.light_coord = coord;
 	phong.light_ratio = ratio;
 	phong.light_color = color;
-	light_ray = unit_vector(sub_vectors(phong.coord, phong.hit_point));
+	light_ray = sub_vectors(phong.light_coord, phong.hit_point);
 	phong.light_ray_dist_2 = norm_square(light_ray);
 	phong.light_ray = unit_vector(light_ray);
+	phong.dot_light_normal = dot_product(phong.light_ray, phong.normal);
 	return (phong);
 }
 
@@ -49,25 +51,22 @@ static void	print_object(t_phong *phong)
 {
 	t_point	h;
 
-	if (phong->object->type <= SPOT_LIGHT)
-		return ;
-
-	if (dot_product(phong->normal, unit_vector(sub_vectors(phong->coord, \
-		phong->hit_point))) <= 0.0)
+	if (phong->object->type <= TYPE_SPOT_LIGHT || phong->dot_light_normal <= 0.0)
 		return ;
 	h = add_vectors(scalar_multi(-1.0, phong->camera_ray), phong->light_ray);
 	h = unit_vector(h);
-	phong_diffuse(phong, dot_product(phong->normal, phong->light_ray));
-	phong_specular(phong, pow(dot_product(phong->normal, h), phong->object->specular));
-
+	phong_diffuse(phong, phong->dot_light_normal);
+	phong_specular(phong, pow(dot_product(phong->normal, h), \
+		phong->object->specular));
 }
-static unsigned int	find_color_pixel(t_scene *scene, t_point ray)
+
+static unsigned int	find_color_pixel(t_scene *scene, t_point pixel)
 {
 	t_phong			phong;
 	t_list			*lst;
 	t_spot_light	*sp;
 
-	phong.camera_ray = unit_vector(sub_vectors(ray, scene->camera->coord));
+	phong.camera_ray = unit_dist(pixel, scene->camera->coord);
 	phong.object = find_intersect(scene, phong.camera_ray, \
 		&phong.camera_ray_dist, NULL);
 	if (!phong.object)
@@ -77,7 +76,7 @@ static unsigned int	find_color_pixel(t_scene *scene, t_point ray)
 		scalar_multi(phong.camera_ray_dist, phong.camera_ray));
 	phong.normal = phong.object->get_normal(phong.camera_ray, \
 		phong.hit_point, phong.object->object);
-	phong.color = phong.object->get_color(scene, phong.object->object, \
+	phong.color = phong.object->get_color(scene, phong.object, \
 		phong.hit_point, phong.normal);
 	lst = scene->spot_lights;
 	while (lst)
@@ -113,7 +112,7 @@ void	print_window(t_scene *scene, int offset)
 	int				x;
 	int				y;
 	t_point			tmp;
-	t_point			ray;
+	t_point			pixel;
 	unsigned int	color;
 
 	x = -1;
@@ -121,15 +120,15 @@ void	print_window(t_scene *scene, int offset)
 	while (++x < scene->width)
 	{
 		y = -1;
-		ray = tmp;
+		pixel = tmp;
 		while (++y < scene->height)
 		{
 			if (!(x % offset) && !(y % offset))
-				color = find_color_pixel(scene, ray);
+				color = find_color_pixel(scene, pixel);
 			else if (x % offset && !(y % offset))
 				color = get_pixel_color(scene, x - x % offset, y);
 			put_pixel(scene, x, y, color);
-			ray = add_vectors(ray, scene->camera->shift_y);
+			pixel = add_vectors(pixel, scene->camera->shift_y);
 		}
 		color = get_pixel_color(scene, x, 0);
 		tmp = add_vectors(tmp, scene->camera->shift_x);
