@@ -19,7 +19,7 @@
   pl                  0.0,0.0,-1.0       0.0,0.0,1.0                                       255,0,225
 # Sphere            |                  |             | Diameter as     |                 |               |
 #                   |                  |             | positive double |                 |               |
-  sp                  1.0,1.0,0.0                      0.5                                 255,0,0
+  sp                  1.0,1.0,0.0                      0.5                                 255,0,0        specular=30 checkerboard=255,255,255 texture=buck.ppm
 # Cylinder          |                  |             | Diameter as     | Height as       |               |
 #                   |                  |             | positive double | positive double |               |
   cy                  1.0,0.0,0.0        0.0,0.0,1.0   0.2               0.4               10,0,255

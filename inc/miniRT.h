@@ -6,7 +6,7 @@
 /*   By: ncotte <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/29 11:02:34 by ncotte            #+#    #+#             */
-/*   Updated: 2023/02/17 21:31:42 by shalimi          ###   ########.fr       */
+/*   Updated: 2023/02/20 16:56:44 by shalimi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@
 /* Number of objects */
 
 # define NB_OBJECTS				8
-# define NB_BONUS				2
+# define NB_BONUS				3
 
 /* Translation, rotation & other factors */
 
@@ -262,24 +262,34 @@ typedef struct s_cone
 	double	value_quad;
 }	t_cone;
 
+typedef struct s_texture
+{
+	int			value;
+	int			height;
+	int			width;
+	t_color		**pixels;
+}	t_texture;
+
 typedef struct s_object
 {
-	void			*object;
-	struct s_color	(*get_color)(struct s_scene *, struct s_object *, \
-						t_point, t_point);
-	struct s_point	(*get_normal)(t_point, t_point, void *);
-	double			(*intersect)(t_point, void *, t_point *);
-	void			(*update)(struct s_scene *, void *, unsigned int);
-	void			(*translation_relative)(int, struct s_scene *);
-	void			(*rotation_relative)(int, struct s_scene *);
-	void			(*translation_absolute)(struct s_scene *, t_point);
-	void			(*rotation_absolute)(struct s_scene *, t_matrix);
-	void			(*numpad_plus_minus)(int, struct s_scene *);
-	void			(*scroll)(int, struct s_scene *);
-	t_color			*color_bis;
-	int				type;
-	int				specular;
+	void				*object;
+	struct s_texture	*texture;
+	struct s_color		(*get_color)(struct s_scene *, struct s_object *, \
+							t_point, t_point);
+	struct s_point		(*get_normal)(t_point, t_point, void *);
+	double				(*intersect)(t_point, void *, t_point *);
+	void				(*update)(struct s_scene *, void *, unsigned int);
+	void				(*translation_relative)(int, struct s_scene *);
+	void				(*rotation_relative)(int, struct s_scene *);
+	void				(*translation_absolute)(struct s_scene *, t_point);
+	void				(*rotation_absolute)(struct s_scene *, t_matrix);
+	void				(*numpad_plus_minus)(int, struct s_scene *);
+	void				(*scroll)(int, struct s_scene *);
+	t_color				*color_bis;
+	int					type;
+	int					specular;
 }	t_object;
+
 
 typedef struct s_phong
 {
@@ -582,6 +592,7 @@ int				parse_length(double *length, char *item, char *name, char half);
 int				parse_angle(double *angle, char *item);
 
 int				parse_specular(t_object *object, char *item);
+int				parse_texture(t_object *object, char *item);
 
 char			*next_coord(char *item, char last);
 

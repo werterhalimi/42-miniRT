@@ -6,7 +6,7 @@
 #    By: ncotte <marvin@42lausanne.ch>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/12 11:39:15 by ncotte            #+#    #+#              #
-#    Updated: 2023/02/17 21:32:06 by shalimi          ###   ########.fr        #
+#    Updated: 2023/02/21 00:04:03 by shalimi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,7 +40,7 @@ SRCS_FILES		:=	utils/error.c			utils/quit.c			utils/info.c \
 					start/parse_camera.c	start/parse_light.c		start/parse_spot_light.c \
 					start/parse_sphere.c	start/parse_plane.c		start/parse_cylinder.c \
 					start/parse_cone.c		start/parse_specular.c	start/read_file.c \
-					start/init.c \
+					start/parse_texture.c	start/init.c \
 					main.c
 
 SRCS_DIR		:=	./src/
@@ -64,7 +64,7 @@ INC				:=	miniRT.h	hooks.h
 HEADERS 		:=	$(addprefix $(INC_DIR),$(INC))
 
 CC				:=	@gcc
-CFLAGS			:=	-g -Wall -Wextra -Werror -I $(INC_DIR)
+CFLAGS			:=	-Wall -Wextra -Werror -I $(INC_DIR)
 DEBUG			:=	-g3 -fsanitize=undefined
 
 RM				:=	@rm -f

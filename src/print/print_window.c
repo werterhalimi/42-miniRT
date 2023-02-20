@@ -6,7 +6,7 @@
 /*   By: ncotte <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 14:39:19 by ncotte            #+#    #+#             */
-/*   Updated: 2023/02/17 21:18:18 by shalimi          ###   ########.fr       */
+/*   Updated: 2023/02/20 14:45:09 by shalimi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static int	is_shadow(t_scene *scene, t_phong phong)
 		tmp = scene->objects[i]->intersect(phong.light_ray, \
 			scene->objects[i]->object, &phong.hit_point);
 		tmp *= tmp;
-		if (!isinf(tmp) && tmp <= phong.light_ray_dist_2 \
+		if (!isinf(tmp) && tmp * tmp <= phong.light_ray_dist_2 \
 			&& tmp > 0.0 && scene->objects[i] != phong.object)
 			return (YES);
 	}

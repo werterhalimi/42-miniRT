@@ -6,7 +6,7 @@
 /*   By: ncotte <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 13:50:00 by ncotte            #+#    #+#             */
-/*   Updated: 2023/02/19 13:50:02 by ncotte           ###   ########.fr       */
+/*   Updated: 2023/02/20 22:23:14 by shalimi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,9 @@ static void	init_static(char **bonus_names, \
 	bonus_names[1] = "specular";
 	fct_bonus[1] = &parse_specular;
 	lengths[1] = (int)ft_strlen(bonus_names[1]);
+	bonus_names[2] = "texture";
+	fct_bonus[2] = &parse_texture;
+	lengths[2] = (int)ft_strlen(bonus_names[2]);
 }
 
 static int	item_bonus(t_object *object, char *item, int index, int *flags)
