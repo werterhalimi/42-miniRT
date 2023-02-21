@@ -6,7 +6,7 @@
 /*   By: shalimi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 15:42:50 by shalimi           #+#    #+#             */
-/*   Updated: 2023/02/21 18:11:21 by shalimi          ###   ########.fr       */
+/*   Updated: 2023/02/22 00:35:57 by shalimi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,45 @@ char	*get_ppm_line(int fd)
 	return (tmp);
 }
 
+static char	*append(char *str, char a)
+{
+	char	*ret;
+	int		len;
+
+	len = ft_strlen(str) + 1;
+	ret = malloc(sizeof(char) * len + 1);
+	ft_memcpy(ret, str, len);
+	ret[len - 1] = a;
+	ret[len] = 0;
+	free(str);
+	return (ret);
+}
+
+static char	*get_header(int fd)
+{
+	char	*ret;
+	char	*tmp;
+	int		nb;
+
+	tmp = malloc(sizeof(char) * 2);
+	ret = malloc(sizeof(char) * 2);
+	tmp[1] = 0;
+	ret[1] = 0;
+	nb = 0;
+	while (nb < 3 && read(fd, tmp, 1) > 0)
+	{
+		ret = append(ret, *tmp);
+		if (*tmp == '\n')
+			nb++;
+	}
+	free(tmp);
+	return ret;
+}
 
 int	read_ppm(t_object *obj, int fd)
 {
 	int		valid;
-	char	*line = malloc(15);
+	char	*line = malloc(17);
 
 	t_texture *texture = ft_calloc(1, sizeof(t_texture));
 	texture->value = 0;
@@ -41,7 +75,7 @@ int	read_ppm(t_object *obj, int fd)
 	texture->width = 0;
 	valid = 0;
 
-	read(fd, line, 15);
+	line = get_header(fd);
 	while (texture->value == 0)
 	{
 		if (ft_strncmp(line, "P6", 2) == 0)
@@ -49,9 +83,9 @@ int	read_ppm(t_object *obj, int fd)
 			if (valid)
 				return (print_error(ERROR, "PPM file has two P6 declaration"));
 			valid = 1;
-			while (*(++line) && (*line != '\n'))
-				continue ;
-			if (*line == '\n') line++;
+			while (*line && *line != '\n')
+				line++;
+			line++;
 		}
 		while (*line && valid)
 		{
