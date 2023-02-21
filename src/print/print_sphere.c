@@ -6,7 +6,7 @@
 /*   By: ncotte <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 14:36:43 by ncotte            #+#    #+#             */
-/*   Updated: 2023/02/20 22:42:47 by shalimi          ###   ########.fr       */
+/*   Updated: 2023/02/21 16:37:28 by shalimi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,10 @@
 
 static t_color	sphere_map(t_texture *texture, t_point normal)
 {
-	double tu = normal.x / 2 + 0.5;
-	double tv = normal.y / 2 + 0.5;
-	return (texture->pixels[(int) (tu * texture->height)][(int) (tv * texture->width)]);
+	double tu = normal.y / 2 + 0.5;
+	double tv = normal.z / 2 + 0.5;
+	tv = 1 - tv;
+	return (texture->pixels[(int) (tv * texture->height)][(int) (tu * texture->width)]);
 }
 
 t_color	get_color_sphere(t_scene *scene, t_object *object, \
@@ -51,6 +52,7 @@ t_point	normal_sphere(t_point ray, t_point hit_point, void *object)
 
 	sphere = (t_sphere *)object;
 	normal = unit_dist(hit_point, sphere->coord);
+
 	if (dot_product(normal, ray) <= 0.0)
 		return (normal);
 	return (scalar_multi(-1.0, normal));

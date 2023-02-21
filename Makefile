@@ -6,7 +6,7 @@
 #    By: ncotte <marvin@42lausanne.ch>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/12 11:39:15 by ncotte            #+#    #+#              #
-#    Updated: 2023/02/21 00:04:03 by shalimi          ###   ########.fr        #
+#    Updated: 2023/02/21 16:17:48 by shalimi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -64,7 +64,7 @@ INC				:=	miniRT.h	hooks.h
 HEADERS 		:=	$(addprefix $(INC_DIR),$(INC))
 
 CC				:=	@gcc
-CFLAGS			:=	-Wall -Wextra -Werror -I $(INC_DIR)
+CFLAGS			:=	-g -Wall -Wextra -Werror -I $(INC_DIR)
 DEBUG			:=	-g3 -fsanitize=undefined
 
 RM				:=	@rm -f
