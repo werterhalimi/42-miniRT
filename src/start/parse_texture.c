@@ -6,7 +6,7 @@
 /*   By: shalimi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 15:42:50 by shalimi           #+#    #+#             */
-/*   Updated: 2023/02/22 00:35:57 by shalimi          ###   ########.fr       */
+/*   Updated: 2023/02/22 00:37:25 by shalimi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,7 @@ int	read_ppm(t_object *obj, int fd)
 
 	unsigned char	*test = malloc(sizeof(*test) * texture->width*texture->height*3);
 	read(fd,test, texture->width*texture->height*3);
+	close(fd);
 	texture->pixels = ft_calloc(texture->height, sizeof(*texture->pixels));
 
 	int	i;
