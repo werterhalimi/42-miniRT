@@ -38,10 +38,10 @@ void	translation(int key_code, t_scene *scene)
 	else if (!scene->index)
 		translation_absolute_camera(scene, vector);
 	else if (scene->mode == RELATIVE_MODE \
- && scene->objects[scene->index - 1]->translation_relative)
+		&& scene->objects[scene->index - 1]->translation_relative)
 		scene->objects[scene->index - 1]->translation_relative(key_code, scene);
 	else if (scene->mode == ABSOLUTE_MODE \
- && scene->objects[scene->index - 1]->translation_absolute)
+		&& scene->objects[scene->index - 1]->translation_absolute)
 		scene->objects[scene->index - 1]->translation_absolute(scene, vector);
-	print_window(scene, PIXEL_RESOLUTION);
+	print_window(scene, PIXEL_RESOLUTION, 0);
 }

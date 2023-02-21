@@ -27,7 +27,7 @@ static char	*next_color(char *item, char last)
 	return (NULL);
 }
 
-static int	set_color(unsigned char *color, char const *item)
+static int	set_color(double *color, char const *item)
 {
 	int	c;
 	int	i;
@@ -43,7 +43,7 @@ static int	set_color(unsigned char *color, char const *item)
 		|| c > 255)
 		return (print_error(ERROR, \
 			"The color components must be included in {0; ...; 255}"));
-	*color = (unsigned char) c;
+	*color = (double)c / 255.0;
 	return (SUCCESS);
 }
 

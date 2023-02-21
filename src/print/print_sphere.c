@@ -12,11 +12,14 @@
 
 #include "miniRT.h"
 
-static t_color	sphere_map(t_texture *texture, t_point normal)
+static t_color	sphere_map(t_texture *tex, t_point normal)
 {
-	double tu = normal.x / 2 + 0.5;
-	double tv = normal.y / 2 + 0.5;
-	return (texture->pixels[(int) (tu * texture->height)][(int) (tv * texture->width)]);
+	double	tu;
+	double	tv;
+
+	tu = normal.x * 0.5 + 0.5;
+	tv = normal.y * 0.5 + 0.5;
+	return (tex->pixels[(int)(tu * tex->height)][(int)(tv * tex->width)]);
 }
 
 t_color	get_color_sphere(t_scene *scene, t_object *object, \

@@ -50,10 +50,10 @@ void	rotation(int key_code, t_scene *scene)
 	else if (!scene->index)
 		rotation_absolute_camera(scene, matrix);
 	else if (scene->mode == RELATIVE_MODE \
- && scene->objects[scene->index - 1]->rotation_relative)
+		&& scene->objects[scene->index - 1]->rotation_relative)
 		scene->objects[scene->index - 1]->rotation_relative(key_code, scene);
 	else if (scene->mode == ABSOLUTE_MODE \
- && scene->objects[scene->index - 1]->rotation_absolute)
+		&& scene->objects[scene->index - 1]->rotation_absolute)
 		scene->objects[scene->index - 1]->rotation_absolute(scene, matrix);
-	print_window(scene, PIXEL_RESOLUTION);
+	print_window(scene, PIXEL_RESOLUTION, 0);
 }

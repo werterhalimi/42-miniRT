@@ -29,7 +29,7 @@ static int	sub_parse_spot_light(t_spot_light *spot_light, t_list *current)
 	if (parse_angle(&(spot_light->angle), item))
 		return (ERROR);
 	item = next_item(item);
-	if (parse_color(&(spot_light->color), item))
+	if (parse_color(&(spot_light->real_color), item))
 		return (ERROR);
 	if (next_item(item))
 		return (print_error(ERROR, "Too many items for spot spot_light"));

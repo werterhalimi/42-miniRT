@@ -45,7 +45,7 @@ static void	scroll_hook(int mouse_code, t_scene *scene)
 		fov_camera(mouse_code, scene);
 	else if (scene->objects[scene->index - 1]->scroll)
 		scene->objects[scene->index - 1]->scroll(mouse_code, scene);
-	print_window(scene, PIXEL_RESOLUTION);
+	print_window(scene, PIXEL_RESOLUTION, 0);
 }
 
 int	mouse_hook(int mouse_code, int x, int y, t_scene *scene)

@@ -36,7 +36,7 @@ static void	update_numpad(int key_code, t_scene *scene)
 		ratio_amb_light(key_code, scene);
 	else if (scene->objects[scene->index - 1]->numpad_plus_minus)
 		scene->objects[scene->index - 1]->numpad_plus_minus(key_code, scene);
-	print_window(scene, PIXEL_RESOLUTION);
+	print_window(scene, PIXEL_RESOLUTION, 0);
 }
 
 int	key_hook(int key_code, t_scene *scene)

@@ -23,7 +23,7 @@ static int	sub_parse_light(t_light *light, t_list *current)
 	if (parse_ratio(&(light->ratio), item))
 		return (ERROR);
 	item = next_item(item);
-	if (parse_color(&(light->color), item))
+	if (parse_color(&(light->real_color), item))
 		return (ERROR);
 	if (next_item(item))
 		return (print_error(ERROR, "Too many items for main light"));
