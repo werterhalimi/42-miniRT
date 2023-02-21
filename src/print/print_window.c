@@ -24,7 +24,7 @@ static int	is_shadow(t_scene *scene, t_phong phong)
 	{
 		tmp = scene->objects[i]->intersect(phong.light_ray, \
 			scene->objects[i]->object, &phong.hit_point);
-		if (!isinf(tmp) && tmp * tmp <= phong.light_ray_dist_2 \
+		if (!isinf(tmp) && tmp * tmp <= phong.light_ray_dist_2 - FLT_EPSILON \
 			&& tmp > 0.0 && scene->objects[i] != phong.object)
 			return (YES);
 	}
@@ -55,7 +55,7 @@ static void	print_object(t_phong *phong)
 		phong->camera_ray), phong->light_ray))));
 }
 
-static unsigned int	find_color_pixel(t_scene *scene, \
+unsigned int	find_color_pixel(t_scene *scene, \
 						t_point pixel, unsigned int reflexions)
 {
 	t_phong			phong;

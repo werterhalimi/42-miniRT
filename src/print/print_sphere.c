@@ -18,8 +18,7 @@ static t_color	sphere_map(t_texture *tex, double a, double b)
 	double	tv;
 
 	tu = 1 - (b * M_1_PI + 0.5);
-	tv = (a/(2 * M_PI) + 0.25);
-
+	tv = a * 0.5 * M_1_PI + 0.25;
 	return (tex->pixels[(int)(tu * tex->height)][(int)(tv * tex->width)]);
 }
 
@@ -28,9 +27,8 @@ t_color	get_color_sphere(t_scene *scene, t_object *object, \
 {
 	t_sphere	*sphere;
 	t_point		vector;
-	double		a;
-	double		b;
-	double		c;
+	double		longitude;
+	double		latitude;
 
 	(void) scene;
 	(void) normal;
@@ -38,22 +36,15 @@ t_color	get_color_sphere(t_scene *scene, t_object *object, \
 	if (!object->color_bis && !object->texture)
 		return (sphere->color);
 	vector = sub_vectors(hit_point, sphere->coord);
-	c = acos(dot_product(vector, sphere->right) * inv_sqrt(pow(dot_product(vector, sphere->right), 2) + pow(dot_product(vector, sphere->down),2)));
-	if (dot_product(vector, sphere->down) < 0)
-		c *= -1.0;
-
-	// -pi/2 -- pi / 2
-	a = (atan(dot_product(vector, sphere->down) \
+	longitude = (atan(dot_product(vector, sphere->down) \
 		/ dot_product(vector, sphere->right)));
 	if (dot_product(vector, sphere->right) < 0)
-		a += M_PI;
-	// - pi / 2 -- pi/2
-	b = (asin(dot_product(vector, sphere->front) \
+		longitude += M_PI;
+	latitude = (asin(dot_product(vector, sphere->front) \
 		/ sphere->radius));
 	if (object->texture)
-		return (sphere_map(object->texture, a, b));
-
-	if (!((long)floor(a * 8 * M_1_PI) % 2) ^ !((long)floor(b * 8 * M_1_PI) % 2))
+		return (sphere_map(object->texture, longitude, latitude));
+	if (!((long)floor(longitude * 8 * M_1_PI) % 2) ^ !((long)floor(latitude * 8 * M_1_PI) % 2))
 		return (*object->color_bis);
 	return (sphere->color);
 }

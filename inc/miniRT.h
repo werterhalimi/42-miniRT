@@ -344,6 +344,8 @@ int				print_error(int error_code, char *error_msg);
 
 int				write_type(t_scene *scene);
 
+void			write_color(t_color color, char *name);
+
 void			write_point(t_point point, char *name);
 
 void			write_info(t_scene *scene);
@@ -514,6 +516,13 @@ void			phong_ambient(t_phong *phong, t_amb_light *amb_light);
 void			phong_diffuse(t_phong *phong, double dot);
 
 void			phong_specular(t_phong *phong, double dot);
+
+
+
+unsigned int	find_color_pixel(t_scene *scene, \
+						t_point pixel, unsigned int reflexions);
+
+
 
 void			print_window(t_scene *scene, int offset, \
 					unsigned int reflexions);

@@ -50,6 +50,14 @@ void	write_point(t_point point, char *name)
 	printf("z = %lf\n", point.z);
 }
 
+void	write_color(t_color color, char *name)
+{
+	printf("%s :\n", name);
+	printf("R = %u\n", (unsigned int)(color.r * 255.0));
+	printf("G = %u\n", (unsigned int)(color.g * 255.0));
+	printf("B = %u\n", (unsigned int)(color.b * 255.0));
+}
+
 void	write_info(t_scene *scene)
 {
 	int	i;
@@ -74,7 +82,7 @@ void	write_info(t_scene *scene)
 	printf("Size X = %lf\n", scene->camera->size_x);
 	printf("Size Y = %lf\n", scene->camera->size_y);
 	write_point(scene->window_corner, "Scene window corner");
-	i = 0;
-	while (scene->objects[i])
-		printf("Object of type : %d\n", scene->objects[i++]->type);
+	i = -1;
+	while (scene->objects[++i])
+		printf("Object id %d of type : %d\n", i, scene->objects[i]->type);
 }
