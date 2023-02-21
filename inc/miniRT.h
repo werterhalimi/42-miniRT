@@ -517,13 +517,6 @@ void			phong_diffuse(t_phong *phong, double dot);
 
 void			phong_specular(t_phong *phong, double dot);
 
-
-
-unsigned int	find_color_pixel(t_scene *scene, \
-						t_point pixel, unsigned int reflexions);
-
-
-
 void			print_window(t_scene *scene, int offset, \
 					unsigned int reflexions);
 

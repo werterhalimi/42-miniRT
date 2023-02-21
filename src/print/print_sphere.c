@@ -12,13 +12,13 @@
 
 #include "miniRT.h"
 
-static t_color	sphere_map(t_texture *tex, double a, double b)
+static t_color	sphere_map(t_texture *tex, double longitude, double latitude)
 {
 	double	tu;
 	double	tv;
 
-	tu = 1 - (b * M_1_PI + 0.5);
-	tv = a * 0.5 * M_1_PI + 0.25;
+	tu = 1 - (latitude * M_1_PI + 0.5);
+	tv = longitude * 0.5 * M_1_PI + 0.25;
 	return (tex->pixels[(int)(tu * tex->height)][(int)(tv * tex->width)]);
 }
 
@@ -56,7 +56,6 @@ t_point	normal_sphere(t_point ray, t_point hit_point, void *object)
 
 	sphere = (t_sphere *)object;
 	normal = unit_dist(hit_point, sphere->coord);
-
 	if (dot_product(normal, ray) <= 0.0)
 		return (normal);
 	return (scalar_multi(-1.0, normal));

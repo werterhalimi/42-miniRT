@@ -55,7 +55,7 @@ static void	print_object(t_phong *phong)
 		phong->camera_ray), phong->light_ray))));
 }
 
-unsigned int	find_color_pixel(t_scene *scene, \
+static unsigned int	find_color_pixel(t_scene *scene, \
 						t_point pixel, unsigned int reflexions)
 {
 	t_phong			phong;
