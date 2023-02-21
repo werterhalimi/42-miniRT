@@ -6,7 +6,7 @@
 /*   By: ncotte <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 14:36:43 by ncotte            #+#    #+#             */
-/*   Updated: 2023/02/21 16:37:28 by shalimi          ###   ########.fr       */
+/*   Updated: 2023/02/21 17:28:21 by shalimi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ static t_color	sphere_map(t_texture *texture, t_point normal)
 {
 	double tu = normal.y / 2 + 0.5;
 	double tv = normal.z / 2 + 0.5;
+	tu = 1 - tu;
 	tv = 1 - tv;
 	return (texture->pixels[(int) (tv * texture->height)][(int) (tu * texture->width)]);
 }
