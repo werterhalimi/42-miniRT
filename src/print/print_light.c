@@ -21,5 +21,5 @@ t_color	get_color_light(t_scene *scene, t_object *object, \
 	(void) hit_point;
 	(void) normal;
 	light = (t_light *)object->object;
-	return (light->color);
+	return (light->real_color);
 }

@@ -59,8 +59,8 @@
 
 /* Move modes */
 
-# define RELATIVE_MODE				0
-# define ABSOLUTE_MODE				1
+# define RELATIVE_MODE			0
+# define ABSOLUTE_MODE			1
 
 /* Updates flags */
 
@@ -68,8 +68,11 @@
 # define CAMERA_ROTATION		0x00000002
 # define CAMERA_FOV				0x00000004
 # define CAMERA_ALL				0x00000007
+# define AMB_LIGHT_RATIO		0x00000008
 
 # define LIGHT_TRANSLATION		0x00000010
+# define LIGHT_RATIO			0x00000020
+# define LIGHT_ALL				0x00000030
 
 # define PLANE_TRANSLATION		0x00000100
 # define PLANE_ROTATION			0x00000200
@@ -94,7 +97,8 @@
 # define SPOT_LIGHT_TRANSLATION	0x01000000
 # define SPOT_LIGHT_ROTATION	0x02000000
 # define SPOT_LIGHT_ANGLE		0x04000000
-# define SPOT_LIGHT_ALL			0x07000000
+# define SPOT_LIGHT_RATIO		0x08000000
+# define SPOT_LIGHT_ALL			0x0F000000
 
 # define UPDATE_ALL				0xFFFFFFFF
 
@@ -147,14 +151,15 @@ typedef struct s_matrix
 
 typedef struct s_color
 {
-	unsigned char	r;
-	unsigned char	g;
-	unsigned char	b;
+	double	r;
+	double	g;
+	double	b;
 }	t_color;
 
 typedef struct s_amb_light
 {
-	t_color	color;
+	t_color	real_color;
+	t_color	ratio_color;
 	double	ratio;
 }	t_amb_light;
 
@@ -176,7 +181,8 @@ typedef struct s_light
 {
 	t_point	coord;
 	t_point	relative_coord;
-	t_color	color;
+	t_color	real_color;
+	t_color	ratio_color;
 	double	ratio;
 }	t_light;
 
@@ -187,7 +193,8 @@ typedef struct s_spot_light
 	t_point	direction;
 	t_point	right;
 	t_point	down;
-	t_color	color;
+	t_color	real_color;
+	t_color	ratio_color;
 	double	ratio;
 	double	angle;
 	double	cos_angle;
@@ -290,7 +297,6 @@ typedef struct s_object
 	int					specular;
 }	t_object;
 
-
 typedef struct s_phong
 {
 	t_point		light_coord;
@@ -298,12 +304,11 @@ typedef struct s_phong
 	t_point		camera_ray;
 	t_point		hit_point;
 	t_point		light_ray;
-	t_color		color;
+	t_color		object_color;
 	t_color		light_color;
+	t_color		final_color;
 	t_object	*object;
 	t_light		*light;
-	double		rgb[3];
-	double		light_ratio;
 	double		camera_ray_dist;
 	double		light_ray_dist_2;
 	double		dot_light_normal;
@@ -399,9 +404,13 @@ t_matrix		matrix_rotation(t_point vector, double s);
 
 /* objects */
 
+t_color			update_color(t_color real_color, double ratio);
+
 void			update_scene(t_scene *scene, unsigned int flags);
 
 void			ratio_amb_light(int key_code, t_scene *scene);
+
+void			update_amb_light(t_scene *scene, unsigned int flags);
 
 void			fov_camera(int mouse_code, t_scene *scene);
 
@@ -500,14 +509,14 @@ t_point			normal_cone(t_point ray, t_point hit_point, void *object);
 
 void			put_pixel(t_scene *scene, int x, int y, unsigned int color);
 
-void			print_window(t_scene *scene, int offset);
-
-void			phong_ambient(t_amb_light *amb_light, \
-					t_color base, double *rgb);
+void			phong_ambient(t_phong *phong, t_amb_light *amb_light);
 
 void			phong_diffuse(t_phong *phong, double dot);
 
-void			phong_specular(t_phong *phong, double specular);
+void			phong_specular(t_phong *phong, double dot);
+
+void			print_window(t_scene *scene, int offset, \
+					unsigned int reflexions);
 
 /* rotations */
 

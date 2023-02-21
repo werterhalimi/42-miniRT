@@ -16,7 +16,7 @@ int	key_release(int key_code, t_scene *scene)
 {
 	if (key_code != KEY_PAGE_UP && key_code != KEY_PAGE_DOWN \
 		&& key_code != KEY_TAB && key_code != KEY_ESC)
-		print_window(scene, 1);
+		print_window(scene, 1, 1);
 	return (0);
 }
 
@@ -25,6 +25,6 @@ int	mouse_release(int mouse_code, int x, int y, t_scene *scene)
 	(void) x;
 	(void) y;
 	if (mouse_code != LEFT_CLICK && mouse_code != RIGHT_CLICK)
-		print_window(scene, 1);
+		print_window(scene, 1, 1);
 	return (0);
 }

@@ -29,7 +29,7 @@ int	parse_amb_light(t_scene *scene, t_list *current, t_object *object)
 	if (parse_ratio(&(amb_light->ratio), item))
 		return (ERROR);
 	item = next_item(item);
-	if (parse_color(&(amb_light->color), item))
+	if (parse_color(&(amb_light->real_color), item))
 		return (ERROR);
 	if (next_item(item))
 		return (print_error(ERROR, "Too many items for ambient light"));

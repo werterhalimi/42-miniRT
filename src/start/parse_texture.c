@@ -6,7 +6,7 @@
 /*   By: shalimi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 15:42:50 by shalimi           #+#    #+#             */
-/*   Updated: 2023/02/21 17:22:43 by shalimi          ###   ########.fr       */
+/*   Updated: 2023/02/21 18:11:21 by shalimi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,6 @@ int	read_ppm(t_object *obj, int fd)
 	if (!valid) 
 		return (print_error(ERROR, "PPM file doesn't have P3 declaration"));
 
-	texture->value = 255 / texture->value;
 	unsigned char	*test = malloc(sizeof(*test) * texture->width*texture->height*3);
 	read(fd,test, texture->width*texture->height*3);
 	texture->pixels = ft_calloc(texture->height, sizeof(*texture->pixels));
@@ -99,12 +98,14 @@ int	read_ppm(t_object *obj, int fd)
 		texture->pixels[i] = ft_calloc(texture->width, sizeof(t_color));
 		while (y < texture->width)
 		{
-			texture->pixels[i][y] = (t_color) {test[j] / texture->value, test[j+1] / texture->value, test[j+2] / texture->value};
+			texture->pixels[i][y] = (t_color) {(double) test[j] / texture->value,(double) test[j+1] / texture->value, (double)test[j+2] / texture->value};
 			j += 3;
 			y++;
 		}
 		i++;
 	}
+	texture->height -= 1;
+	texture->width -= 1;
 /*	int		i;
 	int		j;
 	int		y;

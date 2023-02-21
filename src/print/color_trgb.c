@@ -20,5 +20,12 @@ unsigned int	create_trgb(unsigned char t, unsigned char r, \
 
 unsigned int	color_trgb(t_color color)
 {
-	return (*(unsigned int *)(unsigned char [4]){color.b, color.g, color.r, 0});
+	unsigned char	red;
+	unsigned char	green;
+	unsigned char	blue;
+
+	red = (unsigned char)(color.r * 255.0);
+	green = (unsigned char)(color.g * 255.0);
+	blue = (unsigned char)(color.b * 255.0);
+	return (*(unsigned int *)(unsigned char [4]){blue, green, red, 0});
 }

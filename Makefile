@@ -36,11 +36,11 @@ SRCS_FILES		:=	utils/error.c			utils/quit.c			utils/info.c \
 					hooks/release.c \
 					start/next_item.c		start/parse_color.c		start/parse_coord.c \
 					start/parse_vector.c	start/parse_ratio.c		start/parse_length.c \
-					start/parse_angle.c		start/parse_bonus.c		start/parse_amb_light.c \
-					start/parse_camera.c	start/parse_light.c		start/parse_spot_light.c \
-					start/parse_sphere.c	start/parse_plane.c		start/parse_cylinder.c \
-					start/parse_cone.c		start/parse_specular.c	start/read_file.c \
-					start/parse_texture.c	start/init.c \
+					start/parse_angle.c		start/parse_specular.c	start/parse_texture.c \
+					start/parse_bonus.c		start/parse_camera.c	start/parse_amb_light.c \
+					start/parse_plane.c		start/parse_light.c		start/parse_spot_light.c \
+					start/parse_sphere.c	start/parse_cone.c		start/parse_cylinder.c \
+					start/read_file.c		start/init.c \
 					main.c
 
 SRCS_DIR		:=	./src/

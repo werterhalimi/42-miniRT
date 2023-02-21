@@ -20,4 +20,15 @@ void	ratio_amb_light(int key_code, t_scene *scene)
 	else if (key_code == NUMPAD_MINUS \
 		&& scene->amb_light->ratio >= LIGHT_RATIO_FACTOR - FLT_EPSILON)
 		scene->amb_light->ratio -= LIGHT_RATIO_FACTOR;
+	update_scene(scene, AMB_LIGHT_RATIO);
+}
+
+void	update_amb_light(t_scene *scene, unsigned int flags)
+{
+	t_amb_light	*al;
+
+	if (!(flags & AMB_LIGHT_RATIO))
+		return ;
+	al = scene->amb_light;
+	al->ratio_color = update_color(al->real_color, al->ratio);
 }

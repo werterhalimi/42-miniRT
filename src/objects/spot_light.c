@@ -23,6 +23,7 @@ void	ratio_spot_light(int key_code, t_scene *scene)
 	else if (key_code == NUMPAD_MINUS \
 		&& spot_light->ratio >= LIGHT_RATIO_FACTOR - FLT_EPSILON)
 		spot_light->ratio -= LIGHT_RATIO_FACTOR;
+	update_scene(scene, SPOT_LIGHT_RATIO);
 }
 
 void	angle_spot_light(int mouse_code, t_scene *scene)
@@ -39,14 +40,16 @@ void	angle_spot_light(int mouse_code, t_scene *scene)
 
 void	update_spot_light(t_scene *scene, void *object, unsigned int flags)
 {
-	t_spot_light	*spot_light;
+	t_spot_light	*sl;
 
 	if (!(flags & (CAMERA_TRANSLATION | SPOT_LIGHT_ALL)))
 		return ;
-	spot_light = (t_spot_light *)object;
+	sl = (t_spot_light *)object;
+	if (flags & LIGHT_RATIO)
+		sl->ratio_color = update_color(sl->real_color, sl->ratio);
 	if (flags & (SPOT_LIGHT_TRANSLATION | CAMERA_TRANSLATION))
-		spot_light->relative_coord = sub_vectors(spot_light->coord, \
+		sl->relative_coord = sub_vectors(sl->coord, \
 			scene->camera->coord);
 	if (flags & SPOT_LIGHT_ANGLE)
-		spot_light->cos_angle = -cos(spot_light->angle);
+		sl->cos_angle = -cos(sl->angle);
 }
