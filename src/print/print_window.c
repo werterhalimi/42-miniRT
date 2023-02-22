@@ -6,7 +6,7 @@
 /*   By: ncotte <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 14:39:19 by ncotte            #+#    #+#             */
-/*   Updated: 2023/02/20 14:45:09 by shalimi          ###   ########.fr       */
+/*   Updated: 2023/02/22 17:36:35 by shalimi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ static unsigned int	find_color_pixel(t_scene *scene, \
 	phong.hit_point = add_vectors(scene->camera->coord, \
 		scalar_multi(phong.camera_ray_dist, phong.camera_ray));
 	phong.normal = phong.object->get_normal(phong.camera_ray, \
-		phong.hit_point, phong.object->object);
+		phong.hit_point, phong.object->object, phong.object->normal_map);
 	phong.object_color = phong.object->get_color(scene, phong.object, \
 		phong.hit_point, phong.normal);
 	phong_ambient(&phong, scene->amb_light);

@@ -6,7 +6,7 @@
 /*   By: ncotte <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 17:04:57 by ncotte            #+#    #+#             */
-/*   Updated: 2023/02/17 03:14:57 by shalimi          ###   ########.fr       */
+/*   Updated: 2023/02/22 01:05:13 by shalimi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,9 @@ t_color	get_color_cone(t_scene *scene, t_object *object, \
 	return (cone->color);
 }
 
-t_point	normal_cone(t_point ray, t_point hit_point, void *object)
+t_point	normal_cone(t_point ray, t_point hit_point, void *object, t_texture *texture)
 {
+	(void) texture;
 	t_cone	*cone;
 	t_point	normal;
 	t_point	chp;

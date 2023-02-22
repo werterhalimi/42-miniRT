@@ -6,7 +6,7 @@
 /*   By: shalimi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 15:42:50 by shalimi           #+#    #+#             */
-/*   Updated: 2023/02/22 00:37:25 by shalimi          ###   ########.fr       */
+/*   Updated: 2023/02/22 17:52:06 by shalimi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ static char	*get_header(int fd)
 	return ret;
 }
 
-int	read_ppm(t_object *obj, int fd)
+int	read_ppm(t_texture **tex, int fd)
 {
 	int		valid;
 	char	*line = malloc(17);
@@ -188,12 +188,39 @@ int	read_ppm(t_object *obj, int fd)
 		}
 		i++;
 	}*/
-	obj->texture = texture;
+	*tex = texture;
 	return (SUCCESS);
 }
 
 int	parse_texture(t_object *object, char *item)
 {
+	char		*tmp;
+	int			i;
+	int			fd;
+
+	if (!item)
+		return (print_error(ERROR, "A texture is missing"));
+	i = 0;
+	while (item[i])
+	{
+		if (item[i] == ' ')
+		{
+			item[i] = 0;
+			break ;
+		}
+		i++;
+	}
+	tmp = ft_strtrim(item, "\n \t");
+	fd = open(tmp, O_RDONLY);
+	if (fd < 0)
+		return (print_error(ERROR, "invalid texture file"));
+	if (i > 0)
+		item[i] = ' ';
+	return (read_ppm(&object->texture, fd));
+}
+
+int	parse_normal_map(t_object *object, char *item)
+{	
 	char		*tmp;
 	int			fd;
 
@@ -204,5 +231,5 @@ int	parse_texture(t_object *object, char *item)
 	free(tmp);
 	if (fd < 0)
 		return (print_error(ERROR, "invalid texture file"));
-	return (read_ppm(object, fd));
+	return (read_ppm(&object->normal_map, fd));
 }

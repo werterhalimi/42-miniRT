@@ -6,7 +6,7 @@
 /*   By: ncotte <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 14:36:36 by ncotte            #+#    #+#             */
-/*   Updated: 2023/02/17 21:04:02 by shalimi          ###   ########.fr       */
+/*   Updated: 2023/02/22 01:05:50 by shalimi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,9 @@ t_color	get_color_plane(t_scene *scene, t_object *object, \
 	return (plane->color);
 }
 
-t_point	normal_plane(t_point ray, t_point hit_point, void *object)
+t_point	normal_plane(t_point ray, t_point hit_point, void *object, t_texture *texture)
 {
+	(void) texture;
 	t_plane	*plane;
 
 	(void) hit_point;

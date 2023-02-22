@@ -6,7 +6,7 @@
 /*   By: ncotte <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 14:36:28 by ncotte            #+#    #+#             */
-/*   Updated: 2023/02/17 21:04:02 by shalimi          ###   ########.fr       */
+/*   Updated: 2023/02/22 01:05:35 by shalimi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,9 @@ t_color	get_color_cylinder(t_scene *scene, t_object *object, \
 	return (cylinder->color);
 }
 
-t_point	normal_cylinder(t_point ray, t_point hit_point, void *object)
+t_point	normal_cylinder(t_point ray, t_point hit_point, void *object, t_texture *texture)
 {
+	(void) texture;
 	t_cylinder	*cylinder;
 	t_point		normal;
 	t_point		projection;
