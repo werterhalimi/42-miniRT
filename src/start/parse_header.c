@@ -63,27 +63,19 @@ static int	header_item(t_scene *scene, char *item, int index, int *flags)
 	return (YES);
 }
 
-int	parse_header(t_scene *scene, t_list *current, t_object *object)
+static int	sub_parse_header(t_scene *scene, char *item, int *flags)
 {
-	int		i;
-	int		flags;
-	int		value;
-	int		total;
-	char	*item;
+	int	i;
+	int	value;
+	int	total;
 
-	(void) object;
-	if (scene->width)
-		return (print_error(ERROR, \
-			"There can be only one header per file"));
-	flags = 0x00000000;
-	item = next_item((char *)(current->content));
 	while (item)
 	{
 		i = -1;
 		total = 0;
 		while (++i < NB_HEADER_INFO)
 		{
-			value = header_item(scene, item, i, &flags);
+			value = header_item(scene, item, i, flags);
 			if (value < 0)
 				return (ERROR);
 			total += value;
@@ -92,6 +84,21 @@ int	parse_header(t_scene *scene, t_list *current, t_object *object)
 			return (print_error(ERROR, "Unknown parameter"));
 		item = next_item(item);
 	}
+	return (SUCCESS);
+}
+
+int	parse_header(t_scene *scene, t_list *current, t_object *object)
+{
+	int		flags;
+	char	*item;
+
+	(void) object;
+	if (scene->width)
+		return (print_error(ERROR, \
+			"There can be only one header per file"));
+	flags = 0x00000000;
+	item = next_item((char *)(current->content));
+	sub_parse_header(scene, item, &flags);
 	if (!(flags & 0x00000001) ^ !(flags & 0x00000002))
 		return (print_error(ERROR, \
 			"The width and height must be both defined or none"));
