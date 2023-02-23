@@ -1,5 +1,7 @@
 # valid.rt
 
+# Header (optional)   max width=2560     max height=1395
+  H                   width=512         height=512    reflexions=1
 # Object            | Coordinates      | Orientation | Info 1          | Info 2          | Color         | Bonus
 #                   | x,y,z as doubles | x,y,z in    |                 |                 | R,G,B in      |
 #                   |                  | [-1.0; 1.0] |                 |                 | {0; ...; 255} |
@@ -16,13 +18,13 @@
 
 # Optional objects  |                  |             |                 |                 |               |
 # Plane             |                  |             |                 |                 |               |
-  pl                  0.0,0.0,-1.0       0.0,0.0,1.0                                       255,0,225       specular=10
+  pl                  0.0,0.0,-1.0       0.0,0.0,1.0                                       255,0,225       specular=10 reflectance=1.0
 # Sphere            |                  |             | Diameter as     |                 |               |
 #                   |                  |             | positive double |                 |               |
-  sp                  1.0,1.0,0.0                      0.5                                 255,0,0         specular=10
+  sp                  1.0,1.0,0.0                      0.5                                 255,0,0         specular=10 reflectance=0.0
 # Cylinder          |                  |             | Diameter as     | Height as       |               |
 #                   |                  |             | positive double | positive double |               |
-  cy                  1.0,0.0,0.0        0.0,0.0,1.0   0.2               0.4               10,0,255        specular=10
+  cy                  1.0,0.0,0.0        0.0,0.0,1.0   0.2               0.4               10,0,255        specular=10 reflectance=0.0
 # Cone              |                  |             | Diameter as     | Height as       |               |
 #                   |                  |             | positive double | positive double |               |
-  co                  1.0,-1.0,0.0       0.0,0.0,1.0   0.2               0.4               30,255,30       specular=10
+  co                  1.0,-1.0,0.0       0.0,0.0,1.0   0.2               0.4               30,255,30       specular=10 reflectance=0.0

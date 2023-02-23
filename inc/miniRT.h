@@ -107,7 +107,7 @@
 # define NB_NON_OBJECTS_ITEMS	3
 # define NB_OBJECTS				6
 # define NB_ITEMS				9
-# define NB_BONUS				4
+# define NB_BONUS				5
 # define NB_HEADER_INFO			3
 
 /* Translation, rotation & other factors */
@@ -213,7 +213,8 @@ typedef struct s_sphere
 	t_point	front;
 	t_point	right;
 	t_point	down;
-	t_color	color;
+	t_color	real_color;
+	t_color	ratio_color;
 	double	radius;
 	double	radius_2;
 	double	value;
@@ -225,7 +226,8 @@ typedef struct s_plane
 	t_point	normal;
 	t_point	right;
 	t_point	down;
-	t_color	color;
+	t_color	real_color;
+	t_color	ratio_color;
 	double	value;
 }	t_plane;
 
@@ -241,7 +243,8 @@ typedef struct s_cylinder
 	t_point	relative_center_down;
 	t_point	right;
 	t_point	down;
-	t_color	color;
+	t_color	real_color;
+	t_color	ratio_color;
 	double	radius;
 	double	radius_2;
 	double	semi_height;
@@ -263,7 +266,8 @@ typedef struct s_cone
 	t_point	relative_center_base;
 	t_point	right;
 	t_point	down;
-	t_color	color;
+	t_color	real_color;
+	t_color	ratio_color;
 	double	radius;
 	double	radius_2;
 	double	height;
@@ -300,6 +304,7 @@ typedef struct s_object
 	t_texture			*texture;
 	t_texture			*normal_map;
 	t_color				*color_bis;
+	double				reflectance;
 	int					type;
 	int					specular;
 }	t_object;
@@ -308,7 +313,7 @@ typedef struct s_phong
 {
 	t_point		light_coord;
 	t_point		normal;
-	t_point		camera_ray;
+	t_point		view_ray;
 	t_point		hit_point;
 	t_point		light_ray;
 	t_color		object_color;
@@ -316,7 +321,8 @@ typedef struct s_phong
 	t_color		final_color;
 	t_object	*object;
 	t_light		*light;
-	double		camera_ray_dist;
+	t_point		*origin;
+	double		view_ray_dist;
 	double		light_ray_dist_2;
 	double		dot_light_normal;
 }	t_phong;
@@ -471,10 +477,11 @@ double			intersect_cylinder(t_point ray, void *object, t_point *origin);
 
 double			intersect_cone(t_point ray, void *object, t_point *origin);
 
-t_object		*find_intersect(t_scene *scene, t_point ray, \
-					double *intersect, int *index);
+int				find_intersect(t_scene *scene, t_phong *phong);
 
 /* print */
+
+t_color			new_color(double r, double g, double b);
 
 unsigned int	create_trgb(unsigned char t, unsigned char r, \
 					unsigned char g, unsigned char b);
@@ -608,7 +615,7 @@ int				parse_color(t_color *color, char *item);
 
 int				parse_color_bonus(void *ptr, char *item);
 
-int				parse_ratio(double *ratio, char *item);
+int				parse_ratio(void *ptr, char *item);
 
 int				parse_length(double *length, char *item, char *name, char half);
 

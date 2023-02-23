@@ -14,15 +14,16 @@
 
 static void	select_object(int x, int y, t_scene *scene)
 {
-	t_point	ray;
+	t_phong	phong;
 
 	mlx_mouse_get_pos(scene->window, &x, &y);
 	if (x < 0 || y < 0)
 		return ;
-	ray = unit_dist(add_vectors(add_vectors(scalar_multi(x, \
+	phong.view_ray = unit_dist(add_vectors(add_vectors(scalar_multi(x, \
 		scene->camera->shift_x), scalar_multi(y, \
 		scene->camera->shift_y)), scene->window_corner), scene->camera->coord);
-	find_intersect(scene, ray, NULL, &scene->index);
+	phong.origin = NULL;
+	scene->index = find_intersect(scene, &phong);
 	write_type(scene);
 }
 

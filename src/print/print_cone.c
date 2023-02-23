@@ -24,7 +24,7 @@ t_color	get_color_cone(t_scene *scene, t_object *object, \
 	(void) normal;
 	cone = (t_cone *)object->object;
 	if (!object->color_bis)
-		return (cone->color);
+		return (cone->ratio_color);
 	vector = sub_vectors(hit_point, cone->coord);
 	a = (long)floor(atan(dot_product(vector, cone->right) \
 		/ dot_product(vector, cone->down)) * MC_8_PI);
@@ -33,12 +33,12 @@ t_color	get_color_cone(t_scene *scene, t_object *object, \
 	{
 		if (!((long)floor(h) % 2) ^ !(a % 2))
 			return (*object->color_bis);
-		return (cone->color);
+		return (cone->ratio_color);
 	}
 	if (!((long)floor(sqrt(distance_square(vector, \
 		scalar_multi(h, cone->direction)))) % 2) ^ !(a % 2))
 		return (*object->color_bis);
-	return (cone->color);
+	return (cone->ratio_color);
 }
 
 t_point	normal_cone(t_point ray, t_point hit_point, \

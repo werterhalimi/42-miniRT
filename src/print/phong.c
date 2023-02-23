@@ -15,11 +15,11 @@
 void	phong_ambient(t_phong *phong, t_amb_light *amb_light)
 {
 	phong->final_color.r = fmin(amb_light->ratio_color.r \
-		* phong->object_color.r, 1.0);
+		* phong->object_color.r + phong->final_color.r, 1.0);
 	phong->final_color.g = fmin(amb_light->ratio_color.g \
-		* phong->object_color.g, 1.0);
+		* phong->object_color.g + phong->final_color.g, 1.0);
 	phong->final_color.b = fmin(amb_light->ratio_color.b \
-		* phong->object_color.b, 1.0);
+		* phong->object_color.b + phong->final_color.b, 1.0);
 }
 
 void	phong_diffuse(t_phong *phong, double dot)
