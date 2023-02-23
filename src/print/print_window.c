@@ -129,7 +129,7 @@ void	print_window(t_scene *scene, int offset, unsigned int reflexions)
 	tmp = scene->window_corner;
 	progress = scene->width / 20;
 	if (offset == 1)
-		printf("Rendering : \n");
+		printf("Rendering :          |\n%s", BOLD_GREEN);
 	while (++x < scene->width)
 	{
 		y = -1;
@@ -148,7 +148,9 @@ void	print_window(t_scene *scene, int offset, unsigned int reflexions)
 		color = get_pixel_color(scene, x, 0);
 		tmp = add_vectors(tmp, scene->camera->shift_x);
 	}
+	if (offset == 1 && !(x % progress))
+		write(STDOUT_FILENO, happy, 3);
 	if (offset == 1)
-		printf("\n");
+		printf("\n%s", RESET_COLOR);
 	mlx_put_image_to_window(scene->mlx, scene->window, scene->image, 0, 0);
 }
