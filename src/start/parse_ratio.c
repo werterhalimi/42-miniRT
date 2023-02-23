@@ -12,15 +12,18 @@
 
 #include "miniRT.h"
 
-int	parse_ratio(double *ratio, char *item)
+int	parse_ratio(void *ptr, char *item)
 {
+	double	ratio;
+
 	if (!item)
-		return (print_error(ERROR, "A light ratio is missing"));
-	if (str_to_double(item, ratio, YES))
+		return (print_error(ERROR, "A ratio is missing"));
+	if (str_to_double(item, &ratio, YES))
 		return (print_error(ERROR, \
-			"Invalid light ratio format. Required: one double"));
-	if (*ratio < 0.0 || 1.0 < *ratio)
+			"Invalid ratio format. Required: one double"));
+	if (ratio < 0.0 || 1.0 < ratio)
 		return (print_error(ERROR, \
-			"The light ratio must be included in [0.0; 1.0]"));
+			"The ratio must be included in [0.0; 1.0]"));
+	*(double *)ptr = ratio;
 	return (SUCCESS);
 }

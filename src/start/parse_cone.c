@@ -29,7 +29,7 @@ static int	sub_parse_cone(t_cone *cone, t_list *current, t_object *obj)
 	if (parse_length(&(cone->height), item, "Height", NO))
 		return (ERROR);
 	item = next_item(item);
-	if (parse_color(&(cone->color), item))
+	if (parse_color(&(cone->real_color), item))
 		return (ERROR);
 	item = next_item(item);
 	if (item)
@@ -49,6 +49,8 @@ int	parse_cone(t_scene *scene, t_list *current, t_object *object)
 	if (sub_parse_cone(cone, current, object))
 		return (ERROR);
 	cone->down = orthogonal_base(cone->direction, &cone->right);
+	cone->ratio_color = update_color(cone->real_color, \
+		1.0 - object->reflectance);
 	object->object = cone;
 	object->get_color = &get_color_cone;
 	object->get_normal = &normal_cone;

@@ -23,7 +23,7 @@ static int	sub_parse_plane(t_plane *plane, t_list *current, t_object *obj)
 	if (parse_vector(&(plane->normal), item, YES))
 		return (ERROR);
 	item = next_item(item);
-	if (parse_color(&(plane->color), item))
+	if (parse_color(&(plane->real_color), item))
 		return (ERROR);
 	item = next_item(item);
 	if (item)
@@ -43,6 +43,8 @@ int	parse_plane(t_scene *scene, t_list *current, t_object *object)
 	if (sub_parse_plane(plane, current, object))
 		return (ERROR);
 	plane->down = orthogonal_base(plane->normal, &plane->right);
+	plane->ratio_color = update_color(plane->real_color, \
+		1.0 - object->reflectance);
 	object->object = plane;
 	object->get_color = &get_color_plane;
 	object->get_normal = &normal_plane;

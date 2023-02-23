@@ -28,18 +28,21 @@ static int	*init_static(char **bonus_names, int (*fct_bonus[])(void *, char *))
 	fct_bonus[2] = &parse_texture;
 	bonus_names[3] = "normal_map";
 	fct_bonus[3] = &parse_normal_map;
+	bonus_names[4] = "reflectance";
+	fct_bonus[4] = &parse_ratio;
 	i = -1;
 	while (++i < NB_BONUS)
 		lengths[i] = (int)ft_strlen(bonus_names[i]);
 	return (lengths);
 }
 
-static void	get_address(t_object *object, void **item_ptr)
+static void	get_address(t_object *object, void *item_ptr[])
 {
 	item_ptr[0] = &object->color_bis;
 	item_ptr[1] = &object->specular;
 	item_ptr[2] = &object->texture;
 	item_ptr[3] = &object->normal_map;
+	item_ptr[4] = &object->reflectance;
 }
 
 static int	item_bonus(t_object *object, char *item, int index, int *flags)

@@ -6,7 +6,7 @@
 /*   By: shalimi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 15:42:50 by shalimi           #+#    #+#             */
-/*   Updated: 2023/02/22 17:52:06 by shalimi          ###   ########.fr       */
+/*   Updated: 2023/02/23 19:30:43 by shalimi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,6 @@ int	read_ppm(t_texture **tex, int fd)
 	while (i < texture->height)
 	{
 		y = 0;
-		printf("%i\n", i);
 		texture->pixels[i] = ft_calloc(texture->width, sizeof(t_color));
 		while (y < texture->width)
 		{
