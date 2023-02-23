@@ -15,40 +15,42 @@
 static void	init_arrays(char **obj_names, \
 	int (*fct_array[])(t_scene *, t_list *, t_object *))
 {
-	obj_names[0] = "A ";
-	fct_array[0] = &parse_amb_light;
-	obj_names[1] = "C ";
-	fct_array[1] = &parse_camera;
-	obj_names[2] = "L ";
-	fct_array[2] = &parse_light;
-	obj_names[3] = "sp ";
-	fct_array[3] = &parse_sphere;
-	obj_names[4] = "pl ";
-	fct_array[4] = &parse_plane;
-	obj_names[5] = "cy ";
-	fct_array[5] = &parse_cylinder;
-	obj_names[6] = "co ";
-	fct_array[6] = &parse_cone;
-	obj_names[7] = "sl ";
-	fct_array[7] = &parse_spot_light;
+	obj_names[0] = "H ";
+	fct_array[0] = &parse_header;
+	obj_names[1] = "A ";
+	fct_array[1] = &parse_amb_light;
+	obj_names[2] = "C ";
+	fct_array[2] = &parse_camera;
+	obj_names[3] = "L ";
+	fct_array[3] = &parse_light;
+	obj_names[4] = "sp ";
+	fct_array[4] = &parse_sphere;
+	obj_names[5] = "pl ";
+	fct_array[5] = &parse_plane;
+	obj_names[6] = "cy ";
+	fct_array[6] = &parse_cylinder;
+	obj_names[7] = "co ";
+	fct_array[7] = &parse_cone;
+	obj_names[8] = "sl ";
+	fct_array[8] = &parse_spot_light;
 }
 
 static int	parse_selector(t_scene *scene, t_list *current, char *obj_names[], \
 	int (*fct_array[])(t_scene *, t_list *, t_object *))
 {
-	int			i;
-	int			j;
+	int	i;
+	int	j;
 
 	i = -1;
-	while (++i < NB_OBJECTS)
+	while (++i < NB_ITEMS)
 	{
 		if (!ft_strncmp(current->content, obj_names[i], \
 			ft_strlen(obj_names[i])))
 		{
-			if (i < 2)
+			if (i < NB_NON_OBJECTS_ITEMS)
 				return (fct_array[i](scene, current, NULL));
 			j = 0;
-			if (i > 2)
+			if (i > NB_NON_OBJECTS_ITEMS)
 				j = 1;
 			while (scene->objects[j])
 				j++;
@@ -63,8 +65,8 @@ static int	parse_selector(t_scene *scene, t_list *current, char *obj_names[], \
 
 static int	objects_parsing(t_scene *scene, t_list **list)
 {
-	int		(*fct_array[NB_OBJECTS])(t_scene *, t_list *, t_object *);
-	char	*obj_names[NB_OBJECTS];
+	int		(*fct_array[NB_ITEMS])(t_scene *, t_list *, t_object *);
+	char	*obj_names[NB_ITEMS];
 
 	scene->objects = ft_calloc(scene->nb_objects + 1, \
 		sizeof (*scene->objects));
@@ -104,7 +106,7 @@ static int	init_mlx(t_scene *scene)
 		&scene->line_len, &scene->endian);
 	if (!scene->address)
 		return (print_error(ERROR, "Image address not found"));
-	print_window(scene, 1, 1);
+	print_window(scene, 1, scene->reflexions);
 	return (SUCCESS);
 }
 
@@ -119,10 +121,13 @@ int	init(int argc, char **argv, t_scene **scene)
 	(*scene)->nb_objects = read_file(argc, argv, &objects);
 	if ((*scene)->nb_objects < 0)
 		return (ERROR);
-	(*scene)->width = 1920;
-	(*scene)->height = 1080;
 	if (objects_parsing(*scene, &objects))
 		return (ERROR);
+	if (!(*scene)->width)
+	{
+		(*scene)->width = 1920;
+		(*scene)->height = 1080;
+	}
 	update_scene(*scene, UPDATE_ALL);
 	return (init_mlx(*scene));
 }

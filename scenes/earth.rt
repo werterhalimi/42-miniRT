@@ -1,5 +1,7 @@
 # earth.rt
 
+# Header (optional)   max width=2560     max height=1395
+  H                   width=2560         height=1395    reflexions=0
 # Object            | Coordinates      | Orientation  | Info 1          | Info 2          | Color         | Bonus
 #                   | x,y,z as doubles | x,y,z in     |                 |                 | R,G,B in      |
 #                   |                  | [-1.0; 1.0]  |                 |                 | {0; ...; 255} |

@@ -104,8 +104,11 @@
 
 /* Number of objects */
 
-# define NB_OBJECTS				8
+# define NB_NON_OBJECTS_ITEMS	3
+# define NB_OBJECTS				6
+# define NB_ITEMS				9
 # define NB_BONUS				4
+# define NB_HEADER_INFO			3
 
 /* Translation, rotation & other factors */
 
@@ -282,9 +285,6 @@ typedef struct s_texture
 
 typedef struct s_object
 {
-	void				*object;
-	struct s_texture	*texture;
-	struct s_texture	*normal_map;
 	struct s_color		(*get_color)(struct s_scene *, struct s_object *, \
 							t_point, t_point);
 	struct s_point		(*get_normal)(t_point, t_point, void *, t_texture *);
@@ -296,6 +296,9 @@ typedef struct s_object
 	void				(*rotation_absolute)(struct s_scene *, t_matrix);
 	void				(*numpad_plus_minus)(int, struct s_scene *);
 	void				(*scroll)(int, struct s_scene *);
+	void				*object;
+	t_texture			*texture;
+	t_texture			*normal_map;
 	t_color				*color_bis;
 	int					type;
 	int					specular;
@@ -338,6 +341,7 @@ typedef struct s_scene
 	int			index;
 	int			nb_objects;
 	int			mode;
+	int			reflexions;
 }	t_scene;
 
 /* utils */
@@ -602,7 +606,7 @@ int				parse_bonus(t_object *object, char *item);
 
 int				parse_color(t_color *color, char *item);
 
-int				parse_color_bonus(t_object *object, char *item);
+int				parse_color_bonus(void *ptr, char *item);
 
 int				parse_ratio(double *ratio, char *item);
 
@@ -610,17 +614,20 @@ int				parse_length(double *length, char *item, char *name, char half);
 
 int				parse_angle(double *angle, char *item);
 
-int				parse_specular(t_object *object, char *item);
+int				parse_integer(void *ptr, char *item);
 
-int				parse_texture(t_object *object, char *item);
+int				parse_texture(void *ptr, char *item);
 
-int				parse_normal_map(t_object *object, char *item);
+int				parse_normal_map(void *ptr, char *item);
 
 char			*next_coord(char *item, char last);
 
 int				parse_coord(t_point *coord, char *item);
 
 int				parse_vector(t_point *vector, char *item, char unit);
+
+int				parse_header(t_scene *scene, t_list *current, \
+					t_object *object);
 
 int				parse_amb_light(t_scene *scene, t_list *current, \
 					t_object *object);

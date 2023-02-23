@@ -64,10 +64,13 @@ int	parse_color(t_color *color, char *item)
 	return (SUCCESS);
 }
 
-int	parse_color_bonus(t_object *object, char *item)
+int	parse_color_bonus(void *ptr, char *item)
 {
-	object->color_bis = ft_calloc(1, sizeof (*object->color_bis));
-	if (!object->color_bis || parse_color(object->color_bis, item))
+	t_color	*color_bis;
+
+	color_bis = ft_calloc(1, sizeof (*color_bis));
+	if (!color_bis || parse_color(color_bis, item))
 		return (ERROR);
+	*(t_color **)ptr = color_bis;
 	return (SUCCESS);
 }

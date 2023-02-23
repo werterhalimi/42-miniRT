@@ -192,8 +192,9 @@ int	read_ppm(t_texture **tex, int fd)
 	return (SUCCESS);
 }
 
-int	parse_texture(t_object *object, char *item)
+int	parse_texture(void *ptr, char *item)
 {
+	t_texture	*texture;
 	char		*tmp;
 	int			i;
 	int			fd;
@@ -216,11 +217,15 @@ int	parse_texture(t_object *object, char *item)
 		return (print_error(ERROR, "Invalid texture file"));
 	if (i > 0)
 		item[i] = ' ';
-	return (read_ppm(&object->texture, fd));
+	if (read_ppm(&texture, fd))
+		return (ERROR);
+	*(t_texture **)ptr = texture;
+	return (SUCCESS);
 }
 
-int	parse_normal_map(t_object *object, char *item)
-{	
+int	parse_normal_map(void *ptr, char *item)
+{
+	t_texture	*normal_map;
 	char		*tmp;
 	int			fd;
 
@@ -231,5 +236,8 @@ int	parse_normal_map(t_object *object, char *item)
 	ft_free(tmp);
 	if (fd < 0)
 		return (print_error(ERROR, "Invalid texture file"));
-	return (read_ppm(&object->normal_map, fd));
+	if (read_ppm(&normal_map, fd))
+		return (ERROR);
+	*(t_texture **)ptr = normal_map;
+	return (SUCCESS);
 }

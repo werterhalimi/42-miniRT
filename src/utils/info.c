@@ -16,7 +16,7 @@ static char	**init_type_name(void)
 {
 	char	**type_name;
 
-	type_name = ft_calloc(NB_OBJECTS - 1, sizeof (*type_name));
+	type_name = ft_calloc(NB_OBJECTS + 1, sizeof (*type_name));
 	if (!type_name)
 		return (NULL);
 	type_name[TYPE_MAIN_LIGHT] = "main light";

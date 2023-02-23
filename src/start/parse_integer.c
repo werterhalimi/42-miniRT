@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_specular.c                                   :+:      :+:    :+:   */
+/*   parse_integer.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: shalimi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,16 +12,18 @@
 
 #include "miniRT.h"
 
-int	parse_specular(t_object *object, char *item)
+int	parse_integer(void *ptr, char *item)
 {
+	int		number;
 	char	*buff;
 
 	if (!item)
-		return (print_error(ERROR, "A specular is missing"));
-	object->specular = ft_atoi(item);
-	buff = ft_itoa(object->specular);
-	if (ft_strncmp(item, buff, ft_strlen(buff)) || object->specular < 0)
+		return (print_error(ERROR, "A number is missing"));
+	number = ft_atoi(item);
+	buff = ft_itoa(number);
+	if (ft_strncmp(item, buff, ft_strlen(buff)) || number < 0)
 		return (print_error(ERROR, \
-			"Invalid specular format. Required: one positive int"));
+			"Invalid format. Required: one positive integer"));
+	*(int *)ptr = number;
 	return (SUCCESS);
 }
