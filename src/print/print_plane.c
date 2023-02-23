@@ -33,11 +33,12 @@ t_color	get_color_plane(t_scene *scene, t_object *object, \
 	return (plane->color);
 }
 
-t_point	normal_plane(t_point ray, t_point hit_point, void *object, t_texture *texture)
+t_point	normal_plane(t_point ray, t_point hit_point, \
+			void *object, t_texture *texture)
 {
-	(void) texture;
 	t_plane	*plane;
 
+	(void) texture;
 	(void) hit_point;
 	plane = (t_plane *)object;
 	if (dot_product(plane->normal, ray) <= 0.0)

@@ -15,18 +15,19 @@
 static void	init_static(char **bonus_names, \
 	int (*fct_bonus[])(t_object *, char *), int lengths[])
 {
+	int	i;
+
 	bonus_names[0] = "checkerboard";
 	fct_bonus[0] = &parse_color_bonus;
-	lengths[0] = (int)ft_strlen(bonus_names[0]);
 	bonus_names[1] = "specular";
 	fct_bonus[1] = &parse_specular;
-	lengths[1] = (int)ft_strlen(bonus_names[1]);
 	bonus_names[2] = "texture";
 	fct_bonus[2] = &parse_texture;
-	lengths[2] = (int)ft_strlen(bonus_names[2]);
 	bonus_names[3] = "normal_map";
 	fct_bonus[3] = &parse_normal_map;
-	lengths[3] = (int)ft_strlen(bonus_names[3]);
+	i = -1;
+	while (++i < NB_BONUS)
+		lengths[i] = (int)ft_strlen(bonus_names[i]);
 }
 
 static int	item_bonus(t_object *object, char *item, int index, int *flags)

@@ -19,7 +19,7 @@
 #  pl                  0.0,0.0,-1.0       0.0,0.0,1.0                                        255,0,225       specular=10
 # Sphere            |                  |              | Diameter as     |                 |               |
 #                   |                  |              | positive double |                 |               |
-  sp                  0.0,0.0,0.0                       5.0                                 255,255,255     specular=10 texture=Earth.ppm
+  sp                  0.0,0.0,0.0                       5.0                                 255,255,255     specular=10 texture=textures/Earth.ppm
 # Cylinder          |                  |              | Diameter as     | Height as       |               |
 #                   |                  |              | positive double | positive double |               |
 #  cy                  1.0,0.0,0.0        0.0,0.0,1.0    0.2               0.4               10,0,255        specular=10

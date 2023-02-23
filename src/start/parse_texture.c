@@ -12,8 +12,6 @@
 
 #include "miniRT.h"
 
-
-
 char	*get_ppm_line(int fd)
 {
 	char	*tmp;
@@ -25,7 +23,7 @@ char	*get_ppm_line(int fd)
 	if (!line)
 		return (0);
 	tmp = ft_strtrim(line, " \t");
-	free(line);
+	ft_free(line);
 	return (tmp);
 }
 
@@ -34,12 +32,12 @@ static char	*append(char *str, char a)
 	char	*ret;
 	int		len;
 
-	len = ft_strlen(str) + 1;
-	ret = malloc(sizeof(char) * len + 1);
+	len = (int)ft_strlen(str) + 1;
+	ret = ft_calloc(len + 1, sizeof (char));
 	ft_memcpy(ret, str, len);
 	ret[len - 1] = a;
 	ret[len] = 0;
-	free(str);
+	ft_free(str);
 	return (ret);
 }
 
@@ -49,8 +47,8 @@ static char	*get_header(int fd)
 	char	*tmp;
 	int		nb;
 
-	tmp = malloc(sizeof(char) * 2);
-	ret = malloc(sizeof(char) * 2);
+	tmp = ft_calloc(2, sizeof (char));
+	ret = ft_calloc(2, sizeof (char));
 	tmp[1] = 0;
 	ret[1] = 0;
 	nb = 0;
@@ -60,21 +58,26 @@ static char	*get_header(int fd)
 		if (*tmp == '\n')
 			nb++;
 	}
-	free(tmp);
-	return ret;
+	ft_free(tmp);
+	return (ret);
 }
 
 int	read_ppm(t_texture **tex, int fd)
 {
-	int		valid;
-	char	*line = malloc(17);
+	int				valid;
+	char			*line;
+	int				i;
+	int				j;
+	int				y;
+	t_texture		*texture;
+	unsigned char	*test;
+//	char			*line = malloc(17);
 
-	t_texture *texture = ft_calloc(1, sizeof(t_texture));
+	texture = ft_calloc(1, sizeof (t_texture));
 	texture->value = 0;
 	texture->height = 0;
 	texture->width = 0;
 	valid = 0;
-
 	line = get_header(fd);
 	while (texture->value == 0)
 	{
@@ -94,46 +97,43 @@ int	read_ppm(t_texture **tex, int fd)
 				texture->width = ft_atoi(line);
 				while (*(line++) && (*line != ' '))
 					continue ;
-				if (*line == ' ') line++;
-
+				if (*line == ' ')
+					line++;
 			}
 			if (*line && texture->height == 0)
 			{
 				texture->height = ft_atoi(line);
 				while (*(line++) && (*line != '\n'))
 					continue ;
-				if (*line == '\n') line++;
+				if (*line == '\n')
+					line++;
 			}
 			if (*line && texture->value == 0)
 			{
 				texture->value = ft_atoi(line);
-				break;
+				break ;
 			}
 			line++;
 		}
 	}
-	if (!valid) 
+	if (!valid)
 		return (print_error(ERROR, "PPM file doesn't have P3 declaration"));
-
-	unsigned char	*test = malloc(sizeof(*test) * texture->width*texture->height*3);
-	read(fd,test, texture->width*texture->height*3);
+	test = ft_calloc(texture->width * texture->height * 3, sizeof (*test));
+	read(fd, test, texture->width * texture->height * 3);
 	close(fd);
-	texture->pixels = ft_calloc(texture->height, sizeof(*texture->pixels));
-
-	int	i;
-	int	j;
-	int	y;
-
+	texture->pixels = ft_calloc(texture->height, sizeof (*texture->pixels));
 	j = 0;
 	i = 0;
-	while(i < texture->height)
+	while (i < texture->height)
 	{
 		y = 0;
 		printf("%i\n", i);
 		texture->pixels[i] = ft_calloc(texture->width, sizeof(t_color));
 		while (y < texture->width)
 		{
-			texture->pixels[i][y] = (t_color) {(double) test[j] / texture->value,(double) test[j+1] / texture->value, (double)test[j+2] / texture->value};
+			texture->pixels[i][y] = (t_color){(double)test[j] / texture->value, \
+				(double)test[j + 1] / texture->value, \
+				(double)test[j + 2] / texture->value};
 			j += 3;
 			y++;
 		}
@@ -213,7 +213,7 @@ int	parse_texture(t_object *object, char *item)
 	tmp = ft_strtrim(item, "\n \t");
 	fd = open(tmp, O_RDONLY);
 	if (fd < 0)
-		return (print_error(ERROR, "invalid texture file"));
+		return (print_error(ERROR, "Invalid texture file"));
 	if (i > 0)
 		item[i] = ' ';
 	return (read_ppm(&object->texture, fd));
@@ -228,8 +228,8 @@ int	parse_normal_map(t_object *object, char *item)
 		return (print_error(ERROR, "A texture is missing"));
 	tmp = ft_strtrim(item, "\n \t");
 	fd = open(tmp, O_RDONLY);
-	free(tmp);
+	ft_free(tmp);
 	if (fd < 0)
-		return (print_error(ERROR, "invalid texture file"));
+		return (print_error(ERROR, "Invalid texture file"));
 	return (read_ppm(&object->normal_map, fd));
 }

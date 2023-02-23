@@ -119,9 +119,12 @@
 
 /* Maths const */
 
-# define PI_360					0.008726646259971647884618453842443064
+# define MC_PI_360				0.008726646259971647884618453842443064
+# define MC_8_PI				2.546479089470325372302140213960229793
+# define MC_1_2PI				0.159154943091895335768883763372514362
 
 /* Objects */
+
 enum {
 	TYPE_MAIN_LIGHT,
 	TYPE_SPOT_LIGHT,
@@ -493,22 +496,26 @@ t_color			get_color_spot_light(t_scene *scene, t_object *object, \
 t_color			get_color_sphere(t_scene *scene, t_object *object, \
 					t_point hit_point, t_point normal);
 
-t_point			normal_sphere(t_point ray, t_point hit_point, void *object, t_texture *texture);
+t_point			normal_sphere(t_point ray, t_point hit_point, \
+					void *object, t_texture *texture);
 
 t_color			get_color_plane(t_scene *scene, t_object *object, \
 					t_point hit_point, t_point normal);
 
-t_point			normal_plane(t_point ray, t_point hit_point, void *object, t_texture *texture);
+t_point			normal_plane(t_point ray, t_point hit_point, \
+					void *object, t_texture *texture);
 
 t_color			get_color_cylinder(t_scene *scene, t_object *object, \
 					t_point hit_point, t_point normal);
 
-t_point			normal_cylinder(t_point ray, t_point hit_point, void *object, t_texture *texture);
+t_point			normal_cylinder(t_point ray, t_point hit_point, \
+					void *object, t_texture *texture);
 
 t_color			get_color_cone(t_scene *scene, t_object *object, \
 					t_point hit_point, t_point normal);
 
-t_point			normal_cone(t_point ray, t_point hit_point, void *object, t_texture *texture);
+t_point			normal_cone(t_point ray, t_point hit_point, \
+					void *object, t_texture *texture);
 
 void			put_pixel(t_scene *scene, int x, int y, unsigned int color);
 
@@ -604,7 +611,9 @@ int				parse_length(double *length, char *item, char *name, char half);
 int				parse_angle(double *angle, char *item);
 
 int				parse_specular(t_object *object, char *item);
+
 int				parse_texture(t_object *object, char *item);
+
 int				parse_normal_map(t_object *object, char *item);
 
 char			*next_coord(char *item, char last);

@@ -22,6 +22,6 @@ int	parse_angle(double *angle, char *item)
 	if (*angle < 0.0 || 180.0 < *angle)
 		return (print_error(ERROR, \
 			"The angle must be included in [0.0; 180.0]"));
-	*angle *= PI_360;
+	*angle *= MC_PI_360;
 	return (SUCCESS);
 }

@@ -12,6 +12,8 @@
 
 #include "miniRT.h"
 
+#ifdef __APPLE__
+
 double	cos_rot(void)
 {
 	static double	result;
@@ -21,12 +23,23 @@ double	cos_rot(void)
 	return (result);
 }
 
-double	cos_rot_1(void)
+double	sin_rot(void)
 {
 	static double	result;
 
 	if (!result)
-		result = 1.0 - cos_rot();
+		result = __sinpi(ROTATION_FACTOR);
+	return (result);
+}
+
+#else
+
+double	cos_rot(void)
+{
+	static double	result;
+
+	if (!result)
+		result = cos(ROTATION_FACTOR * M_PI);
 	return (result);
 }
 
@@ -35,7 +48,18 @@ double	sin_rot(void)
 	static double	result;
 
 	if (!result)
-		result = __sinpi(ROTATION_FACTOR);
+		result = sin(ROTATION_FACTOR * M_PI);
+	return (result);
+}
+
+#endif
+
+double	cos_rot_1(void)
+{
+	static double	result;
+
+	if (!result)
+		result = 1.0 - cos_rot();
 	return (result);
 }
 

@@ -27,7 +27,7 @@ t_color	get_color_cylinder(t_scene *scene, t_object *object, \
 		return (cylinder->color);
 	vector = sub_vectors(hit_point, cylinder->coord);
 	a = (long)floor(atan(dot_product(vector, cylinder->right) \
-		/ dot_product(vector, cylinder->down)) * 8 * M_1_PI);
+		/ dot_product(vector, cylinder->down)) * MC_8_PI);
 	h = dot_product(vector, cylinder->direction);
 	if (-(cylinder->semi_height - FLT_EPSILON) < h \
 		&& h < cylinder->semi_height - FLT_EPSILON)
@@ -42,13 +42,14 @@ t_color	get_color_cylinder(t_scene *scene, t_object *object, \
 	return (cylinder->color);
 }
 
-t_point	normal_cylinder(t_point ray, t_point hit_point, void *object, t_texture *texture)
+t_point	normal_cylinder(t_point ray, t_point hit_point, \
+			void *object, t_texture *texture)
 {
-	(void) texture;
 	t_cylinder	*cylinder;
 	t_point		normal;
 	t_point		projection;
 
+	(void) texture;
 	cylinder = (t_cylinder *)object;
 	projection = get_projection_unit(sub_vectors(hit_point, \
 		cylinder->coord), cylinder->direction);

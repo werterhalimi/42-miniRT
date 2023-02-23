@@ -27,7 +27,7 @@ t_color	get_color_cone(t_scene *scene, t_object *object, \
 		return (cone->color);
 	vector = sub_vectors(hit_point, cone->coord);
 	a = (long)floor(atan(dot_product(vector, cone->right) \
-		/ dot_product(vector, cone->down)) * 8 * M_1_PI);
+		/ dot_product(vector, cone->down)) * MC_8_PI);
 	h = dot_product(vector, cone->direction);
 	if (h < cone->height - FLT_EPSILON)
 	{
@@ -41,15 +41,16 @@ t_color	get_color_cone(t_scene *scene, t_object *object, \
 	return (cone->color);
 }
 
-t_point	normal_cone(t_point ray, t_point hit_point, void *object, t_texture *texture)
+t_point	normal_cone(t_point ray, t_point hit_point, \
+			void *object, t_texture *texture)
 {
-	(void) texture;
 	t_cone	*cone;
 	t_point	normal;
 	t_point	chp;
 	t_point	y;
 	double	t;
 
+	(void) texture;
 	cone = (t_cone *)object;
 	chp = (sub_vectors(hit_point, cone->coord));
 	t = norm_square(chp) / dot_product(chp, cone->direction);
