@@ -6,7 +6,7 @@
 /*   By: ncotte <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 14:48:45 by ncotte            #+#    #+#             */
-/*   Updated: 2023/02/01 14:48:46 by ncotte           ###   ########.fr       */
+/*   Updated: 2023/02/24 19:29:35 by shalimi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,4 +38,14 @@ unsigned int	color_trgb(t_color color)
 	green = (unsigned char)(color.g * 255.0);
 	blue = (unsigned char)(color.b * 255.0);
 	return (*(unsigned int *)(unsigned char [4]){blue, green, red, 0});
+}
+
+t_color	sub_colors(t_color a, t_color b)
+{
+	return ((t_color){a.r - b.r, a.g - b.g, a.b - b.b});
+}
+
+t_color	add_colors(t_color a, t_color b)
+{
+	return ((t_color){a.r + b.r, a.g + b.g, a.b + b.b});
 }
