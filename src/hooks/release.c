@@ -20,6 +20,7 @@ int	key_release(int key_code, t_scene *scene)
 		mlx_put_image_to_window(scene->mlx, scene->window, \
 			scene->main_img->ptr, 0, 0);
 	else if (is_key_rotation(key_code) || is_key_translation(key_code) \
+		|| key_code == NUMPAD_PLUS || key_code == NUMPAD_MINUS \
 		|| key_code == KEY_SPACE)
 		print_window(scene, 1, scene->reflexions);
 	return (0);

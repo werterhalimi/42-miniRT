@@ -40,5 +40,5 @@ t_point	unit_dist(t_point a, t_point b)
 
 t_point	reflection(t_point ray, t_point axis)
 {
-	return (unit_dist(ray, scalar_multi(2.0 * dot_product(ray, axis), axis)));
+	return (sub_vectors(ray, scalar_multi(2.0 * dot_product(ray, axis), axis)));
 }
