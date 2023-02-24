@@ -6,17 +6,19 @@
 #    By: ncotte <marvin@42lausanne.ch>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/12 11:39:15 by ncotte            #+#    #+#              #
-#    Updated: 2023/02/21 16:17:48 by shalimi          ###   ########.fr        #
+#    Updated: 2023/02/24 19:25:18 by shalimi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 SRCS_FILES		:=	utils/error.c			utils/quit.c			utils/info.c \
+					utils/ppm.c \
 					maths/point.c			maths/vector.c			maths/quad_solv.c \
 					maths/matrix.c			maths/quake.c			maths/str_to_double.c \
 					maths/trigo.c			maths/trigo_bis.c \
 					objects/camera.c		objects/light.c			objects/amb_light.c \
 					objects/plane.c			objects/sphere.c		objects/cylinder.c \
 					objects/cone.c			objects/spot_light.c	objects/update_scene.c \
+					objects/texture.c \
 					intersect/intersect_light.c			intersect/intersect_plane.c \
 					intersect/intersect_sphere.c		intersect/intersect_cylinder.c \
 					intersect/intersect_cone.c			intersect/intersect_spot_light.c \

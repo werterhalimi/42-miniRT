@@ -6,7 +6,7 @@
 /*   By: ncotte <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/29 11:02:34 by ncotte            #+#    #+#             */
-/*   Updated: 2023/02/22 17:36:57 by shalimi          ###   ########.fr       */
+/*   Updated: 2023/02/24 19:24:28 by shalimi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -395,6 +395,14 @@ void			write_point(t_point point, char *name);
 
 void			write_info(t_scene *scene);
 
+int				read_ppm(t_texture **texture, int fd);
+
+char			*remove_space(char *item);
+
+void			create_image(t_texture **texture, unsigned char *map);
+
+char			*get_header(int fd);
+
 /* maths */
 
 void			print_graduation(t_scene *scene);
@@ -489,6 +497,10 @@ void			radius_cone(int mouse_code, t_scene *scene);
 
 void			height_cone(int key_code, t_scene *scene);
 
+t_texture		*bump_to_map(t_texture *bump);
+
+int				init_texture(int fd, t_texture **texture);
+
 /* intersect */
 
 double			intersect_light(t_point ray, void *object, t_point *origin);
@@ -516,6 +528,10 @@ unsigned int	create_trgb(unsigned char t, unsigned char r, \
 					unsigned char g, unsigned char b);
 
 unsigned int	color_trgb(t_color color);
+
+t_color			sub_colors(t_color a, t_color b);
+
+t_color			add_colors(t_color a, t_color b);
 
 unsigned int	get_pixel_color(t_image *image, int x, int y);
 
