@@ -12,16 +12,6 @@
 
 #include "miniRT.h"
 
-t_point	unit_dist(t_point a, t_point b)
-{
-	return (unit_vector(sub_vectors(a, b)));
-}
-
-t_point	reflection(t_point ray, t_point axis)
-{
-	return (unit_dist(ray, scalar_multi(2.0 * dot_product(ray, axis), axis)));
-}
-
 t_point	cross_product(t_point v1, t_point v2)
 {
 	t_point	vector;

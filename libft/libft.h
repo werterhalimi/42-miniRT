@@ -120,32 +120,32 @@ char	*ft_strnstr(const char *haystack, const char *needle, size_t len);
 int		ft_atoi(const char *str);
 
 /// @brief Allocate count * size bytes of memory and fill it with 0
-/// @return its address, NULL if error
+/// @return its addr, NULL if error
 void	*ft_calloc(size_t count, size_t size);
 
 /// @brief Duplicate s1 into a new string
-/// @return its address, NULL if error
+/// @return its addr, NULL if error
 char	*ft_strdup(const char *s1);
 
 /// @brief Create a new srting from s, 
 //	starting at start and of length len at most,
-/// @return its address, NULL if error
+/// @return its addr, NULL if error
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 
 /// @brief Concatenate s2 after s1 in a new string
-/// @return its address, NULL if error
+/// @return its addr, NULL if error
 char	*ft_strjoin(char const *s1, char const *s2);
 
 /// @brief Trim s1 of the characters in set at the start and end in a new string
-/// @return its address, NULL if error
+/// @return its addr, NULL if error
 char	*ft_strtrim(char const *s1, char const *set);
 
 /// @brief Create an array of strings from the original s but splited by c
-/// @return its address, NULL if error
+/// @return its addr, NULL if error
 char	**ft_split(char const *s, char c);
 
 /// @brief Create a sting containing an int n
-/// @return its address, NULL if error
+/// @return its addr, NULL if error
 char	*ft_itoa(int n);
 
 /// @brief Apply f to all elements of s
@@ -168,7 +168,7 @@ void	ft_putendl_fd(char *s, int fd);
 void	ft_putnbr_fd(int n, int fd);
 
 /// @brief Create a new element of a linked list
-/// @return its address, NULL if error
+/// @return its addr, NULL if error
 t_list	*ft_lstnew(void *content);
 
 /// @brief Add new at the start of *lst
@@ -179,7 +179,7 @@ void	ft_lstadd_front(t_list **lst, t_list *new);
 int		ft_lstsize(t_list *lst);
 
 /// @brief Find the last element of lst
-/// @return its address, NULL if error
+/// @return its addr, NULL if error
 t_list	*ft_lstlast(t_list *lst);
 
 /// @brief Add new at the end of *lst

@@ -32,7 +32,7 @@ static int	ft_print_fd(t_str *result, int fd)
 }
 
 /// @brief Allocate memory depending on the format
-/// @return the address of memory, NULL if error
+/// @return the addr of memory, NULL if error
 static char	*malloc_format(char format, va_list *args, int *len)
 {
 	if (format == 'c')

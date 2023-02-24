@@ -77,16 +77,13 @@ t_point	normal_sphere(t_point ray, t_point hit_point, \
 	t_sphere	*sphere;
 	t_point		normal;
 	t_color		color;
-	t_point		perturbation;
 
 	sphere = (t_sphere *)object;
 	normal = unit_dist(hit_point, sphere->coord);
 	if (texture)
 	{
 		color = get_uv_color(sphere, texture, hit_point);
-		perturbation = (t_point){color.r - 0.5, color.g - 0.5, color.b - 0.5};
-		perturbation = scalar_multi(0.9, perturbation);
-		normal = unit_vector(add_vectors(perturbation, normal));
+		normal = bump_normal(normal, color);
 	}
 	if (dot_product(normal, ray) <= 0.0)
 		return (normal);

@@ -1,28 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.h                                            :+:      :+:    :+:   */
+/*   bump_normal.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ncotte <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/15 18:07:53 by ncotte            #+#    #+#             */
-/*   Updated: 2022/10/17 14:18:40 by ncotte           ###   ########.fr       */
+/*   Created: 2023/02/24 18:12:36 by ncotte            #+#    #+#             */
+/*   Updated: 2023/02/24 18:12:37 by ncotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef UTILS_H
-# define UTILS_H
+#include "miniRT.h"
 
-# include "libft.h"
+t_point	bump_normal(t_point normal, t_color color)
+{
+	t_point	perturbation;
 
-# define HEXADECIMAL_FORMAT "0123456789abcdef"
-
-/// @brief Create a sting containing an unsigned int u
-/// @return its addr, NULL if error
-char	*ft_uitoa(unsigned int u);
-
-/// @brief Create a sting containing an unsigned int u in hexadecimal
-/// @return its addr, NULL if error
-char	*ft_hextoa(unsigned int u);
-
-#endif
+	perturbation = (t_point){color.r - 0.5, color.g - 0.5, color.b - 0.5};
+	perturbation = scalar_multi(0.9, perturbation);
+	return (unit_vector(add_vectors(perturbation, normal)));
+}

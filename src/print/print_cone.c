@@ -46,8 +46,7 @@ t_color	get_color_cone(t_scene *scene, t_object *object, \
 	t_cone	*cone;
 	t_point	vector;
 	double	h;
-
-	double		longitude;
+	double	longitude;
 
 	(void) scene;
 	(void) normal;
@@ -60,14 +59,15 @@ t_color	get_color_cone(t_scene *scene, t_object *object, \
 	h = dot_product(vector, cone->direction);
 	if (h < cone->height - FLT_EPSILON)
 	{
-		if(object->texture)
+		if (object->texture)
 			return (cone_map(object->texture, longitude, h / cone->height));
 		if (!((long)floor(h) % 2) ^ !((long)floor(longitude * MC_8_PI) % 2))
 			return (*object->color_bis);
 		return (cone->ratio_color);
 	}
 	if (object->color_bis && !((long)floor(sqrt(distance_square(vector, \
-		scalar_multi(h, cone->direction)))) % 2) ^ !((long) floor(longitude * MC_8_PI) % 2))
+		scalar_multi(h, cone->direction)))) % 2) \
+		^ !((long) floor(longitude * MC_8_PI) % 2))
 		return (*object->color_bis);
 	return (cone->ratio_color);
 }
@@ -78,8 +78,7 @@ t_point	normal_cone(t_point ray, t_point hit_point, \
 	t_cone	*cone;
 	t_point	normal;
 	t_point	chp;
-	t_point		perturbation;
-	t_color		color;
+	t_color	color;
 	t_point	y;
 	double	t;
 
@@ -92,9 +91,7 @@ t_point	normal_cone(t_point ray, t_point hit_point, \
 	if (texture)
 	{
 		color = get_uv_color(cone, texture, hit_point);
-		perturbation = (t_point){color.r - 0.5, color.g - 0.5, color.b - 0.5};
-		perturbation = scalar_multi(0.9, perturbation);
-		normal = unit_vector(add_vectors(perturbation, normal));
+		normal = bump_normal(normal, color);
 	}
 	if (dot_product(unit_dist(hit_point, cone->center_base), \
 		cone->direction) >= -0.01)

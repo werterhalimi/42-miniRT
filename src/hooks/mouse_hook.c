@@ -34,7 +34,7 @@ static void	info_click(int x, int y, t_scene *scene)
 	mlx_mouse_get_pos(scene->window, &x, &y);
 	if (x < 0 || y < 0)
 		return ;
-	color = get_pixel_color(scene, x, y);
+	color = get_pixel_color(scene->main_img, x, y);
 	printf("Click at ( %d, %d )\n", x, y);
 	printf("Color : R = %u, G = %u, B = %u\n", color_get_r(color), \
 		color_get_g(color), color_get_b(color));

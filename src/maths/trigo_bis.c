@@ -1,28 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.h                                            :+:      :+:    :+:   */
+/*   trigo_bis.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ncotte <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/15 18:07:53 by ncotte            #+#    #+#             */
-/*   Updated: 2022/10/17 14:18:40 by ncotte           ###   ########.fr       */
+/*   Created: 2023/02/24 16:59:20 by ncotte            #+#    #+#             */
+/*   Updated: 2023/02/24 16:59:22 by ncotte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef UTILS_H
-# define UTILS_H
+#include "miniRT.h"
 
-# include "libft.h"
+double	cos_rot_1(void)
+{
+	static double	result;
 
-# define HEXADECIMAL_FORMAT "0123456789abcdef"
+	if (!result)
+		result = 1.0 - cos_rot();
+	return (result);
+}
 
-/// @brief Create a sting containing an unsigned int u
-/// @return its addr, NULL if error
-char	*ft_uitoa(unsigned int u);
+double	n_sin_rot(void)
+{
+	static double	result;
 
-/// @brief Create a sting containing an unsigned int u in hexadecimal
-/// @return its addr, NULL if error
-char	*ft_hextoa(unsigned int u);
-
-#endif
+	if (!result)
+		result = sin_rot() * -1.0;
+	return (result);
+}

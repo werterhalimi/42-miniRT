@@ -26,7 +26,7 @@ static void	*split_free(char **result, int size, int *tab)
 }
 
 /// @brief Create an array containing the lengths of sub-string in str between c
-/// @return its address, NULL if error
+/// @return its addr, NULL if error
 static int	*ft_parsing(char const *str, char c, int *size)
 {
 	int	*tab;

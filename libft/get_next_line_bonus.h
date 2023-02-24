@@ -50,7 +50,7 @@ int		gnl_strchr(const char *s, int c);
 /// \brief Concatenate s2 after s1 in a new string
 /// \param s1 the first string
 /// \param s2 the second string
-/// \return the address of the new string, NULL if error
+/// \return the addr of the new string, NULL if error
 char	*gnl_strjoin(char const *s1, char const *s2);
 
 /// \brief Read and return a line (that end with \n, except the last) from fd

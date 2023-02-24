@@ -63,13 +63,15 @@ t_color	get_color_cylinder(t_scene *scene, t_object *object, \
 		&& h < cylinder->semi_height - FLT_EPSILON)
 	{
 		if (object->texture)
-			return cylinder_map(object->texture, longitude, h / cylinder->semi_height);
+			return (cylinder_map(object->texture, longitude, \
+				h / cylinder->semi_height));
 		if (!((long)floor(h) % 2) ^ !((long)floor(longitude * MC_8_PI) % 2))
 			return (*object->color_bis);
 		return (cylinder->ratio_color);
 	}
 	if (object->color_bis && !((long)floor(sqrt(distance_square(vector, \
-		scalar_multi(h, cylinder->direction)))) % 2) ^ !((long)floor(longitude * MC_8_PI) % 2))
+		scalar_multi(h, cylinder->direction)))) % 2) \
+		^ !((long)floor(longitude * MC_8_PI) % 2))
 		return (*object->color_bis);
 	return (cylinder->ratio_color);
 }
@@ -80,7 +82,6 @@ t_point	normal_cylinder(t_point ray, t_point hit_point, \
 	t_cylinder	*cylinder;
 	t_point		normal;
 	t_point		projection;
-	t_point		perturbation;
 	t_color		color;
 
 	(void) texture;
@@ -99,11 +100,8 @@ t_point	normal_cylinder(t_point ray, t_point hit_point, \
 	if (texture)
 	{
 		color = get_uv_color(cylinder, texture, hit_point);
-		perturbation = (t_point){color.r - 0.5, color.g - 0.5, color.b - 0.5};
-		perturbation = scalar_multi(0.9, perturbation);
-		normal = unit_vector(add_vectors(perturbation, normal));
+		normal = bump_normal(normal, color);
 	}
-
 	if (dot_product(normal, ray) > 0.0)
 		normal = scalar_multi(-1.0, normal);
 	return (normal);

@@ -14,8 +14,13 @@
 
 int	key_release(int key_code, t_scene *scene)
 {
-	if (key_code != KEY_PAGE_UP && key_code != KEY_PAGE_DOWN \
-		&& key_code != KEY_TAB && key_code != KEY_ESC)
+	if (key_code == NUMPAD_ENTER && scene->axis)
+		print_graduation(scene);
+	else if (key_code == NUMPAD_ENTER)
+		mlx_put_image_to_window(scene->mlx, scene->window, \
+			scene->main_img->ptr, 0, 0);
+	else if (is_key_rotation(key_code) || is_key_translation(key_code) \
+		|| key_code == KEY_SPACE)
 		print_window(scene, 1, scene->reflexions);
 	return (0);
 }

@@ -39,8 +39,6 @@ static t_color	get_uv_color(t_plane *plane, t_texture *tex, \
 	return (tex->pixels[(int)(tu * tex->height)][(int)(tv * tex->width)]);
 }
 
-
-
 t_color	get_color_plane(t_scene *scene, t_object *object, \
 			t_point hit_point, t_point normal)
 {
@@ -58,7 +56,7 @@ t_color	get_color_plane(t_scene *scene, t_object *object, \
 	x = (dot_product(vector, plane->right));
 	y = (dot_product(vector, plane->down));
 	if (object->texture)
-		return plane_map(object->texture, x, y);
+		return (plane_map(object->texture, x, y));
 	if (!((long)floor(x) % 2) ^ !((long)floor(y) % 2))
 		return (*object->color_bis);
 	return (plane->ratio_color);
@@ -68,21 +66,16 @@ t_point	normal_plane(t_point ray, t_point hit_point, \
 			void *object, t_texture *texture)
 {
 	t_plane	*plane;
-	t_point		perturbation;
-	t_color		color;
-	t_point		normal;
+	t_color	color;
+	t_point	normal;
 
 	plane = (t_plane *)object;
 	normal = plane->normal;
 	if (texture)
 	{
 		color = get_uv_color(plane, texture, hit_point);
-		perturbation = (t_point){color.r - 0.5, color.g - 0.5, color.b - 0.5};
-		perturbation = scalar_multi(0.9, perturbation);
-		normal = unit_vector(add_vectors(perturbation, normal));
+		normal = bump_normal(normal, color);
 	}
-
-
 	if (dot_product(normal, ray) <= 0.0)
 		return (normal);
 	return (scalar_multi(-1.0, normal));
