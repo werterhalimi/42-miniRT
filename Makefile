@@ -13,7 +13,7 @@
 SRCS_FILES		:=	utils/error.c			utils/quit.c			utils/info.c \
 					maths/point.c			maths/vector.c			maths/quad_solv.c \
 					maths/matrix.c			maths/quake.c			maths/str_to_double.c \
-					maths/trigo.c \
+					maths/trigo.c			maths/trigo_bis.c \
 					objects/camera.c		objects/light.c			objects/amb_light.c \
 					objects/plane.c			objects/sphere.c		objects/cylinder.c \
 					objects/cone.c			objects/spot_light.c	objects/update_scene.c \
@@ -21,10 +21,11 @@ SRCS_FILES		:=	utils/error.c			utils/quit.c			utils/info.c \
 					intersect/intersect_sphere.c		intersect/intersect_cylinder.c \
 					intersect/intersect_cone.c			intersect/intersect_spot_light.c \
 					intersect/find_intersect.c \
-					print/color_trgb.c		print/put_pixel.c		print/phong.c \
-					print/get_color.c		print/print_plane.c		print/print_cylinder.c \
+					print/color_trgb.c		print/put_pixel.c		print/print_graduation.c \
+					print/get_color.c		print/phong.c			print/bump_normal.c \
 					print/print_light.c		print/print_sphere.c	print/print_spot_light.c \
-					print/print_cone.c		print/print_window.c \
+					print/print_plane.c		print/print_cone.c		print/print_cylinder.c \
+					print/pixel_color.c		print/print_window.c \
 					rotations/rotation.c				rotations/rotation_camera.c \
 					rotations/rotation_plane.c			rotations/rotation_cylinder.c \
 					rotations/rotation_cone.c			rotations/rotation_spot_light.c \
@@ -40,7 +41,8 @@ SRCS_FILES		:=	utils/error.c			utils/quit.c			utils/info.c \
 					start/parse_bonus.c		start/parse_camera.c	start/parse_amb_light.c \
 					start/parse_plane.c		start/parse_light.c		start/parse_spot_light.c \
 					start/parse_sphere.c	start/parse_cone.c		start/parse_cylinder.c \
-					start/parse_header.c	start/read_file.c		start/init.c \
+					start/parse_header.c	start/read_file.c		start/parsing.c \
+					start/init.c \
 					main.c
 
 SRCS_DIR		:=	./src/

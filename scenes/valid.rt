@@ -16,10 +16,10 @@
 
 # Optional objects  |                  |             |                 |                 |               |
 # Plane             |                  |             |                 |                 |               |
-  pl                  0.0,0.0,-1.0       0.0,0.0,1.0                                       255,0,225
+  pl                  0.0,0.0,-1.0       0.0,0.0,1.0                                       255,0,225       texture=textures/brick.ppm
 # Sphere            |                  |             | Diameter as     |                 |               |
 #                   |                  |             | positive double |                 |               |
-#  sp                  1.0,1.0,0.0                      0.5                                 255,0,0        specular=30 checkerboard=255,255,255 texture=earth2.ppm normal_map=map_terre.ppm
+  sp                  1.0,1.0,0.0                      0.5                                 255,0,0        specular=30 checkerboard=255,255,255 texture=textures/earth2.ppm normal_map=textures/map_terre.ppm
   sp                  1.0,1.0,3.0                      0.5                                 255,0,0        specular=30 checkerboard=255,255,255 texture=textures/earth2.ppm
 # Cylinder          |                  |             | Diameter as     | Height as       |               |
 #                   |                  |             | positive double | positive double |               |

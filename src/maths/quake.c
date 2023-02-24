@@ -32,3 +32,13 @@ t_point	unit_vector(t_point vector)
 {
 	return (scalar_multi(inv_sqrt(norm_square(vector)), vector));
 }
+
+t_point	unit_dist(t_point a, t_point b)
+{
+	return (unit_vector(sub_vectors(a, b)));
+}
+
+t_point	reflection(t_point ray, t_point axis)
+{
+	return (unit_dist(ray, scalar_multi(2.0 * dot_product(ray, axis), axis)));
+}

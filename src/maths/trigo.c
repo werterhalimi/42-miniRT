@@ -53,26 +53,3 @@ double	sin_rot(void)
 }
 
 #endif
-
-double	cos_rot_1(void)
-{
-	static double	result;
-
-	if (!result)
-		result = 1.0 - cos_rot();
-	return (result);
-}
-
-double	n_sin_rot(void)
-{
-	static double	result;
-
-	if (!result)
-		result = sin_rot() * -1.0;
-	return (result);
-}
-
-double	vector_angle(t_point a, t_point b)
-{
-	return (acos(dot_product(a, b)));
-}

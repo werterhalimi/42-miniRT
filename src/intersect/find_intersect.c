@@ -12,32 +12,26 @@
 
 #include "miniRT.h"
 
-t_object	*find_intersect(t_scene *scene, t_point ray, \
-				double *intersect, int *index)
+int	find_intersect(t_scene *scene, t_phong *phong)
 {
-	t_object	*object;
-	double		first_intersect;
-	double		tmp;
-	int			i;
+	double	tmp;
+	int		object_index;
+	int		i;
 
 	i = -1;
-	if (index)
-		*index = 0;
-	object = NULL;
-	first_intersect = INFINITY;
+	object_index = 0;
+	phong->object = NULL;
+	phong->view_ray_dist = INFINITY;
 	while (scene->objects[++i])
 	{
-		tmp = scene->objects[i]->intersect(ray, \
-			scene->objects[i]->object, NULL);
-		if (!isinf(tmp) && tmp < first_intersect)
+		tmp = scene->objects[i]->intersect(phong->view_ray, \
+			scene->objects[i]->object, phong->origin);
+		if (!isinf(tmp) && tmp < phong->view_ray_dist)
 		{
-			object = scene->objects[i];
-			first_intersect = tmp;
-			if (index)
-				*index = i + 1;
+			phong->object = scene->objects[i];
+			phong->view_ray_dist = tmp;
+			object_index = i + 1;
 		}
 	}
-	if (intersect)
-		*intersect = first_intersect;
-	return (object);
+	return (object_index);
 }

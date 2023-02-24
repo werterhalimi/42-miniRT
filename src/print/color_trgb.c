@@ -12,6 +12,16 @@
 
 #include "miniRT.h"
 
+t_color	new_color(double r, double g, double b)
+{
+	t_color	color;
+
+	color.r = r;
+	color.g = g;
+	color.b = b;
+	return (color);
+}
+
 unsigned int	create_trgb(unsigned char t, unsigned char r, \
 		unsigned char g, unsigned char b)
 {

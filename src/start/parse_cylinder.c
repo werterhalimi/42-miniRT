@@ -29,7 +29,7 @@ static int	sub_parse_cylinder(t_cylinder *cy, t_list *current, t_object *obj)
 	if (parse_length(&(cy->semi_height), item, "Height", YES))
 		return (ERROR);
 	item = next_item(item);
-	if (parse_color(&(cy->color), item))
+	if (parse_color(&(cy->real_color), item))
 		return (ERROR);
 	item = next_item(item);
 	if (item)
@@ -49,6 +49,8 @@ int	parse_cylinder(t_scene *scene, t_list *current, t_object *object)
 	if (sub_parse_cylinder(cylinder, current, object))
 		return (ERROR);
 	cylinder->down = orthogonal_base(cylinder->direction, &cylinder->right);
+	cylinder->ratio_color = update_color(cylinder->real_color, \
+		1.0 - object->reflectance);
 	object->object = cylinder;
 	object->get_color = &get_color_cylinder;
 	object->get_normal = &normal_cylinder;

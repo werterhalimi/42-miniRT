@@ -12,110 +12,67 @@
 
 #include "miniRT.h"
 
-static int	is_shadow(t_scene *scene, t_phong phong)
+static void	write_progress(t_scene *scene, int offset, int u)
 {
-	double	tmp;
-	int		i;
+	static int	progress;
+	static char	block[3];
 
-	i = 0;
-	if (phong.dot_light_normal <= 0.0)
-		return (YES);
-	while (scene->objects[++i])
+	if (!progress)
 	{
-		tmp = scene->objects[i]->intersect(phong.light_ray, \
-			scene->objects[i]->object, &phong.hit_point);
-		if (!isinf(tmp) && tmp * tmp <= phong.light_ray_dist_2 - FLT_EPSILON \
-			&& tmp > 0.0 && scene->objects[i] != phong.object)
-			return (YES);
+		progress = scene->main_img->width / 19;
+		block[0] = (char)0xE2;
+		block[1] = (char)0x96;
+		block[2] = (char)0x88;
 	}
-	return (NO);
+	if (offset == 1 && !(u % progress))
+		write(STDOUT_FILENO, block, 3);
 }
 
-static t_phong	set_phong(t_phong phong, t_point coord, t_color color)
+static void	print_image(t_scene *scene, int offset, unsigned int reflexions)
 {
-	t_point	light_ray;
-
-	phong.light_coord = coord;
-	phong.light_color = color;
-	light_ray = sub_vectors(phong.light_coord, phong.hit_point);
-	phong.light_ray_dist_2 = norm_square(light_ray);
-	phong.light_ray = unit_vector(light_ray);
-	phong.dot_light_normal = dot_product(phong.light_ray, phong.normal);
-	return (phong);
-}
-
-static void	print_object(t_phong *phong)
-{
-	if (phong->object->type <= TYPE_SPOT_LIGHT \
-		|| phong->dot_light_normal <= 0.0)
-		return ;
-	phong_diffuse(phong, phong->dot_light_normal);
-	phong_specular(phong, dot_product(phong->normal, \
-		unit_vector(add_vectors(scalar_multi(-1.0, \
-		phong->camera_ray), phong->light_ray))));
-}
-
-static unsigned int	find_color_pixel(t_scene *scene, \
-						t_point pixel, unsigned int reflexions)
-{
-	t_phong			phong;
-	t_list			*lst;
-	t_spot_light	*sp;
-
-	(void) reflexions;
-	phong.camera_ray = unit_dist(pixel, scene->camera->coord);
-	phong.object = find_intersect(scene, phong.camera_ray, \
-		&phong.camera_ray_dist, NULL);
-	if (!phong.object)
-		return (0);
-	phong.hit_point = add_vectors(scene->camera->coord, \
-		scalar_multi(phong.camera_ray_dist, phong.camera_ray));
-	phong.normal = phong.object->get_normal(phong.camera_ray, \
-		phong.hit_point, phong.object->object, phong.object->normal_map);
-	phong.object_color = phong.object->get_color(scene, phong.object, \
-		phong.hit_point, phong.normal);
-	phong_ambient(&phong, scene->amb_light);
-	lst = scene->spot_lights;
-	while (lst)
-	{
-		sp = (t_spot_light *)lst->content;
-		phong = set_phong(phong, sp->coord, sp->ratio_color);
-		if (!is_shadow(scene, phong) \
-			&& dot_product(phong.light_ray, sp->direction) <= sp->cos_angle)
-			print_object(&phong);
-		lst = lst->next;
-	}
-	phong = set_phong(phong, scene->light->coord, scene->light->ratio_color);
-	if (!is_shadow(scene, phong))
-		print_object(&phong);
-	return (color_trgb(phong.final_color));
-}
-
-void	print_window(t_scene *scene, int offset, unsigned int reflexions)
-{
-	int				x;
-	int				y;
+	int				u;
+	int				v;
 	t_point			tmp;
 	t_point			pixel;
 	unsigned int	color;
 
-	x = -1;
+	u = -1;
 	tmp = scene->window_corner;
-	while (++x < scene->width)
+	while (++u < scene->main_img->width)
 	{
-		y = -1;
+		v = -1;
 		pixel = tmp;
-		while (++y < scene->height)
+		write_progress(scene, offset, u);
+		while (++v < scene->main_img->height)
 		{
-			if (!(x % offset) && !(y % offset))
-				color = find_color_pixel(scene, pixel, reflexions);
-			else if (x % offset && !(y % offset))
-				color = get_pixel_color(scene, x - x % offset, y);
-			put_pixel(scene, x, y, color);
+			if (!(u % offset) && !(v % offset))
+				color = pixel_color(scene, pixel, reflexions);
+			else if (u % offset && !(v % offset))
+				color = get_pixel_color(scene->main_img, u - u % offset, v);
+			put_pixel(scene->main_img, u, v, color);
 			pixel = add_vectors(pixel, scene->camera->shift_y);
 		}
-		color = get_pixel_color(scene, x, 0);
+		color = get_pixel_color(scene->main_img, u, 0);
 		tmp = add_vectors(tmp, scene->camera->shift_x);
 	}
-	mlx_put_image_to_window(scene->mlx, scene->window, scene->image, 0, 0);
+}
+
+void	print_window(t_scene *scene, int offset, unsigned int reflexions)
+{
+	if (offset == 1)
+	{
+		printf("Rendering :         |\n");
+		write(STDOUT_FILENO, GREEN, ft_strlen(GREEN));
+	}
+	print_image(scene, offset, reflexions);
+	write_progress(scene, offset, scene->main_img->width);
+	if (offset == 1)
+	{
+		write(STDOUT_FILENO, RESET_COLOR, ft_strlen(RESET_COLOR));
+		write(STDOUT_FILENO, "\n", 1);
+	}
+	mlx_put_image_to_window(scene->mlx, scene->window, \
+		scene->main_img->ptr, 0, 0);
+	if (scene->axis)
+		print_graduation(scene);
 }

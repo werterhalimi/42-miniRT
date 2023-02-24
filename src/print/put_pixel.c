@@ -12,10 +12,10 @@
 
 #include "miniRT.h"
 
-void	put_pixel(t_scene *scene, int x, int y, unsigned int color)
+void	put_pixel(t_image *image, int x, int y, unsigned int color)
 {
 	char	*dst;
 
-	dst = scene->address + (y * scene->line_len + x * (scene->bpp / 8));
+	dst = image->addr + (y * image->line_len + x * (image->bpp / 8));
 	*(unsigned int *)dst = color;
 }

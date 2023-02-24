@@ -23,7 +23,7 @@ static int	sub_parse_sphere(t_sphere *sphere, t_list *current, t_object *obj)
 	if (parse_length(&(sphere->radius), item, "Diameter", YES))
 		return (ERROR);
 	item = next_item(item);
-	if (parse_color(&(sphere->color), item))
+	if (parse_color(&(sphere->real_color), item))
 		return (ERROR);
 	item = next_item(item);
 	if (item)
@@ -44,7 +44,8 @@ int	parse_sphere(t_scene *scene, t_list *current, t_object *object)
 		return (ERROR);
 	sphere->front = new_point(0.0, 0.0, 1.0);
 	sphere->down = orthogonal_base(sphere->front, &sphere->right);
-	printf("%p\n", object->texture);
+	sphere->ratio_color = update_color(sphere->real_color, \
+		1.0 - object->reflectance);
 	object->object = sphere;
 	object->get_color = &get_color_sphere;
 	object->get_normal = &normal_sphere;

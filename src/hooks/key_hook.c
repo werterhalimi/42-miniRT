@@ -45,6 +45,8 @@ int	key_hook(int key_code, t_scene *scene)
 		quit(scene);
 	else if (key_code == KEY_SPACE)
 		write_info(scene);
+	else if (key_code == NUMPAD_ENTER)
+		scene->axis = !scene->axis;
 	else if (is_key_translation(key_code))
 		translation(key_code, scene);
 	else if (is_key_rotation(key_code))

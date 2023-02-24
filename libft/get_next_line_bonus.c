@@ -14,7 +14,7 @@
 
 /// \brief Search for the start of the buffer (ignore the first \0)
 /// \param buffer the char* buffer
-/// \return the address of the first non-zero char in the buffer,
+/// \return the addr of the first non-zero char in the buffer,
 /// \n the start of the buffer if all char are zeros.
 static char	*start_buffer(char *buffer)
 {

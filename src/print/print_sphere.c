@@ -55,7 +55,7 @@ t_color	get_color_sphere(t_scene *scene, t_object *object, \
 	(void) normal;
 	sphere = (t_sphere *)object->object;
 	if (!object->color_bis && !object->texture)
-		return (sphere->color);
+		return (sphere->ratio_color);
 	vector = sub_vectors(hit_point, sphere->coord);
 	longitude = (atan(dot_product(vector, sphere->down) \
 		/ dot_product(vector, sphere->right)));
@@ -68,7 +68,7 @@ t_color	get_color_sphere(t_scene *scene, t_object *object, \
 	if (!((long)floor(longitude * MC_8_PI) % 2) \
 		^ !((long)floor(latitude * MC_8_PI) % 2))
 		return (*object->color_bis);
-	return (sphere->color);
+	return (sphere->ratio_color);
 }
 
 t_point	normal_sphere(t_point ray, t_point hit_point, \
@@ -77,16 +77,13 @@ t_point	normal_sphere(t_point ray, t_point hit_point, \
 	t_sphere	*sphere;
 	t_point		normal;
 	t_color		color;
-	t_point		perturbation;
 
 	sphere = (t_sphere *)object;
 	normal = unit_dist(hit_point, sphere->coord);
 	if (texture)
 	{
 		color = get_uv_color(sphere, texture, hit_point);
-		perturbation = (t_point){color.r - 0.5, color.g - 0.5, color.b - 0.5};
-		perturbation = scalar_multi(0.9, perturbation);
-		normal = unit_vector(add_vectors(perturbation, normal));
+		normal = bump_normal(normal, color);
 	}
 	if (dot_product(normal, ray) <= 0.0)
 		return (normal);

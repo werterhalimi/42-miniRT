@@ -30,11 +30,11 @@ typedef struct s_str
 void	str_lstdelone(t_str *elem);
 
 /// @brief Create a new element of t_str
-/// @return its address, NULL if error
+/// @return its addr, NULL if error
 t_str	*str_lstnew(char *str, int len);
 
 /// @brief Find the last element of lst
-/// @return its address, NULL if error
+/// @return its addr, NULL if error
 t_str	*str_lstlast(t_str *lst);
 
 /// @brief Add new at the end of *lst

@@ -107,7 +107,7 @@
 # define NB_NON_OBJECTS_ITEMS	3
 # define NB_OBJECTS				6
 # define NB_ITEMS				9
-# define NB_BONUS				4
+# define NB_BONUS				5
 # define NB_HEADER_INFO			3
 
 /* Translation, rotation & other factors */
@@ -213,7 +213,8 @@ typedef struct s_sphere
 	t_point	front;
 	t_point	right;
 	t_point	down;
-	t_color	color;
+	t_color	real_color;
+	t_color	ratio_color;
 	double	radius;
 	double	radius_2;
 	double	value;
@@ -225,7 +226,8 @@ typedef struct s_plane
 	t_point	normal;
 	t_point	right;
 	t_point	down;
-	t_color	color;
+	t_color	real_color;
+	t_color	ratio_color;
 	double	value;
 }	t_plane;
 
@@ -241,7 +243,8 @@ typedef struct s_cylinder
 	t_point	relative_center_down;
 	t_point	right;
 	t_point	down;
-	t_color	color;
+	t_color	real_color;
+	t_color	ratio_color;
 	double	radius;
 	double	radius_2;
 	double	semi_height;
@@ -263,7 +266,8 @@ typedef struct s_cone
 	t_point	relative_center_base;
 	t_point	right;
 	t_point	down;
-	t_color	color;
+	t_color	real_color;
+	t_color	ratio_color;
 	double	radius;
 	double	radius_2;
 	double	height;
@@ -277,38 +281,39 @@ typedef struct s_cone
 
 typedef struct s_texture
 {
-	int			value;
-	int			height;
-	int			width;
-	t_color		**pixels;
+	int		value;
+	int		height;
+	int		width;
+	t_color	**pixels;
 }	t_texture;
 
 typedef struct s_object
 {
-	struct s_color		(*get_color)(struct s_scene *, struct s_object *, \
-							t_point, t_point);
-	struct s_point		(*get_normal)(t_point, t_point, void *, t_texture *);
-	double				(*intersect)(t_point, void *, t_point *);
-	void				(*update)(struct s_scene *, void *, unsigned int);
-	void				(*translation_relative)(int, struct s_scene *);
-	void				(*rotation_relative)(int, struct s_scene *);
-	void				(*translation_absolute)(struct s_scene *, t_point);
-	void				(*rotation_absolute)(struct s_scene *, t_matrix);
-	void				(*numpad_plus_minus)(int, struct s_scene *);
-	void				(*scroll)(int, struct s_scene *);
-	void				*object;
-	t_texture			*texture;
-	t_texture			*normal_map;
-	t_color				*color_bis;
-	int					type;
-	int					specular;
+	struct s_color	(*get_color)(struct s_scene *, struct s_object *, \
+						t_point, t_point);
+	struct s_point	(*get_normal)(t_point, t_point, void *, t_texture *);
+	double			(*intersect)(t_point, void *, t_point *);
+	void			(*update)(struct s_scene *, void *, unsigned int);
+	void			(*translation_relative)(int, struct s_scene *);
+	void			(*rotation_relative)(int, struct s_scene *);
+	void			(*translation_absolute)(struct s_scene *, t_point);
+	void			(*rotation_absolute)(struct s_scene *, t_matrix);
+	void			(*numpad_plus_minus)(int, struct s_scene *);
+	void			(*scroll)(int, struct s_scene *);
+	void			*object;
+	t_texture		*texture;
+	t_texture		*normal_map;
+	t_color			*color_bis;
+	double			reflectance;
+	int				type;
+	int				specular;
 }	t_object;
 
 typedef struct s_phong
 {
 	t_point		light_coord;
 	t_point		normal;
-	t_point		camera_ray;
+	t_point		view_ray;
 	t_point		hit_point;
 	t_point		light_ray;
 	t_color		object_color;
@@ -316,10 +321,44 @@ typedef struct s_phong
 	t_color		final_color;
 	t_object	*object;
 	t_light		*light;
-	double		camera_ray_dist;
+	t_point		*origin;
+	double		view_ray_dist;
 	double		light_ray_dist_2;
 	double		dot_light_normal;
 }	t_phong;
+
+typedef struct s_image
+{
+	void	*ptr;
+	char	*addr;
+	int		bpp;
+	int		line_len;
+	int		endian;
+	int		width;
+	int		height;
+}	t_image;
+
+typedef struct s_axis
+{
+	t_point	vector;
+	double	delta_u;
+	double	delta_v;
+	double	slope;
+	double	origin;
+	int		proj_u;
+	int		proj_v;
+	int		epsilon;
+}	t_axis;
+
+typedef struct s_base
+{
+	t_matrix	matrix;
+	t_axis		x_axis;
+	t_axis		y_axis;
+	t_axis		z_axis;
+	int			half_width;
+	int			half_height;
+}	t_base;
 
 typedef struct s_scene
 {
@@ -329,19 +368,17 @@ typedef struct s_scene
 	t_light		*light;
 	t_list		*spot_lights;
 	t_object	**objects;
+	t_image		*main_img;
+	t_image		*axis_img;
 	void		*mlx;
 	void		*window;
-	void		*image;
-	char		*address;
-	int			bpp;
-	int			line_len;
-	int			endian;
 	int			width;
 	int			height;
 	int			index;
 	int			nb_objects;
 	int			mode;
 	int			reflexions;
+	int			axis;
 }	t_scene;
 
 /* utils */
@@ -360,6 +397,8 @@ void			write_info(t_scene *scene);
 
 /* maths */
 
+void			print_graduation(t_scene *scene);
+
 double			inv_sqrt(double d);
 
 double			quad_solv(double a, double b, double c, double *x);
@@ -374,8 +413,6 @@ double			sin_rot(void);
 
 double			n_sin_rot(void);
 
-//double		dist_op(t_point o, t_point p);
-
 t_point			new_point(double x, double y, double z);
 
 double			distance_square(t_point a, t_point b);
@@ -384,11 +421,7 @@ t_point			add_vectors(t_point v1, t_point v2);
 
 t_point			sub_vectors(t_point v1, t_point v2);
 
-//double		norm_vector(t_point normal);
-
 t_point			scalar_multi(double lambda, t_point vector);
-
-double			vector_angle(t_point a, t_point b);
 
 t_point			unit_dist(t_point a, t_point b);
 
@@ -471,17 +504,20 @@ double			intersect_cylinder(t_point ray, void *object, t_point *origin);
 
 double			intersect_cone(t_point ray, void *object, t_point *origin);
 
-t_object		*find_intersect(t_scene *scene, t_point ray, \
-					double *intersect, int *index);
+int				find_intersect(t_scene *scene, t_phong *phong);
 
 /* print */
+
+t_point			bump_normal(t_point normal, t_color color);
+
+t_color			new_color(double r, double g, double b);
 
 unsigned int	create_trgb(unsigned char t, unsigned char r, \
 					unsigned char g, unsigned char b);
 
 unsigned int	color_trgb(t_color color);
 
-unsigned int	get_pixel_color(t_scene *scene, int x, int y);
+unsigned int	get_pixel_color(t_image *image, int x, int y);
 
 unsigned char	color_get_t(unsigned int trgb);
 
@@ -521,13 +557,16 @@ t_color			get_color_cone(t_scene *scene, t_object *object, \
 t_point			normal_cone(t_point ray, t_point hit_point, \
 					void *object, t_texture *texture);
 
-void			put_pixel(t_scene *scene, int x, int y, unsigned int color);
+void			put_pixel(t_image *image, int x, int y, unsigned int color);
 
-void			phong_ambient(t_phong *phong, t_amb_light *amb_light);
+void			init_phong(t_scene *scene, t_phong *phong, t_point origin);
 
-void			phong_diffuse(t_phong *phong, double dot);
+void			set_phong(t_phong *phong, t_point coord, t_color color);
 
-void			phong_specular(t_phong *phong, double dot);
+void			phong_object(t_phong *phong);
+
+unsigned int	pixel_color(t_scene *scene, t_point pixel, \
+					unsigned int reflexions);
 
 void			print_window(t_scene *scene, int offset, \
 					unsigned int reflexions);
@@ -608,7 +647,7 @@ int				parse_color(t_color *color, char *item);
 
 int				parse_color_bonus(void *ptr, char *item);
 
-int				parse_ratio(double *ratio, char *item);
+int				parse_ratio(void *ptr, char *item);
 
 int				parse_length(double *length, char *item, char *name, char half);
 
@@ -651,6 +690,8 @@ int				parse_cylinder(t_scene *scene, t_list *current, \
 int				parse_cone(t_scene *scene, t_list *current, t_object *object);
 
 int				read_file(int argc, char **argv, t_list **objects);
+
+int				parsing(t_scene *scene, t_list **list);
 
 int				init(int argc, char **argv, t_scene **scene);
 

@@ -12,7 +12,7 @@
 
 #include "miniRT.h"
 
-static int	*init_static(t_scene *scene, char **header_names, \
+static int	*init_vars(t_scene *scene, char **header_names, \
 	int (*fct_header[])(void *, char *), void **item_ptr)
 {
 	int	*lengths;
@@ -38,18 +38,15 @@ static int	*init_static(t_scene *scene, char **header_names, \
 
 static int	header_item(t_scene *scene, char *item, int index, int *flags)
 {
-	static int	(*fct_header[NB_HEADER_INFO])(void *, char *);
-	static char	*header_names[NB_HEADER_INFO];
-	static void	*item_ptr[NB_BONUS];
-	static int	*lengths;
+	int		(*fct_header[NB_HEADER_INFO])(void *, char *);
+	char	*header_names[NB_HEADER_INFO];
+	void	*item_ptr[NB_BONUS];
+	int		*lengths;
 
-	if (!(*fct_header))
-	{
-		lengths = init_static(scene, header_names, fct_header, item_ptr);
-		if (!lengths)
-			return (print_error(ERROR_NEG, \
-				"Internal allocation failed"));
-	}
+	lengths = init_vars(scene, header_names, fct_header, item_ptr);
+	if (!lengths)
+		return (print_error(ERROR_NEG, \
+			"Internal allocation failed"));
 	if (ft_strncmp(item, header_names[index], lengths[index]))
 		return (NO);
 	if (item[lengths[index]] != '=')
