@@ -6,7 +6,7 @@
 /*   By: ncotte <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 14:36:28 by ncotte            #+#    #+#             */
-/*   Updated: 2023/02/23 18:57:48 by shalimi          ###   ########.fr       */
+/*   Updated: 2023/02/25 17:47:32 by shalimi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,17 @@ static t_color	get_uv_color(t_cylinder *cy, t_texture *tex, \
 	return (tex->pixels[(int)(tu * tex->height)][(int)(tv * tex->width)]);
 }
 
+static t_color	find_color(t_object *object, double longitude, \
+		double h, t_cylinder *cylinder)
+{
+	if (object->texture)
+		return (cylinder_map(object->texture, longitude, \
+			h / cylinder->semi_height));
+	if (!((long)floor(h) % 2) ^ !((long)floor(longitude * MC_8_PI) % 2))
+		return (*object->color_bis);
+	return (cylinder->ratio_color);
+}
+
 t_color	get_color_cylinder(t_scene *scene, t_object *object, \
 			t_point hit_point, t_point normal)
 {
@@ -61,14 +72,7 @@ t_color	get_color_cylinder(t_scene *scene, t_object *object, \
 	h = dot_product(vector, cylinder->direction);
 	if (-(cylinder->semi_height - FLT_EPSILON) < h \
 		&& h < cylinder->semi_height - FLT_EPSILON)
-	{
-		if (object->texture)
-			return (cylinder_map(object->texture, longitude, \
-				h / cylinder->semi_height));
-		if (!((long)floor(h) % 2) ^ !((long)floor(longitude * MC_8_PI) % 2))
-			return (*object->color_bis);
-		return (cylinder->ratio_color);
-	}
+		find_color(object, longitude, h, cylinder);
 	if (object->color_bis && !((long)floor(sqrt(distance_square(vector, \
 		scalar_multi(h, cylinder->direction)))) % 2) \
 		^ !((long)floor(longitude * MC_8_PI) % 2))
@@ -82,7 +86,6 @@ t_point	normal_cylinder(t_point ray, t_point hit_point, \
 	t_cylinder	*cylinder;
 	t_point		normal;
 	t_point		projection;
-	t_color		color;
 
 	(void) texture;
 	cylinder = (t_cylinder *)object;
@@ -98,10 +101,8 @@ t_point	normal_cylinder(t_point ray, t_point hit_point, \
 	normal = unit_dist(hit_point, \
 		add_vectors(projection, cylinder->coord));
 	if (texture)
-	{
-		color = get_uv_color(cylinder, texture, hit_point);
-		normal = bump_normal(normal, color);
-	}
+		normal = bump_normal(normal, get_uv_color(cylinder, \
+					texture, hit_point));
 	if (dot_product(normal, ray) > 0.0)
 		normal = scalar_multi(-1.0, normal);
 	return (normal);

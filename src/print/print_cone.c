@@ -6,7 +6,7 @@
 /*   By: ncotte <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 17:04:57 by ncotte            #+#    #+#             */
-/*   Updated: 2023/02/23 18:57:54 by shalimi          ###   ########.fr       */
+/*   Updated: 2023/02/25 17:44:44 by shalimi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,16 @@ static t_color	get_uv_color(t_cone *cone, t_texture *tex, \
 	return (tex->pixels[(int)(tu * tex->height)][(int)(tv * tex->width)]);
 }
 
+static t_color	find_color(t_object *object, double longitude, \
+		double h, t_cone *cone)
+{
+	if (object->texture)
+		return (cone_map(object->texture, longitude, h / cone->height));
+	if (!((long)floor(h) % 2) ^ !((long)floor(longitude * MC_8_PI) % 2))
+		return (*object->color_bis);
+	return (cone->ratio_color);
+}
+
 t_color	get_color_cone(t_scene *scene, t_object *object, \
 			t_point hit_point, t_point normal)
 {
@@ -58,13 +68,7 @@ t_color	get_color_cone(t_scene *scene, t_object *object, \
 		/ dot_product(vector, cone->down)));
 	h = dot_product(vector, cone->direction);
 	if (h < cone->height - FLT_EPSILON)
-	{
-		if (object->texture)
-			return (cone_map(object->texture, longitude, h / cone->height));
-		if (!((long)floor(h) % 2) ^ !((long)floor(longitude * MC_8_PI) % 2))
-			return (*object->color_bis);
-		return (cone->ratio_color);
-	}
+		find_color(object, longitude, h, cone);
 	if (object->color_bis && !((long)floor(sqrt(distance_square(vector, \
 		scalar_multi(h, cone->direction)))) % 2) \
 		^ !((long) floor(longitude * MC_8_PI) % 2))
@@ -78,7 +82,6 @@ t_point	normal_cone(t_point ray, t_point hit_point, \
 	t_cone	*cone;
 	t_point	normal;
 	t_point	chp;
-	t_color	color;
 	t_point	y;
 	double	t;
 
@@ -90,8 +93,7 @@ t_point	normal_cone(t_point ray, t_point hit_point, \
 	normal = unit_dist(hit_point, y);
 	if (texture)
 	{
-		color = get_uv_color(cone, texture, hit_point);
-		normal = bump_normal(normal, color);
+		normal = bump_normal(normal, get_uv_color(cone, texture, hit_point));
 	}
 	if (dot_product(unit_dist(hit_point, cone->center_base), \
 		cone->direction) >= -0.01)
