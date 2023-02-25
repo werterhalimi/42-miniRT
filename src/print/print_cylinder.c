@@ -6,7 +6,7 @@
 /*   By: ncotte <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 14:36:28 by ncotte            #+#    #+#             */
-/*   Updated: 2023/02/25 17:47:32 by shalimi          ###   ########.fr       */
+/*   Updated: 2023/02/25 19:21:16 by shalimi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,14 +81,14 @@ t_color	get_color_cylinder(t_scene *scene, t_object *object, \
 }
 
 t_point	normal_cylinder(t_point ray, t_point hit_point, \
-			void *object, t_texture *texture)
+			t_object *object, t_texture *texture)
 {
 	t_cylinder	*cylinder;
 	t_point		normal;
 	t_point		projection;
 
 	(void) texture;
-	cylinder = (t_cylinder *)object;
+	cylinder = (t_cylinder *)object->object;
 	projection = get_projection_unit(sub_vectors(hit_point, \
 		cylinder->coord), cylinder->direction);
 	if (norm_square(projection) >= cylinder->semi_height_2 - FLT_EPSILON)
@@ -101,8 +101,8 @@ t_point	normal_cylinder(t_point ray, t_point hit_point, \
 	normal = unit_dist(hit_point, \
 		add_vectors(projection, cylinder->coord));
 	if (texture)
-		normal = bump_normal(normal, get_uv_color(cylinder, \
-					texture, hit_point));
+		normal = bump_normal(object->relief, normal, \
+				get_uv_color(cylinder, texture, hit_point));
 	if (dot_product(normal, ray) > 0.0)
 		normal = scalar_multi(-1.0, normal);
 	return (normal);

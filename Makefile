@@ -6,7 +6,7 @@
 #    By: ncotte <marvin@42lausanne.ch>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/12 11:39:15 by ncotte            #+#    #+#              #
-#    Updated: 2023/02/24 19:25:18 by shalimi          ###   ########.fr        #
+#    Updated: 2023/02/25 19:27:57 by shalimi          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,7 +44,7 @@ SRCS_FILES		:=	utils/error.c			utils/quit.c			utils/info.c \
 					start/parse_plane.c		start/parse_light.c		start/parse_spot_light.c \
 					start/parse_sphere.c	start/parse_cone.c		start/parse_cylinder.c \
 					start/parse_header.c	start/read_file.c		start/parsing.c \
-					start/init.c \
+					start/init.c            start/parse_relief.c \
 					main.c
 
 SRCS_DIR		:=	./src/

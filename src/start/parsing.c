@@ -6,7 +6,7 @@
 /*   By: ncotte <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/24 17:15:01 by ncotte            #+#    #+#             */
-/*   Updated: 2023/02/24 17:15:03 by ncotte           ###   ########.fr       */
+/*   Updated: 2023/02/25 19:27:24 by shalimi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ static int	parse_selector(t_scene *scene, t_list *current, char *obj_names[], \
 			while (scene->objects[j])
 				j++;
 			scene->objects[j] = ft_calloc(1, sizeof (t_object));
+			scene->objects[j]->relief = 0;
 			if (!scene->objects[j])
 				return (print_error(ERROR, "Object allocation failed"));
 			return (fct_array[i](scene, current, scene->objects[j]));

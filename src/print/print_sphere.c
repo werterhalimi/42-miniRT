@@ -6,7 +6,7 @@
 /*   By: ncotte <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 14:36:43 by ncotte            #+#    #+#             */
-/*   Updated: 2023/02/22 18:11:41 by shalimi          ###   ########.fr       */
+/*   Updated: 2023/02/25 19:22:00 by shalimi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,18 +72,18 @@ t_color	get_color_sphere(t_scene *scene, t_object *object, \
 }
 
 t_point	normal_sphere(t_point ray, t_point hit_point, \
-			void *object, t_texture *texture)
+			t_object *object, t_texture *texture)
 {
 	t_sphere	*sphere;
 	t_point		normal;
 	t_color		color;
 
-	sphere = (t_sphere *)object;
+	sphere = (t_sphere *)object->object;
 	normal = unit_dist(hit_point, sphere->coord);
 	if (texture)
 	{
 		color = get_uv_color(sphere, texture, hit_point);
-		normal = bump_normal(normal, color);
+		normal = bump_normal(object->relief, normal, color);
 	}
 	if (dot_product(normal, ray) <= 0.0)
 		return (normal);

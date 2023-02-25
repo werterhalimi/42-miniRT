@@ -6,7 +6,7 @@
 /*   By: ncotte <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 13:50:00 by ncotte            #+#    #+#             */
-/*   Updated: 2023/02/22 17:36:34 by shalimi          ###   ########.fr       */
+/*   Updated: 2023/02/25 19:51:08 by shalimi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ static int	*init_static(char **bonus_names, int (*fct_bonus[])(void *, char *))
 	fct_bonus[3] = &parse_normal_map;
 	bonus_names[4] = "reflectance";
 	fct_bonus[4] = &parse_ratio;
+	bonus_names[5] = "relief";
+	fct_bonus[5] = &parse_relief;
 	i = -1;
 	while (++i < NB_BONUS)
 		lengths[i] = (int)ft_strlen(bonus_names[i]);
@@ -43,6 +45,7 @@ static void	get_address(t_object *object, void *item_ptr[])
 	item_ptr[2] = &object->texture;
 	item_ptr[3] = &object->normal_map;
 	item_ptr[4] = &object->reflectance;
+	item_ptr[5] = &object->relief;
 }
 
 static int	item_bonus(t_object *object, char *item, int index, int *flags)

@@ -6,7 +6,7 @@
 /*   By: shalimi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 15:42:50 by shalimi           #+#    #+#             */
-/*   Updated: 2023/02/24 19:29:49 by shalimi          ###   ########.fr       */
+/*   Updated: 2023/02/25 19:32:06 by shalimi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	parse_normal_map(void *ptr, char *item)
 
 	if (!item)
 		return (print_error(ERROR, "A texture is missing"));
-	tmp = ft_strtrim(item, "\n \t");
+	tmp = remove_space(item);
 	fd = open(tmp, O_RDONLY);
 	ft_free(tmp);
 	if (fd < 0)

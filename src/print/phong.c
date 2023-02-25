@@ -6,7 +6,7 @@
 /*   By: shalimi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 22:18:57 by shalimi           #+#    #+#             */
-/*   Updated: 2023/02/17 21:17:42 by shalimi          ###   ########.fr       */
+/*   Updated: 2023/02/25 19:20:37 by shalimi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	init_phong(t_scene *scene, t_phong *phong, t_point origin)
 	phong->hit_point = add_vectors(origin, \
 		scalar_multi(phong->view_ray_dist, phong->view_ray));
 	phong->normal = phong->object->get_normal(phong->view_ray, \
-		phong->hit_point, phong->object->object, phong->object->normal_map);
+		phong->hit_point, phong->object, phong->object->normal_map);
 	phong->object_color = phong->object->get_color(scene, phong->object, \
 		phong->hit_point, phong->normal);
 	phong->final_color.r = fmin(amb_color.r \
