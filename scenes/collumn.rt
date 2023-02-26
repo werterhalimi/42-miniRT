@@ -1,0 +1,44 @@
+# valid.rt
+
+# Header (optional)   max width=2560     max height=1395
+  H                   width=1920         height=1080   
+# Object            | Coordinates      | Orientation | Info 1          | Info 2          | Color         | Bonus
+#                   | x,y,z as doubles | x,y,z in    |                 |                 | R,G,B in      |
+#                   |                  | [-1.0; 1.0] |                 |                 | {0; ...; 255} |
+# Mandatory objects |                  |             |                 |                 |               |
+# Ambient light     |                  |             | Ratio in        |                 |               |
+#                   |                  |             | [0.0; 1.0]      |                 |               |
+  A                                                    0.2                                 255,255,255
+# Camera            |                  |             | CAMERA_FOV in   |                 |               |
+#                   |                  |             | [0.0; 180.0]    |                 |               |
+  C                   -1.0,0.0,0.0       1.0,0.0,0.0   90.0
+# Main light        |                  |             | Ratio in        |                 |               |
+#                   |                  |             | [0.0; 1.0]      |                 |               |
+  L                   -5.0,0.0,5.0                     0.0                                 255,255,255
+
+# Optional objects  |                  |             |                 |                 |               |
+# Plane             |                  |             |                 |                 |               |
+  pl                  0.0,0.0,-0.3       0.0,0.0,1.0                                       100,100,100       specular=10 relief=1.1 texture=textures/wood.ppm bump_map=textures/wood_bump.ppm
+  pl                  0.0,0.0,0.3       0.0,0.0,1.0                                       100,100,100       specular=10 relief=1.1 texture=textures/wood.ppm bump_map=textures/wood_bump.ppm
+  pl                  2.0,0.0,-0.5       -1.0,0.0,0.0                                       0,0,225       specular=10 relief=30 texture=textures/brick2.ppm normal_map=textures/brick_map.ppm
+# Sphere            |                  |             | Diameter as     |                 |               |
+#                   |                  |             | positive double |                 |               |
+  sp                  1.0,1.0,-0.3                      0.3                                 255,255,255   
+  sp                  1.0,-1.0,-0.3                      0.3                                 255,255,255   
+  sp                  0.0,1.0,-0.3                      0.3                                 255,255,255         
+  sp                  0.0,-1.0,-0.3                      0.3                                 255,255,255       
+  sp                  1.0,1.0,0.3                      0.3                                 255,255,255         
+  sp                  1.0,-1.0,0.3                      0.3                                 255,255,255        
+  sp                  0.0,1.0,0.3                      0.3                                 255,255,255         
+  sp                  0.0,-1.0,0.3                      0.3                                 255,255,255        
+  sp                  1.0,0.0,0.0                      0.3                                 255,0,0         specular=40 relief=5 texture=textures/metal.ppm bump_map=textures/metal_bump.ppm
+# Cylinder          |                  |             | Diameter as     | Height as       |               |
+#                   |                  |             | positive double | positive double |               |
+  cy                  1.0,1.0,0.0        0.0,0.0,1.0   0.2               0.4               255,255,255       
+  cy                  1.0,-1.0,0.0        0.0,0.0,1.0   0.2               0.4               255,255,255        
+  cy                  0.0,1.0,0.0        0.0,0.0,1.0   0.2               0.4               255,255,255       
+  cy                  0.0,-1.0,0.0        0.0,0.0,1.0   0.2               0.4               255,255,255       
+
+
+  sl                  -2,-2.0,0.0       1.0,1.0,0     0.4               60                255,255,255
+  sl                  -2,2.0,0.0       1.0,-1.0,0     0.4               60                255,255,255
