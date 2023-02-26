@@ -6,7 +6,7 @@
 /*   By: ncotte <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/29 11:02:34 by ncotte            #+#    #+#             */
-/*   Updated: 2023/02/24 19:24:28 by shalimi          ###   ########.fr       */
+/*   Updated: 2023/02/25 19:52:01 by shalimi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@
 # define NB_NON_OBJECTS_ITEMS	3
 # define NB_OBJECTS				6
 # define NB_ITEMS				9
-# define NB_BONUS				5
+# define NB_BONUS				6
 # define NB_HEADER_INFO			3
 
 /* Translation, rotation & other factors */
@@ -291,7 +291,8 @@ typedef struct s_object
 {
 	struct s_color	(*get_color)(struct s_scene *, struct s_object *, \
 						t_point, t_point);
-	struct s_point	(*get_normal)(t_point, t_point, void *, t_texture *);
+	struct s_point	(*get_normal)(t_point, t_point, \
+			struct s_object *, t_texture *);
 	double			(*intersect)(t_point, void *, t_point *);
 	void			(*update)(struct s_scene *, void *, unsigned int);
 	void			(*translation_relative)(int, struct s_scene *);
@@ -305,6 +306,7 @@ typedef struct s_object
 	t_texture		*normal_map;
 	t_color			*color_bis;
 	double			reflectance;
+	double			relief;
 	int				type;
 	int				specular;
 }	t_object;
@@ -520,7 +522,7 @@ int				find_intersect(t_scene *scene, t_phong *phong);
 
 /* print */
 
-t_point			bump_normal(t_point normal, t_color color);
+t_point			bump_normal(double relief, t_point normal, t_color color);
 
 t_color			new_color(double r, double g, double b);
 
@@ -553,25 +555,25 @@ t_color			get_color_sphere(t_scene *scene, t_object *object, \
 					t_point hit_point, t_point normal);
 
 t_point			normal_sphere(t_point ray, t_point hit_point, \
-					void *object, t_texture *texture);
+					t_object *object, t_texture *texture);
 
 t_color			get_color_plane(t_scene *scene, t_object *object, \
 					t_point hit_point, t_point normal);
 
 t_point			normal_plane(t_point ray, t_point hit_point, \
-					void *object, t_texture *texture);
+					t_object *object, t_texture *texture);
 
 t_color			get_color_cylinder(t_scene *scene, t_object *object, \
 					t_point hit_point, t_point normal);
 
 t_point			normal_cylinder(t_point ray, t_point hit_point, \
-					void *object, t_texture *texture);
+					t_object *object, t_texture *texture);
 
 t_color			get_color_cone(t_scene *scene, t_object *object, \
 					t_point hit_point, t_point normal);
 
 t_point			normal_cone(t_point ray, t_point hit_point, \
-					void *object, t_texture *texture);
+					t_object *object, t_texture *texture);
 
 void			put_pixel(t_image *image, int x, int y, unsigned int color);
 
@@ -664,6 +666,7 @@ int				parse_color(t_color *color, char *item);
 int				parse_color_bonus(void *ptr, char *item);
 
 int				parse_ratio(void *ptr, char *item);
+int				parse_relief(void *ptr, char *item);
 
 int				parse_length(double *length, char *item, char *name, char half);
 
