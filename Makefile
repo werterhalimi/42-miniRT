@@ -27,9 +27,10 @@ SRCS_FILES		:=	utils/error.c			utils/quit.c			utils/info.c \
 					print/print_light.c		print/print_sphere.c	print/print_spot_light.c \
 					print/print_plane.c		print/print_cone.c		print/print_cylinder.c \
 					print/pixel_color.c		print/print_window.c \
-					rotations/rotation.c				rotations/rotation_camera.c \
+					rotations/rotation_sphere.c			rotations/rotation_camera.c \
 					rotations/rotation_plane.c			rotations/rotation_cylinder.c \
 					rotations/rotation_cone.c			rotations/rotation_spot_light.c \
+					rotations/rotation.c \
 					translations/translation.c			translations/translation_camera.c \
 					translations/translation_light.c	translations/translation_sphere.c \
 					translations/translation_plane.c	translations/translation_cylinder.c \

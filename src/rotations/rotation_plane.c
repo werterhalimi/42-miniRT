@@ -12,26 +12,43 @@
 
 #include "miniRT.h"
 
+static void	rotation_texture_plane(int key_code, \
+				t_scene *scene, t_object *object, t_plane *plane)
+{
+	if (!object->texture && !object->normal_map && !object->color_bis)
+		return ;
+	if (key_code == NUMPAD_7)
+		plane->right = matrix_vector_multi(matrix_rotation(plane->normal, \
+			n_sin_rot()), plane->right);
+	else
+		plane->right = matrix_vector_multi(matrix_rotation(plane->normal, \
+			sin_rot()), plane->right);
+	plane->down = cross_product(plane->normal, plane->right);
+	update_scene(scene, PLANE_ROTATION);
+}
+
 void	rotation_relative_plane(int key_code, t_scene *scene)
 {
-	t_plane	*pl;
+	t_object	*object;
+	t_plane		*plane;
 
-	pl = (t_plane *)scene->objects[scene->index - 1]->object;
+	object = scene->objects[scene->index - 1];
+	plane = (t_plane *)object->object;
 	if (key_code == NUMPAD_2)
-		pl->down = matrix_vector_multi(matrix_rotation(pl->right, \
-			sin_rot()), pl->down);
+		plane->down = matrix_vector_multi(matrix_rotation(plane->right, \
+			sin_rot()), plane->down);
 	else if (key_code == NUMPAD_8)
-		pl->down = matrix_vector_multi(matrix_rotation(pl->right, \
-			n_sin_rot()), pl->down);
+		plane->down = matrix_vector_multi(matrix_rotation(plane->right, \
+			n_sin_rot()), plane->down);
 	else if (key_code == NUMPAD_4)
-		pl->right = matrix_vector_multi(matrix_rotation(pl->down, \
-			n_sin_rot()), pl->right);
+		plane->right = matrix_vector_multi(matrix_rotation(plane->down, \
+			n_sin_rot()), plane->right);
 	else if (key_code == NUMPAD_6)
-		pl->right = matrix_vector_multi(matrix_rotation(pl->down, \
-			sin_rot()), pl->right);
+		plane->right = matrix_vector_multi(matrix_rotation(plane->down, \
+			sin_rot()), plane->right);
 	else
-		return ;
-	pl->normal = cross_product(pl->right, pl->down);
+		return (rotation_texture_plane(key_code, scene, object, plane));
+	plane->normal = cross_product(plane->right, plane->down);
 	update_scene(scene, PLANE_ROTATION);
 }
 

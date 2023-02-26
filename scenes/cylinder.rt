@@ -17,4 +17,4 @@
 # Optional objects  |                  |             |                 |                 |               |
 # Cylinder          |                  |             | Diameter as     | Height as       |               | 2nd color
 #                   |                  |             | positive double | positive double |               |
-  cy                  10.0,0.0,0.0       1.0,0,0.0     3                 5                 0,0,255         checkerboard=128,128,255
+  cy                  10.0,0.0,0.0       1.0,0,0.0     3                 5                 0,0,255         texture=textures/Earth.ppm #checkerboard=128,128,255

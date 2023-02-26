@@ -31,10 +31,7 @@ static t_color	get_uv_color(t_cone *cone, t_texture *tex, \
 	t_point		vector;
 
 	vector = sub_vectors(hit_point, cone->coord);
-	longitude = (atan(dot_product(vector, cone->down) \
-		/ dot_product(vector, cone->right)));
-	if (dot_product(vector, cone->right) < 0)
-		longitude += M_PI;
+	longitude = get_longitude(vector, cone->right, cone->down);
 	tu = 0.5 * dot_product(vector, cone->direction) + 0.5;
 	tv = longitude * MC_1_2PI + 0.25;
 	return (tex->pixels[(int)(tu * tex->height)][(int)(tv * tex->width)]);
@@ -64,8 +61,7 @@ t_color	get_color_cone(t_scene *scene, t_object *object, \
 	if (!object->color_bis && !object->texture)
 		return (cone->ratio_color);
 	vector = sub_vectors(hit_point, cone->coord);
-	longitude = (atan(dot_product(vector, cone->right) \
-		/ dot_product(vector, cone->down)));
+	longitude = get_longitude(vector, cone->right, cone->down);
 	h = dot_product(vector, cone->direction);
 	if (h < cone->height - FLT_EPSILON)
 		return (find_cone_color(object, longitude, h, cone));

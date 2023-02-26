@@ -23,7 +23,7 @@
   sp                  1.0,1.0,0.0                      0.5                                 255,0,0        specular=30 checkerboard=255,255,255 texture=textures/earth2.ppm bump_map=textures/earthbm.ppm relief=1
 # Cylinder          |                  |             | Diameter as     | Height as       |               |
 #                   |                  |             | positive double | positive double |               |
-  cy                  1.0,0.0,0.0        0.0,0.0,1.0   0.2               0.4               10,0,255        specular=0
+  cy                  1.0,0.0,0.0        0.0,0.0,1.0   0.2               0.4               10,0,255        specular=10 texture=textures/earth2.ppm
 # Cone              |                  |             | Diameter as     | Height as       |               |
 #                   |                  |             | positive double | positive double |               |
-  co                  1.0,-1.0,0.0       0.0,0.0,1.0   0.2               0.4               30,255,30
+  co                  1.0,-1.0,0.0       0.0,0.0,1.0   0.2               0.4               30,255,30       specular=10 texture=textures/earth2.ppm

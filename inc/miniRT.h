@@ -79,8 +79,9 @@
 # define PLANE_ALL				0x00000300
 
 # define SPHERE_TRANSLATION		0x00001000
-# define SPHERE_RADIUS			0x00002000
-# define SPHERE_ALL				0x00003000
+# define SPHERE_ROTATION		0x00002000
+# define SPHERE_RADIUS			0x00004000
+# define SPHERE_ALL				0x00007000
 
 # define CYLINDER_TRANSLATION	0x00010000
 # define CYLINDER_ROTATION		0x00020000
@@ -108,7 +109,7 @@
 # define NB_OBJECTS				6
 # define NB_ITEMS				9
 # define NB_BONUS				6
-# define NB_HEADER_INFO			3
+# define NB_HEADER_INFO			2
 
 /* Translation, rotation & other factors */
 
@@ -415,6 +416,10 @@ double			sin_rot(void);
 
 double			n_sin_rot(void);
 
+double			get_latitude(t_point vector, t_point front, double radius);
+
+double			get_longitude(t_point vector, t_point right, t_point down);
+
 t_point			new_point(double x, double y, double z);
 
 double			distance_square(t_point a, t_point b);
@@ -592,6 +597,10 @@ void			rotation_absolute_camera(t_scene *scene, t_matrix matrix);
 void			rotation_relative_spot_light(int key_code, t_scene *scene);
 
 void			rotation_absolute_spot_light(t_scene *scene, t_matrix matrix);
+
+void			rotation_relative_sphere(int key_code, t_scene *scene);
+
+void			rotation_absolute_sphere(t_scene *scene, t_matrix matrix);
 
 void			rotation_relative_plane(int key_code, t_scene *scene);
 

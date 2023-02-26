@@ -12,26 +12,43 @@
 
 #include "miniRT.h"
 
+static void	rotation_texture_cone(int key_code, \
+				t_scene *scene, t_object *object, t_cone *cone)
+{
+	if (!object->texture && !object->normal_map && !object->color_bis)
+		return ;
+	if (key_code == NUMPAD_7)
+		cone->right = matrix_vector_multi(matrix_rotation(cone->direction, \
+			n_sin_rot()), cone->right);
+	else
+		cone->right = matrix_vector_multi(matrix_rotation(cone->direction, \
+			sin_rot()), cone->right);
+	cone->down = cross_product(cone->direction, cone->right);
+	update_scene(scene, CONE_ROTATION);
+}
+
 void	rotation_relative_cone(int key_code, t_scene *scene)
 {
-	t_cone	*co;
+	t_object	*object;
+	t_cone		*cone;
 
-	co = (t_cone *)scene->objects[scene->index - 1]->object;
+	object = scene->objects[scene->index - 1];
+	cone = (t_cone *)object->object;
 	if (key_code == NUMPAD_2)
-		co->down = matrix_vector_multi(matrix_rotation(co->right, \
-			sin_rot()), co->down);
+		cone->down = matrix_vector_multi(matrix_rotation(cone->right, \
+			sin_rot()), cone->down);
 	else if (key_code == NUMPAD_8)
-		co->down = matrix_vector_multi(matrix_rotation(co->right, \
-			n_sin_rot()), co->down);
+		cone->down = matrix_vector_multi(matrix_rotation(cone->right, \
+			n_sin_rot()), cone->down);
 	else if (key_code == NUMPAD_4)
-		co->right = matrix_vector_multi(matrix_rotation(co->down, \
-			n_sin_rot()), co->right);
+		cone->right = matrix_vector_multi(matrix_rotation(cone->down, \
+			n_sin_rot()), cone->right);
 	else if (key_code == NUMPAD_6)
-		co->right = matrix_vector_multi(matrix_rotation(co->down, \
-			sin_rot()), co->right);
+		cone->right = matrix_vector_multi(matrix_rotation(cone->down, \
+			sin_rot()), cone->right);
 	else
-		return ;
-	co->direction = cross_product(co->right, co->down);
+		return (rotation_texture_cone(key_code, scene, object, cone));
+	cone->direction = cross_product(cone->right, cone->down);
 	update_scene(scene, CONE_ROTATION);
 }
 

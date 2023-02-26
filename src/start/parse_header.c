@@ -27,9 +27,6 @@ static int	*init_vars(t_scene *scene, char **header_names, \
 	header_names[1] = "height";
 	fct_header[1] = &parse_integer;
 	item_ptr[1] = &scene->height;
-	header_names[2] = "reflexions";
-	fct_header[2] = &parse_integer;
-	item_ptr[2] = &scene->reflexions;
 	i = -1;
 	while (++i < NB_HEADER_INFO)
 		lengths[i] = (int)ft_strlen(header_names[i]);

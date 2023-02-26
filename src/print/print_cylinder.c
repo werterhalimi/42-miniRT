@@ -17,7 +17,7 @@ static t_color	cylinder_map(t_texture *tex, double longitude, double h)
 	double	tu;
 	double	tv;
 
-	tu = 0.5 * h + 0.5;
+	tu = 0.5 * -h + 0.5;
 	tv = longitude * MC_1_2PI + 0.25;
 	return (tex->pixels[(int)(tu * tex->height)][(int)(tv * tex->width)]);
 }
@@ -31,10 +31,7 @@ static t_color	get_uv_color(t_cylinder *cy, t_texture *tex, \
 	t_point		vector;
 
 	vector = sub_vectors(hit_point, cy->coord);
-	longitude = (atan(dot_product(vector, cy->down) \
-		/ dot_product(vector, cy->right)));
-	if (dot_product(vector, cy->right) < 0)
-		longitude += M_PI;
+	longitude = get_longitude(vector, cy->right, cy->down);
 	tu = 0.5 * dot_product(vector, cy->direction) + 0.5;
 	tv = longitude * MC_1_2PI + 0.25;
 	return (tex->pixels[(int)(tu * tex->height)][(int)(tv * tex->width)]);
@@ -65,14 +62,11 @@ t_color	get_color_cylinder(t_scene *scene, t_object *object, \
 	if (!object->color_bis && !object->texture)
 		return (cylinder->ratio_color);
 	vector = sub_vectors(hit_point, cylinder->coord);
-	longitude = atan(dot_product(vector, cylinder->down) \
-		/ dot_product(vector, cylinder->right));
-	if (dot_product(vector, cylinder->right) < 0)
-		longitude += M_PI;
+	longitude = get_longitude(vector, cylinder->right, cylinder->down);
 	h = dot_product(vector, cylinder->direction);
 	if (-(cylinder->semi_height - FLT_EPSILON) < h \
 		&& h < cylinder->semi_height - FLT_EPSILON)
-		find_color(object, longitude, h, cylinder);
+		return (find_color(object, longitude, h, cylinder));
 	if (object->color_bis && !((long)floor(sqrt(distance_square(vector, \
 		scalar_multi(h, cylinder->direction)))) % 2) \
 		^ !((long)floor(longitude * MC_8_PI) % 2))

@@ -67,8 +67,8 @@ static int	item_bonus(t_object *object, char *item, int index, int *flags)
 	if (item[lengths[index]] != '=')
 		return (print_error(ERROR_NEG, \
 			"Parameter format invalid: name=value"));
-	if (*flags >> index & 0x00000001 || (index == 3 && *flags >> 4 & 0x00000001) \
-		|| (index == 4 && *flags >> 3 & 0x00000001))
+	if (*flags >> index & 0x00000001 || (index == 3 \
+		&& *flags & 0x00010000) || (index == 4 && *flags & 0x00001000))
 		return (print_error(ERROR_NEG, "Parameter already defined"));
 	*flags |= 0x00000001 << index;
 	get_address(object, item_ptr);
