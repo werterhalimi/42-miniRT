@@ -29,7 +29,6 @@ static void	update_selection(int key_code, t_scene *scene)
 		scene->index = (scene->index - 1) % (scene->nb_objects + 1);
 	else
 		scene->index = scene->nb_objects;
-	printf("INDEX = %i\n", scene->index);
 	write_type(scene);
 }
 

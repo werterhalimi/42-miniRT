@@ -51,7 +51,6 @@ int	parse_sphere(t_scene *scene, t_list *current, t_object *object)
 	object->get_normal = &normal_sphere;
 	object->intersect = &intersect_sphere;
 	object->update = &update_sphere;
-//	object->translation_relative = &translation_relative_sphere;
 	object->rotation_relative = &rotation_relative_sphere;
 	object->translation_absolute = &translation_absolute_sphere;
 	object->rotation_absolute = &rotation_absolute_sphere;

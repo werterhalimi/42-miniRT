@@ -17,6 +17,6 @@ t_point	bump_normal(double relief, t_point normal, t_color color)
 	t_point	perturbation;
 
 	perturbation = (t_point){color.r, color.g, color.b};
-	perturbation = scalar_multi(relief, perturbation);
-	return (unit_vector(add_vectors(perturbation, normal)));
+	return (unit_vector(add_vectors(scalar_multi(relief, \
+		perturbation), normal)));
 }

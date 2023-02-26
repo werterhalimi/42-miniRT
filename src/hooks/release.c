@@ -22,7 +22,7 @@ int	key_release(int key_code, t_scene *scene)
 	else if (is_key_rotation(key_code) || is_key_translation(key_code) \
 		|| key_code == NUMPAD_PLUS || key_code == NUMPAD_MINUS \
 		|| key_code == KEY_SPACE)
-		print_window(scene, 1, scene->reflexions);
+		print_window(scene, 1, 0);
 	return (0);
 }
 
@@ -31,6 +31,6 @@ int	mouse_release(int mouse_code, int x, int y, t_scene *scene)
 	(void) x;
 	(void) y;
 	if (mouse_code != LEFT_CLICK && mouse_code != RIGHT_CLICK)
-		print_window(scene, 1, scene->reflexions);
+		print_window(scene, 1, 0);
 	return (0);
 }

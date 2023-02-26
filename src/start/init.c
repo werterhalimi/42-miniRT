@@ -42,7 +42,7 @@ static int	init_mlx(t_scene *scene)
 		return (ERROR);
 	if (init_img(&scene->axis_img, scene->mlx, 100, 100))
 		return (ERROR);
-	print_window(scene, 1, scene->reflexions);
+	print_window(scene, 1, 0);
 	return (SUCCESS);
 }
 

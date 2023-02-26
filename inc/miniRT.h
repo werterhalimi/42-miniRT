@@ -19,7 +19,6 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <stdio.h>
-//# include <string.h>
 # include <limits.h>
 # include <errno.h>
 # include <fcntl.h>
@@ -380,7 +379,6 @@ typedef struct s_scene
 	int			index;
 	int			nb_objects;
 	int			mode;
-	int			reflexions;
 	int			axis;
 }	t_scene;
 
@@ -667,7 +665,6 @@ int				parse_color_bonus(void *ptr, char *item);
 int				parse_relief(void *ptr, char *item);
 
 int				parse_ratio(void *ptr, char *item);
-int				parse_relief(void *ptr, char *item);
 
 int				parse_length(double *length, char *item, char *name, char half);
 
@@ -680,8 +677,6 @@ int				parse_texture(void *ptr, char *item);
 int				read_ppm(t_texture **texture, int fd);
 
 char			*remove_space(char *item);
-
-void			create_image(t_texture **texture, unsigned char *map);
 
 char			*get_header(int fd);
 

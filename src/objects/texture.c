@@ -24,7 +24,7 @@ static t_texture	*create_empty_texture(int height, int width, int value)
 	ret->width = width;
 	ret->value = value;
 	ret->pixels = ft_calloc(ret->height, sizeof (*ret->pixels));
-	if (!ret)
+	if (!ret->pixels)
 		return (NULL);
 	y = 0;
 	while (y < ret->height)
@@ -67,28 +67,24 @@ t_texture	*bump_to_map(t_texture *bump)
 
 int	init_texture(int fd, t_texture **texture)
 {
-	char	*tmp;
 	char	*line;
 	char	**split;
 
-	(*texture) = ft_calloc(1, sizeof (t_texture));
+	*texture = ft_calloc(1, sizeof (t_texture));
 	if (!(*texture))
 		return (print_error(ERROR, "Texture allocation failed"));
 	line = get_header(fd);
+	if (!line)
+		return (print_error(ERROR, "PPM header allocation failed"));
 	split = ft_split(line, '\n');
 	if (!split)
 		return (print_error(ERROR, "Texture init failed because of split"));
 	if (ft_strncmp(split[0], "P6", 2))
 		return (print_error(ERROR, "PPM file isn't P6"));
-	tmp = split[1];
 	(*texture)->width = ft_atoi(split[1]);
 	while (*(split[1]) && *(split[1]) != ' ')
 		(split[1])++;
 	(*texture)->height = ft_atoi(split[1]);
 	(*texture)->value = ft_atoi(split[2]);
-	ft_free(line);
-	ft_free(split[0]);
-	ft_free(tmp);
-	ft_free(split[2]);
 	return (SUCCESS);
 }
