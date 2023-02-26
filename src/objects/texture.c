@@ -18,15 +18,20 @@ static t_texture	*create_empty_texture(int height, int width, int value)
 	int			y;
 
 	ret = ft_calloc(sizeof(*ret), 1);
+	if (!ret)
+		return (NULL);
 	ret->height = height;
 	ret->width = width;
 	ret->value = value;
 	ret->pixels = ft_calloc(ret->height, sizeof (*ret->pixels));
+	if (!ret)
+		return (NULL);
 	y = 0;
 	while (y < ret->height)
 	{
 		ret->pixels[y] = ft_calloc(ret->width, sizeof(t_color));
-		y++;
+		if (!ret->pixels[y++])
+			return (NULL);
 	}
 	return (ret);
 }
@@ -34,26 +39,27 @@ static t_texture	*create_empty_texture(int height, int width, int value)
 t_texture	*bump_to_map(t_texture *bump)
 {
 	t_texture	*ret;
-	int			x;
-	int			y;
+	int			u;
+	int			v;
 
 	ret = create_empty_texture(bump->height, bump->width, bump->value);
-	y = -1;
-	while (++y < ret->height)
+	if (!ret)
+		return (NULL);
+	v = -1;
+	while (++v < ret->height)
 	{
-		x = -1;
-		while (++x < ret->width)
+		u = -1;
+		while (++u < ret->width)
 		{
-				ret->pixels[y][x] = sub_colors(bump->pixels[y][x], \
-						bump->pixels[y][x + 1]);
-				ret->pixels[y][x] = add_colors(\
-						ret->pixels[y][x], \
-						sub_colors(bump->pixels[y][x], bump->pixels[y + 1][x]));
+				ret->pixels[v][u] = sub_colors(bump->pixels[v][u], \
+						bump->pixels[v][u + 1]);
+				ret->pixels[v][u] = add_colors(\
+						ret->pixels[v][u], \
+						sub_colors(bump->pixels[v][u], bump->pixels[v + 1][u]));
 		}
 	}
-	y = -1;
-	while (++y < bump->height)
-		ft_free(bump->pixels[y]);
+	while (--v >= 0)
+		ft_free(bump->pixels[v]);
 	ft_free(bump->pixels);
 	ft_free(bump);
 	return (ret);
@@ -66,11 +72,12 @@ int	init_texture(int fd, t_texture **texture)
 	char	**split;
 
 	(*texture) = ft_calloc(1, sizeof (t_texture));
-	(*texture)->value = 0;
-	(*texture)->height = 0;
-	(*texture)->width = 0;
+	if (!(*texture))
+		return (print_error(ERROR, "Texture allocation failed"));
 	line = get_header(fd);
 	split = ft_split(line, '\n');
+	if (!split)
+		return (print_error(ERROR, "Texture init failed because of split"));
 	if (ft_strncmp(split[0], "P6", 2))
 		return (print_error(ERROR, "PPM file isn't P6"));
 	tmp = split[1];

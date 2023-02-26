@@ -55,7 +55,6 @@ static int	parse_selector(t_scene *scene, t_list *current, char *obj_names[], \
 			while (scene->objects[j])
 				j++;
 			scene->objects[j] = ft_calloc(1, sizeof (t_object));
-			scene->objects[j]->relief = 0;
 			if (!scene->objects[j])
 				return (print_error(ERROR, "Object allocation failed"));
 			return (fct_array[i](scene, current, scene->objects[j]));

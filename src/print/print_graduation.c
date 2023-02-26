@@ -16,7 +16,7 @@ static int	is_valid_coord(t_base *base, t_axis *axis, int u, int v)
 {
 	int	value;
 
-	if (isinf(axis->slope))
+	if (axis->delta_u == 0.0)
 		return (((base->half_height <= v && v <= axis->proj_v) \
 			|| (axis->proj_v <= v && v <= base->half_height)) \
 			&& u == base->half_width);
@@ -49,9 +49,9 @@ static t_axis	init_axis(t_base *base, t_point vector)
 	axis.delta_v = axis.vector.y * base->half_height;
 	axis.proj_u = (int)round(axis.delta_u) + base->half_width;
 	axis.proj_v = (int)round(axis.delta_v) + base->half_height;
-	axis.slope = axis.delta_v / axis.delta_u;
-	if (!isinf(axis.slope))
+	if (axis.delta_u != 0.0)
 	{
+		axis.slope = axis.delta_v / axis.delta_u;
 		axis.origin = base->half_height - axis.slope * base->half_width;
 		axis.epsilon = abs((int)ceil(axis.slope) >> 1);
 	}

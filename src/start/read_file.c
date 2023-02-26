@@ -15,9 +15,11 @@
 static int	quit_read(int status, int fd, int size)
 {
 	close(fd);
-	if (!status)
-		return (size);
-	return (print_error(status, "List allocation failed"));
+	if (status)
+		return (print_error(status, "List allocation failed"));
+	if (size < 0)
+		return (print_error(ERROR_NEG, "Not enough elements"));
+	return (size);
 }
 
 static int	empty_line(char const *line)

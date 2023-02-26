@@ -46,6 +46,27 @@ int	parse_normal_map(void *ptr, char *item)
 		return (print_error(ERROR, "Invalid texture file"));
 	if (read_ppm(&normal_map, fd))
 		return (ERROR);
+	*(t_texture **)ptr = normal_map;
+	return (SUCCESS);
+}
+
+int	parse_bump_map(void *ptr, char *item)
+{
+	t_texture	*normal_map;
+	char		*tmp;
+	int			fd;
+
+	if (!item)
+		return (print_error(ERROR, "A texture is missing"));
+	tmp = remove_space(item);
+	fd = open(tmp, O_RDONLY);
+	ft_free(tmp);
+	if (fd < 0)
+		return (print_error(ERROR, "Invalid texture file"));
+	if (read_ppm(&normal_map, fd))
+		return (ERROR);
 	*(t_texture **)ptr = bump_to_map(normal_map);
+	if (!ptr)
+		return (print_error(ERROR, "Bump map to normal map failed"));
 	return (SUCCESS);
 }

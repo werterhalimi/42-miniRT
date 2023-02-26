@@ -12,15 +12,15 @@
 
 #include "miniRT.h"
 
-int	parse_relief(void *relief, char *item)
+int	parse_relief(void *ptr, char *item)
 {
 	if (!item)
-		return (print_error(ERROR, "An relief is missing"));
-	if (str_to_double(item, relief, YES))
+		return (print_error(ERROR, "A relief is missing"));
+	if (str_to_double(item, (double *)ptr, YES))
 		return (print_error(ERROR, \
 			"Invalid relief format. Required: one double"));
-	if (*((double *)relief) < 0.0)
+	if (*((double *)ptr) < 0.0)
 		return (print_error(ERROR, \
-			"The relief must be {> 0}"));
+			"The relief must be positive"));
 	return (SUCCESS);
 }

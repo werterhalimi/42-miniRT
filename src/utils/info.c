@@ -84,5 +84,5 @@ void	write_info(t_scene *scene)
 	write_point(scene->window_corner, "Scene window corner");
 	i = -1;
 	while (scene->objects[++i])
-		printf("Object id %d of type : %d\n", i, scene->objects[i]->type);
+		printf("Object id %d of type : %d, relief = %lf\n", i, scene->objects[i]->type, scene->objects[i]->relief);
 }

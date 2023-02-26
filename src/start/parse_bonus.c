@@ -28,8 +28,8 @@ static int	*init_static(char **bonus_names, int (*fct_bonus[])(void *, char *))
 	fct_bonus[2] = &parse_texture;
 	bonus_names[3] = "normal_map";
 	fct_bonus[3] = &parse_normal_map;
-	bonus_names[4] = "reflectance";
-	fct_bonus[4] = &parse_ratio;
+	bonus_names[4] = "bump_map";
+	fct_bonus[4] = &parse_bump_map;
 	bonus_names[5] = "relief";
 	fct_bonus[5] = &parse_relief;
 	i = -1;
@@ -44,7 +44,7 @@ static void	get_address(t_object *object, void *item_ptr[])
 	item_ptr[1] = &object->specular;
 	item_ptr[2] = &object->texture;
 	item_ptr[3] = &object->normal_map;
-	item_ptr[4] = &object->reflectance;
+	item_ptr[4] = &object->normal_map;
 	item_ptr[5] = &object->relief;
 }
 
@@ -62,15 +62,16 @@ static int	item_bonus(t_object *object, char *item, int index, int *flags)
 			return (print_error(ERROR_NEG, \
 				"Internal allocation failed"));
 	}
-	get_address(object, item_ptr);
 	if (ft_strncmp(item, bonus_names[index], lengths[index]))
 		return (NO);
 	if (item[lengths[index]] != '=')
 		return (print_error(ERROR_NEG, \
 			"Parameter format invalid: name=value"));
-	if (*flags >> index & 0x00000001)
+	if (*flags >> index & 0x00000001 || (index == 3 && *flags >> 4 & 0x00000001) \
+		|| (index == 4 && *flags >> 3 & 0x00000001))
 		return (print_error(ERROR_NEG, "Parameter already defined"));
 	*flags |= 0x00000001 << index;
+	get_address(object, item_ptr);
 	if (fct_bonus[index](item_ptr[index], item + lengths[index] + 1))
 		return (ERROR_NEG);
 	return (YES);
