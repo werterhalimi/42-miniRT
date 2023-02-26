@@ -70,7 +70,7 @@ int	parsing(t_scene *scene, t_list **list)
 
 	scene->objects = ft_calloc(scene->nb_objects + 1, \
 		sizeof (*scene->objects));
-	if (!(scene->objects))
+	if (!scene->objects)
 		return (print_error(ERROR, "Objects allocation failed"));
 	init_arrays(obj_names, fct_array);
 	while (*list)

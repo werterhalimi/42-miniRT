@@ -12,8 +12,6 @@
 
 #include "miniRT.h"
 
-#ifndef UNIT
-
 int	main(int argc, char *argv[])
 {
 	t_scene	*scene;
@@ -27,16 +25,3 @@ int	main(int argc, char *argv[])
 	mlx_hook(scene->window, ON_DESTROY, 0, (void *)quit, scene);
 	mlx_loop(scene->mlx);
 }
-
-#endif
-
-#ifdef UNIT
-
-int	main(int argc, char *argv[])
-{
-	(void) argc;
-	(void) argv;
-	printf("miniRT\n");
-	return (0);
-}
-#endif
