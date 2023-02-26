@@ -6,7 +6,7 @@
 /*   By: ncotte <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/29 11:02:34 by ncotte            #+#    #+#             */
-/*   Updated: 2023/02/24 19:24:28 by shalimi          ###   ########.fr       */
+/*   Updated: 2023/02/25 19:52:01 by shalimi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -658,6 +658,7 @@ int				parse_color_bonus(void *ptr, char *item);
 int				parse_relief(void *ptr, char *item);
 
 int				parse_ratio(void *ptr, char *item);
+int				parse_relief(void *ptr, char *item);
 
 int				parse_length(double *length, char *item, char *name, char half);
 
