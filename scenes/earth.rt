@@ -1,7 +1,7 @@
 # earth.rt
 
 # Header (optional)   max width=2560     max height=1395
-  H                   width=2560         height=1395    reflexions=0
+  H                   width=2560         height=1395
 # Object            | Coordinates      | Orientation  | Info 1          | Info 2          | Color         | Bonus
 #                   | x,y,z as doubles | x,y,z in     |                 |                 | R,G,B in      |
 #                   |                  | [-1.0; 1.0]  |                 |                 | {0; ...; 255} |
@@ -14,17 +14,12 @@
   C                   10.0,0.0,0.0       -1.0,0.0,0.0   90.0
 # Main light        |                  |              | Ratio in        |                 |               |
 #                   |                  |              | [0.0; 1.0]      |                 |               |
-  L                   100.0,0.0,100.0                   0.7                                 255,255,255
+  L                   10.0,0.0,100.0                   0.7                                 255,255,255
 
 # Optional objects  |                  |              |                 |                 |               |
-# Plane             |                  |              |                 |                 |               |
-#  pl                  0.0,0.0,-1.0       0.0,0.0,1.0                                        255,0,225       specular=10
 # Sphere            |                  |              | Diameter as     |                 |               |
 #                   |                  |              | positive double |                 |               |
-  sp                  0.0,0.0,0.0                       5.0                                 255,255,255     specular=10 texture=textures/Earth.ppm
-# Cylinder          |                  |              | Diameter as     | Height as       |               |
-#                   |                  |              | positive double | positive double |               |
-#  cy                  1.0,0.0,0.0        0.0,0.0,1.0    0.2               0.4               10,0,255        specular=10
-# Cone              |                  |              | Diameter as     | Height as       |               |
-#                   |                  |              | positive double | positive double |               |
-#  co                  1.0,-1.0,0.0       0.0,0.0,1.0    0.2               0.4               30,255,30       specular=10
+  sp                  0.0,0.0,0.0                       5.0                                 255,255,255     specular=30 texture=textures/Earth.ppm normal_map=textures/map_terre.ppm relief=0.5
+# Sphere            |                  |              | Diameter as     |                 |               |
+#                   |                  |              | positive double |                 |               |
+  sp                  -10.0,-5.0,0.0                   2.0                                 255,255,255     specular=30 texture=textures/Moon.ppm bump_map=textures/Moon_bm.ppm relief=2
